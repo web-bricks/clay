@@ -1,8 +1,8 @@
 /**
-    узужвИ╪Ч
+    И│╝Г╫╘Г╩└Д╩╤
 */
 kola("webbricks.clay.ctrl.Expose",
-    ":Element,:Class,:Object,:Document",
+    "kola.html.Element,kola.lang.Class,kola.lang.Object,kola.html.Document",
 function(K,C,O,D){
     
     D.createInlineCss('.cexpose{position:absolute;left:0;top:0;visibility:visible;}');
@@ -14,13 +14,13 @@ function(K,C,O,D){
     }
     var Expose=C.create({
         /**
-            footPrint:╥етзузужж╝ио╣дт╙кь
+            footPrint:Ф■╬Е°╗И│╝Г╫╘Д╧▀Д╦┼Г └Е┘┐Г╢═
             options
-                .anchor:узуж╠╩╥етзддюО
-                .scrollEleё╨╧Ж╤╞лУ
-                .fixedё╨узужйг╥Яйгfix╤╗н╩
-                .color:узуж╣дяуи╚
-                .opacity:узуж╣дм╦цВ╤х
+                .anchor:И│╝Г╫╘Х╒╚Ф■╬Е°╗Е⌠╙И┤▄
+                .scrollEleО╪ Ф╩ Е┼╗Ф²║
+                .fixedО╪ И│╝Г╫╘Ф≤╞Е░╕Ф≤╞fixЕ╝ Д╫█
+                .color:И│╝Г╫╘Г └И╒°Х┴╡
+                .opacity:И│╝Г╫╘Г └И─▐Ф≤▌Е╨╕
         */
         _init:function(footPrint,options){            
             var _this=this;
@@ -42,7 +42,7 @@ function(K,C,O,D){
             this.options.anchor.append(this.snow)
         },
         /**
-            отй╬узуж
+            Ф≤╬Г╓╨И│╝Г╫╘
         */
         show:function(showOpt){
             showOpt=showOpt||{};
@@ -65,7 +65,7 @@ function(K,C,O,D){
             refresh.call(this);
         },
         /**
-            ╧ь╠уузуж
+            Е┘ЁИ≈╜И│╝Г╫╘
         */
         close:function(){
             this._showing=false;

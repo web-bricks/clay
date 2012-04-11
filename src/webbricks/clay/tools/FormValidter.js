@@ -1,12 +1,12 @@
 /**
-    ±íµ¥ÑéÖ¤×é¼ş
-    ÊµÏÖkola-cpt½Ó¿Ú
+    è¡¨å•éªŒè¯ç»„ä»¶
+    å®ç°kola-cptæ¥å£
 */
 kola("webbricks.clay.tools.FormValidter",
-    ":Element,:Type,:Class,:Object,:Array,:Ajax,:Dispatcher",
-function(K,Type,C,O,A,Ajax,Dispatcher){
+    "kola.html.Element,kola.lang.Class,kola.lang.Object,kola.lang.Array,kola.net.Ajax,kola.event.Dispatcher",
+function(K,C,O,A,Ajax,Dispatcher){
     /**
-        Ô¤¶¨ÒåÕıÔò±í´ïÊ½
+        é¢„å®šä¹‰æ­£åˆ™è¡¨è¾¾å¼
     */
     var regs={
         Require : /.+/,
@@ -26,24 +26,24 @@ function(K,Type,C,O,A,Ajax,Dispatcher){
 		QQ : /^[1-9]\d{4,15}$/
     }
     /**
-        Ô¤¶¨Òå¹æÔò
+        é¢„å®šä¹‰è§„åˆ™
     */
     var rules={
         email:{
             trigger:"blur",
-            rule:[["Email","email¸ñÊ½´íÎó"]]
+            rule:[["Email","emailæ ¼å¼é”™è¯¯"]]
         },
         name:{
             trigger:"blur",
-            rule:[[/[\S]{2,13}/,"êÇ³ÆÓ¦Îª2~12Î»"],["Username","êÇ³Æ¸ñÊ½´íÎó"],{url:"isUserNameUnused?name="}],
+            rule:[[/[\S]{2,13}/,"æ˜µç§°åº”ä¸º2~12ä½"],["Username","æ˜µç§°æ ¼å¼é”™è¯¯"],{url:"isUserNameUnused?name="}],
         },
         phone:{
             trigger:"blur",
-            rule:[["Number","µç»°ºÅÂë±ØĞëÊÇÊı×Ö"],["Mobile","µç»°ºÅÂë¸ñÊ½´íÎó"]]
+            rule:[["Number","ç”µè¯å·ç å¿…é¡»æ˜¯æ•°å­—"],["Mobile","ç”µè¯å·ç æ ¼å¼é”™è¯¯"]]
         }
     }
     /**
-        Ä¬ÈÏ±íµ¥×´Ì¬ÇĞ»»
+        é»˜è®¤è¡¨å•çŠ¶æ€åˆ‡æ¢
     */
     var view=function(elem,data){
         if(elem.status==Form.STATUS_EMPTY || elem.status==Form.STATUS_OK){
@@ -53,7 +53,7 @@ function(K,Type,C,O,A,Ajax,Dispatcher){
         }
     }
     /**
-        ±íµ¥ÏîÑéÖ¤
+        è¡¨å•é¡¹éªŒè¯
     */
     var Item=C.create(Dispatcher,{
         _init:function(el){
@@ -80,7 +80,7 @@ function(K,Type,C,O,A,Ajax,Dispatcher){
             var _this=this;
             var rules=_this.code.rule;
             var val=_this.el[0].value;
-            //Èç¹ûÎª¿Õ£¬½»¸ø·Ç¿ÕÑéÖ¤
+            //å¦‚æœä¸ºç©ºï¼Œäº¤ç»™éç©ºéªŒè¯
             if(val==""){
                 if(_this.require=="")
                     _this.status=Form.STATUS_EMPTY;
@@ -93,8 +93,8 @@ function(K,Type,C,O,A,Ajax,Dispatcher){
             }
             for(var i=0;i<rules.length;i++){
                 var rule=rules[i];
-                if(Type.isArray(rule)){
-                    if(Type.isString(rule[0])){
+                if(O.isArray(rule)){
+                    if(O.isString(rule[0])){
                         var reg=regs[rule[0]];
                     }else{
                         var reg=rule[0];
@@ -120,7 +120,7 @@ function(K,Type,C,O,A,Ajax,Dispatcher){
                         },fail:function(){
                             _this.status=Form.STATUS_ERR;
                             _this.dispatch("ERR");
-                            _this.view(_this,"ÍøÂç²»Í¨");
+                            _this.view(_this,"ç½‘ç»œä¸é€š");
                         }
                     });
                     return;
@@ -150,10 +150,10 @@ function(K,Type,C,O,A,Ajax,Dispatcher){
         }
     }
     /**
-        ±íµ¥ÑéÖ¤
+        è¡¨å•éªŒè¯
         options
-            .clearOnFocus ÌõÄ¿ÔÚµÃµ½½¹µãºóÇå³ı´íÎó×´Ì¬
-            .submit µã»÷Ìá½»°´Å¥ºóËùÓĞÑéÖ¤Í¨¹ıµÄ»Øµ÷º¯Êı
+            .clearOnFocus æ¡ç›®åœ¨å¾—åˆ°ç„¦ç‚¹åæ¸…é™¤é”™è¯¯çŠ¶æ€
+            .submit ç‚¹å‡»æäº¤æŒ‰é’®åæ‰€æœ‰éªŒè¯é€šè¿‡çš„å›è°ƒå‡½æ•°
     */
     var Form=C.create({
         _init:function(form,options){
@@ -186,9 +186,9 @@ function(K,Type,C,O,A,Ajax,Dispatcher){
                         _this.items[i].observe("PASS",testAllPass,{scope:_this});
                         _this.items[i].observe("ERR",testErr,{scope:_this});
                         _this.items[i].valid();
-                        if(_this.items[i].status==Form.STATUS_ERR){
-                            return;
-                        }
+                        //if(_this.items[i].status==Form.STATUS_ERR){
+                        //    return;
+                        //}
                     }
                 });
             }

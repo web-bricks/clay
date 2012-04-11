@@ -1,19 +1,19 @@
 /**
-    ²ã×é¼ş
+    å±‚ç»„ä»¶
     @author guanyuxin
 */
 kola("webbricks.clay.ctrl.Overlay",
-    ":Element,:Class,:Object,:Document,webbricks.clay.ctrl.Expose",
+    "kola.html.Element,kola.lang.Class,kola.lang.Object,kola.html.Document,webbricks.clay.ctrl.Expose",
 function(K,C,O,D,Expose){
 
     D.createInlineCss('.coverlay{position:absolute;border:1px solid gray;visibility:visible;-webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);}');
 
     var Overlay=C.create({
         /**
-            overlay:±»×÷Îª²ãÏÔÊ¾µÄdom
+            overlay:è¢«ä½œä¸ºå±‚æ˜¾ç¤ºçš„dom
             options
-                .anchor:ÕÚÕÖ±»·ÅÔÚÄÄÀï
-                .expose£ºexposeµÄoption
+                .anchor:é®ç½©è¢«æ”¾åœ¨å“ªé‡Œ
+                .exposeï¼šexposeçš„option
         */
         _init:function(overlay,options){            
             var _this=this;
@@ -38,12 +38,12 @@ function(K,C,O,D,Expose){
             _this.overlay.addClass("coverlay");
         },
         /**
-            ÏÔÊ¾²ã
+            æ˜¾ç¤ºå±‚
         */
         show:function(){
             this.expose.show({z:Overlay.topLayer++});
             this.overlay.style("display","block");
-            //¾ÓÖĞ
+            //å±…ä¸­
             var w=this.overlay.width();
             var h=this.overlay.height();
             if(!this.options.fixed)
@@ -54,7 +54,7 @@ function(K,C,O,D,Expose){
             this.overlay.style("top",Math.floor(scroll.top+(document.documentElement.clientHeight-h)/2));
         },
         /**
-            Òş²Ø²ã
+            éšè—å±‚
         */
         close:function(){
             this.expose.close();

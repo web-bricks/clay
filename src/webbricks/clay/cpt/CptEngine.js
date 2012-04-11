@@ -1,28 +1,30 @@
 /**
-    ÏÔÊ¾²ã×é¼ş
-    Ñ°ÕÒÒ³ÃæÉÏÓĞ data-cpt ÊôĞÔµÄdomÔªËØ£¬ÕÒµ½¶ÔÓ¦µÄ×é¼ş²¢³õÊ¼»¯
-    ×é¼şĞè×ñÑ­Ò»ÏÂ¹æ·¶
-    ·µ»ØÒ»¸öº¯Êı£¬¸Ãº¯ÊıÊÇÒ»¸ö¹¹ÔìÆ÷
+    æ˜¾ç¤ºå±‚ç»„ä»¶
+    å¯»æ‰¾é¡µé¢ä¸Šæœ‰ data-cpt å±æ€§çš„domå…ƒç´ ï¼Œæ‰¾åˆ°å¯¹åº”çš„ç»„ä»¶å¹¶åˆå§‹åŒ–
+    ç»„ä»¶éœ€éµå¾ªä¸€ä¸‹è§„èŒƒ
+    è¿”å›ä¸€ä¸ªå‡½æ•°ï¼Œè¯¥å‡½æ•°æ˜¯ä¸€ä¸ªæ„é€ å™¨
     new Ctrl(elem,data){}
-        elem£º×é¼şµÄ×îÍâ²ãÔªËØ£¬Ò²¾ÍÊÇÓµÓĞ data-cpt ÊôĞÔµÄdomÔªËØ
-        data£º³õÊ¼»¯Ê±µÄ²ÎÊı£¬°´json¸ñÊ½Ğ´ÔÚdata-cpt-dataÉÏÃæ
+        elemï¼šç»„ä»¶çš„æœ€å¤–å±‚å…ƒç´ ï¼Œä¹Ÿå°±æ˜¯æ‹¥æœ‰ data-cpt å±æ€§çš„domå…ƒç´ 
+        dataï¼šåˆå§‹åŒ–æ—¶çš„å‚æ•°ï¼ŒæŒ‰jsonæ ¼å¼å†™åœ¨data-cpt-dataä¸Šé¢
         
-    ÔÚÒ³Ãæ³õÊ¼»¯ºó»áÉ¨ÃèÎÄµµ£¬Ò³Ãæ²åÈëĞÂ½ÚµãÊÇÉ¨ÃèĞÂ½Úµã£¬ÊÖ¶¯µ÷ÓÃÊ±É¨Ãè
+    åœ¨é¡µé¢åˆå§‹åŒ–åä¼šæ‰«ææ–‡æ¡£ï¼Œé¡µé¢æ’å…¥æ–°èŠ‚ç‚¹æ˜¯æ‰«ææ–°èŠ‚ç‚¹ï¼Œæ‰‹åŠ¨è°ƒç”¨æ—¶æ‰«æ
 */
 kola("webbricks.clay.cpt.CptEngine",
-    ":Element,:Class,:Object,:Event,:Array",
+    "kola.html.Element,kola.lang.Class,kola.lang.Object,kola.lang.Array",
 
-function(K,C,O,Evt,A){
-    //°ó¶¨ÊÂ¼ş
-    K.observe("ElementCreate",scan);
-    //³õÊ¼»¯
-    scan({data:[document]});
+function(K,C,O,A){
+    //ç»‘å®šäº‹ä»¶
+    K.on("ElementCreate",scan);
+    //åˆå§‹åŒ–
+    scan({data:document});
     function scan(evt){
         var elements=K(evt.data).find("[data-cpt]");
+        if(!elements)
+            return;
         A.forEach(elements,function(element){
             var element=K(element);
             var ctrl=element.attr("data-cpt");
-            var data=eval(element.attr("data-cpt-data"));
+            var data=eval('('+element.attr("data-cpt-data")+')');
             kola(ctrl,function(CtrlClass){
                 new CtrlClass(element,data);
             });

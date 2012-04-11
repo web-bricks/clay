@@ -1,5 +1,5 @@
 kola("kola.base.Anim",
-    ":Element,:Object",
+    "kola.html.Element,kola.lang.Object",
 function(K,O){
     function doAnim(){
         this.count+=10;

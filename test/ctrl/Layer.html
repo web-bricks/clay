@@ -1,0 +1,93 @@
+<html>
+<head>
+<style>
+    div.dropDown{
+        position:absolute;
+        margin-top:30px;
+	}
+    ul{
+		display:block;
+		padding:0px;
+	}
+	.anchor{
+        border:1px solid black;
+        background-color:gray;
+		display:inlin-block;
+		float:left;
+	}
+	ul.body>li{
+		display:none;
+	}
+    .noDis{
+        display:none;
+    }
+    .layer_open{
+        background-color:gray;
+    }
+    li{
+		list-style-type:none;
+	}
+	li p{
+		margin:0;
+		background-color:#eeeeee;
+		border:1px solid darkGray;
+		padding:4px;
+		text-align:center;
+		width:100px;
+		cursor:pointer;
+		display:inlin-block;
+	}
+    .unit{
+        border:1px solid black;
+        margin:20px;
+        overflow:auto;
+        padding:2px;
+    }
+</style>
+<script>
+    (function() {
+		//  加载kola
+		var script = document.createElement('script');
+		script.src = 'http://localhost/cv/kola/Package.js';
+		script.type = 'text/javascript';
+        script.charset='UTF8';
+		document.getElementsByTagName('head')[0].appendChild(script);
+		script = null;
+
+		//  声明一个kola替代变量
+		window.kola = function() {
+			var arr = [ this ];
+			for ( var i = 0, il = arguments.length; i < il; i++) {
+				arr.push(arguments[i]);
+			}
+			kola._cache.push(arr);
+		};
+		kola._cache = [];
+	})();
+    kola("webbricks.clay.cpt.CptEngine",function(){});
+</script>
+</head>
+<body>
+    <div class="unit">
+    <div class="anchor" data-cpt="webbricks.clay.ctrl.Layer" data-cpt-data='{entity:">next",trigger:"mouseenter",showLag:500}'>Anchor1</div>
+    <div class="dropDown noDis">
+        <ul>
+            <li><p>1</p></li>
+            <li><p>4</p></li>
+            <li><p>5</p></li>
+            <li><p>6</p></li>
+        </ul>
+    </div>
+    </div>
+    <div class="unit">
+    <div class="anchor" data-cpt="webbricks.clay.ctrl.Layer" data-cpt-data='{entity:">next",trigger:"mouseover"}'>Anchor1</div>
+    <div class="dropDown noDis">
+        <ul>
+            <li><p>1</p></li>
+            <li><p>4</p></li>
+            <li><p>5</p></li>
+            <li><p>6</p></li>
+        </ul>
+    </div>
+    </div>
+</body>

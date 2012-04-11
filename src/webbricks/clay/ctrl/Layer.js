@@ -14,12 +14,12 @@ option
     trigger:
         =direct 直接出现
         =click   鼠标点击
-        =mouseover anchor hover
+        =mouseenter anchor hover
         =mouseenter anchor || entity hover
     showLag
-    closeLag
+    hideLag
 show
-close
+hide
 */
 kola("webbricks.clay.ctrl.Layer",
     ["kola.lang.Class","kola.lang.Object","webbricks.clay.cpt.CptUtil"],
@@ -29,6 +29,8 @@ function(C,O,CptUtil){
     var Layer=function(anchor,option){
         var _this=this;
         _this.option=option;
+        if(_this.option.trigger=="mouseenter" && !_this.option.hideLag)
+            _this.option.hideLag=200;
         _this.anchorHover=false;
         _this.entityHover=false;
         
@@ -46,57 +48,36 @@ function(C,O,CptUtil){
             }else if(_this.option.trigger == "click") {
                 _this.anchor.click(_this.show,{scope:_this});
             }else{
+                //判断是否需要增加hover属性             
                 if(_this.option.showLag){
-                    _this.anchor.mouseover(anchorOver,{scope:_this});
-                    _this.anchor.mouseout(anchorOut,{scope:_this});
+                    _this.anchor.mouseenter(anchorOver,{scope:_this});
+                    _this.anchor.mouseleave(anchorOut,{scope:_this});
                 }
                 if(_this.option.trigger=="mouseenter"){
-                    _this.entity.mouseover(entityOver,{scope:_this});
-                    _this.entity.mouseout(entityOut,{scope:_this});
+                    _this.entity.mouseenter(entityOver,{scope:_this});
+                    _this.entity.mouseleave(entityOut,{scope:_this});
                 }
-                
+                //处理打开事件
                 if(_this.option.showLag){
-                    _this.anchor.mouseover(anchorOver,{scope:_this});
+                    _this.anchor.mouseenter(lagShow,{scope:_this});
                 }else{
-                    _this.anchor.mouseover(_this.show,{scope:_this});
+                    _this.anchor.mouseenter(_this.show,{scope:_this});
                 }
-                if(_this.option.closeLag){
-                    /*
-                    _this.anchor.mouseover(function(e){
-                        var _this2=this;
-                        this.anchorHover=true;
-                        setTimeout(function(){
-                            if(_this2.anchorHover)
-                                _this2.show();
-                        },this.option.showLag);
-                        this.anchor.un("mouseover",arguments.callee);
-                    },{scope:_this});
-                    _this.anchor.mouseout(function(e){
-                        this.anchorHover=false;
-                        this.anchor.un("mouseout",arguments.callee);
-                    },{scope:_this});
-                    */
+                //处理关闭事件
+                if(_this.option.trigger=="mouseenter"){//mouseenter
+                    _this.anchor.mouseleave(isBothOut,{scope:_this});
+                    _this.entity.mouseleave(isBothOut,{scope:_this});
                 }else{
-                    if(_this.option.trigger == "mouseover"){
-                        _this.anchor.mouseout(_this.close,{scope:_this});
-                    }else if(_this.option.trigger == "mouseenter"){
-                        _this.anchor.mouseout(isBothOut,{scope:_this});
-                        _this.entity.mouseout(isBothOut,{scope:_this});
-                        _this.anchor.mouseover(isAnyOver,{scope:_this});
-                        _this.entity.mouseover(isAnyOver,{scope:_this});
+                    if(_this.option.showLag){
+                        _this.anchor.mouseleave(lagHide,{scope:_this});
+                    }else{
+                        _this.anchor.mouseleave(_this.hide,{scope:_this});
                     }
                 }
             }
         }
     }
-    function lagStart(){
-        var _this=this;
-        setTimeout(function(){
-            if(_this.anchorHover)
-                _this.show();
-        },_this.option.showLag);
-        _this.anchor.un("mouseover",arguments.callee);
-    }
+
     function anchorOver(){
         this.anchorHover=true;
     }
@@ -109,22 +90,36 @@ function(C,O,CptUtil){
     function entityOut(){
         this.entityHover=false;
     }
-    
+    //延时打开，定时器触法时如果鼠标不在anchor上，则取消
+    function lagShow(){
+        var _this=this;
+        setTimeout(function(){
+            if(_this.anchorHover)
+                _this.show();
+        },_this.option.showLag);
+    }
+    //延时关闭
+    function lagHide(){
+        var _this=this;
+        setTimeout(function(){
+            _this.hide();
+        },_this.option.hideLag);
+    }
+    //鼠标不在anchor和
     function isBothOut(e){
         var _this=this;
         setTimeout(function(){
             if(_this.anchorHover==false && _this.entityHover==false){
-                
-                _this.close();
+                _this.hide();
             }
-        },200);
+        },_this.option.hideLag);
     }
     C.buildProto(Layer,{
         show:function(e){
             this.anchor.addClass("layer_open");
             this.entity.removeClass("noDis");
         },
-        close:function(e){
+        hide:function(e){
             this.anchor.removeClass("layer_open");
             this.entity.addClass("noDis");
         }

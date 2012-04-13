@@ -18,6 +18,7 @@ option
         =mouseenter anchor || entity hover
     showLag
     hideLag
+    hideOnClickOut 当鼠标在外部点击时关闭
 show
 hide
 */
@@ -77,7 +78,6 @@ function(C,O,CptUtil){
             }
         }
     }
-
     function anchorOver(){
         this.anchorHover=true;
     }
@@ -118,10 +118,21 @@ function(C,O,CptUtil){
         show:function(e){
             this.anchor.addClass("layer_open");
             this.entity.removeClass("noDis");
+            //如果可以点击外部关闭，则绑定事件
+            if(this.option.hideOnClickOut){
+                var self=this;
+                setTimeout(function(){
+                    self.entity.click(self.hide,{scope:self,out:true});
+                },0);
+            }
         },
         hide:function(e){
             this.anchor.removeClass("layer_open");
             this.entity.addClass("noDis");
+            
+            if(this.option.hideOnClickOut){
+                this.entity.off("click",this.hide);
+            }
         }
     });
     return Layer;

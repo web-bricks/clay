@@ -71,7 +71,7 @@ function(K,C,O,D){
             this._showing=false;
             var p=this.options;
             if(!p.fixed)
-                K(p.scrollEle).un("scroll",this.refresh);
+                K(p.scrollEle).off("scroll",this.refresh);
             if(window.addEventListener)
                 window.removeEventListener("resize",this.refresh);
             else

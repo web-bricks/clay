@@ -41,9 +41,9 @@ function(K,C,O,Layer,CptUtil){
                     return;
                 _this.actived=false;
                 for(var i=0,il=_this.items.length;i<il;i++){
-                    _this.items[i].anchor.un("click",itemHover);
+                    _this.items[i].anchor.off("click",itemHover);
                 };                
-                K(document).un("click",arguments.callee);
+                K(document).off("click",arguments.callee);
                 _this.closeAll();
             });
         }

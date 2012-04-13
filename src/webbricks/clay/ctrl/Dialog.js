@@ -24,6 +24,11 @@ kola("webbricks.clay.ctrl.Dialog",[
                     confirmButton:"确定",
                     cancelButton:"取消"
                 },option||{});
+            }else if(type=="alert"){
+                this.option=KolaObject.extend({
+                    content:"",
+                    confirmButton:"知道了",
+                },option||{});
             }
             this.elem=$(shell);
             //tool bar

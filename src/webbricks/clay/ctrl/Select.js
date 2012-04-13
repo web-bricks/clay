@@ -1,6 +1,8 @@
 /**
+    anchor
     option
         entity
+        item
     selectedIndex
     selectedValue
 */
@@ -20,7 +22,7 @@ kola("webbricks.clay.ctrl.Select",[
             this.list=CptUtil.getDom(option.entity,anchor);
             
             this.listCtrl=new Single(this.list,{
-                item:"li",
+                item:option.item||"li",
                 trigger:"mouseover",
                 selectedClass:"hover"
             });
@@ -38,6 +40,6 @@ kola("webbricks.clay.ctrl.Select",[
                 this.layer.hide();
             },{scope:this});
         }
-    })
+    });
     return exports;
 });

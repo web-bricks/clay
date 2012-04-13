@@ -6,7 +6,7 @@ kola("webbricks.clay.ctrl.Overlay",
     "kola.html.Element,kola.lang.Class,kola.lang.Object,kola.html.Document,webbricks.clay.ctrl.Expose",
 function(K,C,O,D,Expose){
 
-    D.createInlineCss('.coverlay{position:absolute;border:1px solid gray;visibility:visible;-webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);}');
+    D.createInlineCss('.coverlay{position:absolute;}');
 
     var Overlay=C.create({
         /**

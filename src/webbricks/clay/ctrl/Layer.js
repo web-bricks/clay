@@ -26,7 +26,7 @@ kola("webbricks.clay.ctrl.Layer",
     ["kola.lang.Class","kola.lang.Object","webbricks.clay.cpt.CptUtil"],
 function(C,O,CptUtil){
     var templete={
-        simpleTip:"";
+        simpleTip:""
     };
     
     var Layer=function(anchor,option){

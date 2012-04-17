@@ -2,9 +2,14 @@
     层组件
     @author guanyuxin
 */
-kola("webbricks.clay.ctrl.Overlay",
-    "kola.html.Element,kola.lang.Class,kola.lang.Object,kola.html.Document,webbricks.clay.ctrl.Expose",
-function(K,C,O,D,Expose){
+kola("webbricks.clay.ctrl.Overlay",[
+    "kola.html.Element",
+    "kola.lang.Class",
+    "kola.lang.Object",
+    "kola.html.Document",
+    "kola.bom.Browser",
+    "webbricks.clay.ctrl.Expose",
+],function(K,C,O,D,Browser,Expose){
 
     D.createInlineCss('.coverlay{position:relative;}.warp{position:fixed;left:0;top:0;overflow-y:scroll;}');
 
@@ -21,6 +26,7 @@ function(K,C,O,D,Expose){
             _this.overlay=K(overlay);
             _this.options=O.extend({
                 anchor:document.body,
+                closeOnClickOut:false,
                 expose:{
                     scrollEle:document,
                     color:"white",
@@ -47,8 +53,9 @@ function(K,C,O,D,Expose){
             _this.options.anchor.append(_this.warp);
             
             _this.expose=new Expose(_this.warp,_this.options.expose);
-            
-            
+            if(_this.options.closeOnClickOut){
+                _this.expose.snow.click(this.close,{scope:_this});
+            }
         },
         /**
             显示层
@@ -69,7 +76,7 @@ function(K,C,O,D,Expose){
             
             K("body").style("overflow","hidden");//other
             K("html").style("overflow","hidden");//ie
-            if(B.isIE6){
+            if(Browser.IE6){
                 this.warp.style("position","absolute").style("top",D.scroll().top);
             }
             this.refresh();

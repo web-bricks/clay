@@ -31,39 +31,39 @@ kola("webbricks.clay.ctrl.Dialog",[
                     confirmButton:"知道了"
                 },option||{});
             }
-            return new this(option);
+            return new this(opt);
         },
         _init:function(option){            
             this.elem=$(shell);
             //tool bar
-            if(this.option.confirmButton || this.option.cancelButton){
-                if(this.option.confirmButton){
-                    this.elem.find(".clay_confirm").html(this.option.confirmButton);
+            if(option.confirmButton || option.cancelButton){
+                if(option.confirmButton){
+                    this.elem.find(".clay_confirm").html(option.confirmButton);
                     this.elem.find(".clay_confirm").click(function(){
                         this.close();
                         this.fire("confirm");
                     },{scope:this});
                 }else{
-                    this.elem.find(".clay_confirm").addClass("noDis");
+                    this.elem.find(".clay_confirm").addClass("hidden");
                 }
-                if(this.option.cancelButton){
-                    this.elem.find(".clay_cancel").html(this.option.cancelButton);
+                if(option.cancelButton){
+                    this.elem.find(".clay_cancel").html(option.cancelButton);
                     this.elem.find(".clay_cancel").click(function(){
                         this.close();
                         this.fire("cancel");
                     },{scope:this});
                 }else{
-                    this.elem.find(".clay_cancel").addClass("noDis");
+                    this.elem.find(".clay_cancel").addClass("hidden");
                 }
             }else{
-                this.elem.find(".clay_tool").addClass("noDis");
+                this.elem.find(".clay_tool").addClass("hidden");
             }
             //close X
             this.elem.find(".clay_close").click(this.close,{scope:this});
             //title
-            this.elem.find(".clay_title").html(this.option.title);
+            this.elem.find(".clay_title").html(option.title);
             //content
-            this.elem.find(".clay_content").html(this.option.content);
+            this.elem.find(".clay_content").html(option.content);
             this.overlay=new Overlay(this.elem);
         },
         show:function(){

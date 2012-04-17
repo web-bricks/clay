@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<style>
+    .box{
+        width:300px;
+        height:300px;
+        border:1px solid black;
+        background-color:#aaf;
+    }
+</style>
+<script>
+    (function() {
+		//  加载kola
+		var script = document.createElement('script');
+		script.src = 'http://localhost/cv/kola/Package.js';
+		script.type = 'text/javascript';
+        script.charset='UTF8';
+		document.getElementsByTagName('head')[0].appendChild(script);
+		script = null;
+
+		//  声明一个kola替代变量
+		window.kola = function() {
+			var arr = [ this ];
+			for ( var i = 0, il = arguments.length; i < il; i++) {
+				arr.push(arguments[i]);
+			}
+			kola._cache.push(arr);
+		};
+		kola._cache = [];
+	})();
+    kola("kola.html.Element,webbricks.clay.interact.Draggable",function($,Draggable){   
+        new Draggable($(".box:eq(0)"),{});
+    });
+</script>
+</head>
+<body>
+<div class="box">
+    213213
+</div>
+
+<div class="box">
+    213213
+</div>
+
+<div class="box">
+    213213
+</div>
+
+<div class="box">
+    213213
+</div>
+
+<div class="box">
+    213213
+</div>
+
+<div class="box">
+    213213
+</div>
+
+<div class="box">
+    213213
+</div>
+
+</body>

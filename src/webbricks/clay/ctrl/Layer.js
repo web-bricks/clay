@@ -25,7 +25,9 @@ hide
 kola("webbricks.clay.ctrl.Layer",
     ["kola.lang.Class","kola.lang.Object","webbricks.clay.cpt.CptUtil"],
 function(C,O,CptUtil){
-    var templete={};
+    var templete={
+        simpleTip:"";
+    };
     
     var Layer=function(anchor,option){
         var _this=this;

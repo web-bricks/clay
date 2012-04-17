@@ -22,15 +22,7 @@
 		kola._cache = [];
 	})();
     kola("kola.html.Element,webbricks.clay.ctrl.Dialog",function(K,e){   
-        var overlay=new e("confirm",{content:"哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈"});
-        
-        overlay.on("confirm",function(){
-            console.log("confirm");
-        })
-        overlay.on("cancel",function(){
-            console.log("cancel");
-        })
-        
+        var overlay=new e("confirm",{content:"哈<br/>哈<br/>哈<br/>哈<br/>哈<br/>哈<br/>哈<br/>哈<br/>哈<br/>哈<br/>哈<br/>哈<br/>哈<br/>哈<br/>哈<br/>哈<br/>"});
         overlay.show();
     });
 </script>

@@ -1,0 +1,8 @@
+Expose:遮罩，突出显示某些dom
+Overlay:独立层，在当前文档之上显示一个新的层
+Layer：与dom节点相关的层
+Dialog：自定义对话框
+SingleSelect：自定义单选按钮组，保证单个选中的
+Menu：菜单栏
+Select：自定义下拉菜单
+AutoComplete：自定义autoComplete

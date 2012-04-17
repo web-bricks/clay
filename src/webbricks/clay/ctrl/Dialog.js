@@ -14,23 +14,26 @@ kola("webbricks.clay.ctrl.Dialog",[
 
               
     var exports=KolaClass.create(Dispatcher,{
-        _init:function(type,option){
+        __ME:function(type,option){
             if(type=="plain"){
-                this.option=KolaObject.extend({
+                var opt=KolaObject.extend({
                     content:""
                 },option||{});
             }else if(type=="confirm"){
-                this.option=KolaObject.extend({
+                var opt=KolaObject.extend({
                     content:"",
                     confirmButton:"确定",
                     cancelButton:"取消"
                 },option||{});
             }else if(type=="alert"){
-                this.option=KolaObject.extend({
+                var opt=KolaObject.extend({
                     content:"",
                     confirmButton:"知道了"
                 },option||{});
             }
+            return new this(option);
+        },
+        _init:function(option){            
             this.elem=$(shell);
             //tool bar
             if(this.option.confirmButton || this.option.cancelButton){

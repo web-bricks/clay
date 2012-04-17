@@ -84,12 +84,12 @@ kola("webbricks.clay.ctrl.Overlay",[
         /**
             隐藏层
         */
-        close:function(){
+        hide:function(){
             K("body").removeStyle("overflow","hidden");
             K("html").removeStyle("overflow","hidden");
             
-            this.expose.close();
-            this.overlay.style("display","none");
+            this.expose.hide();
+            this.warp.style("display","none");
         }
     });
     Overlay.topLayer=1000;

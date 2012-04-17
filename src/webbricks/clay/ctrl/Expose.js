@@ -67,7 +67,7 @@ function(K,C,O,D){
         /**
             关闭遮罩
         */
-        close:function(){
+        hide:function(){
             this._showing=false;
             var p=this.options;
             if(!p.fixed)

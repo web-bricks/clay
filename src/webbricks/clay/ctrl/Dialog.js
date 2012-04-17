@@ -6,7 +6,7 @@ kola("webbricks.clay.ctrl.Dialog",[
     "webbricks.clay.ctrl.Overlay"
 ],function(KolaObject, KolaClass, $, Dispatcher, Overlay) {
     var shell='<div  class="mw">'
-                +'<a href="javascript:void(0);" class="clay_close close" title="关闭"><i>关闭</i></a>'
+                +'<a href="javascript:void(0);" class="clay_hide close" title="关闭"><i>关闭</i></a>'
                 +'<div class="clay_title mwHd"><h4>标题</h4></div>'
                 +'<div class="clay_content mwBd"></div>'
                 +'<div class="clay_tool mwFt"><span class="clay_confirm btn"></span><span class="clay_cancel btn"></span></div>'
@@ -33,46 +33,52 @@ kola("webbricks.clay.ctrl.Dialog",[
             }
             return new this(opt);
         },
-        _init:function(option){            
-            this.elem=$(shell);
+        _init:function(option){
+            this.entity=$(shell);
             //tool bar
             if(option.confirmButton || option.cancelButton){
                 if(option.confirmButton){
-                    this.elem.find(".clay_confirm").html(option.confirmButton);
-                    this.elem.find(".clay_confirm").click(function(){
-                        this.close();
+                    this.entity.find(".clay_confirm").html(option.confirmButton);
+                    this.entity.find(".clay_confirm").click(function(){
+                        this.hide();
                         this.fire("confirm");
                     },{scope:this});
                 }else{
-                    this.elem.find(".clay_confirm").addClass("hidden");
+                    this.entity.find(".clay_confirm").addClass("hidden");
                 }
                 if(option.cancelButton){
-                    this.elem.find(".clay_cancel").html(option.cancelButton);
-                    this.elem.find(".clay_cancel").click(function(){
-                        this.close();
+                    this.entity.find(".clay_cancel").html(option.cancelButton);
+                    this.entity.find(".clay_cancel").click(function(){
+                        this.hide();
                         this.fire("cancel");
                     },{scope:this});
                 }else{
-                    this.elem.find(".clay_cancel").addClass("hidden");
+                    this.entity.find(".clay_cancel").addClass("hidden");
                 }
             }else{
-                this.elem.find(".clay_tool").addClass("hidden");
+                this.entity.find(".clay_tool").addClass("hidden");
             }
-            //close X
-            this.elem.find(".clay_close").click(this.close,{scope:this});
+            //hide X
+            this.entity.find(".clay_hide").click(this.hide,{scope:this});
             //title
-            this.elem.find(".clay_title").html(option.title);
+            this.entity.find(".clay_title").html(option.title);
             //content
-            this.elem.find(".clay_content").html(option.content);
-            this.overlay=new Overlay(this.elem);
+            this.entity.find(".clay_content").html(option.content);
+            this.overlay=new Overlay(this.entity);
         },
         show:function(){
             this.overlay.show();
             this.fire("show");
         },
-        close:function(){
-            this.overlay.close();
-            this.fire("close");
+        hide:function(){
+            this.overlay.hide();
+            this.fire("hide");
+        },
+        setTitle:function(title){
+            this.entity.find(".clay_title").html(title);
+        },
+        setContent:function(title){
+            this.entity.find(".clay_content").html(title);
         }
     });
     return exports;

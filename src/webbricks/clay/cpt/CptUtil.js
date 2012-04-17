@@ -16,6 +16,8 @@ function(K,A){
             //tarveller
             if(src instanceof K)
                 return src;
+            if(src==undefined)
+                return K(element);
             return Util.tl(src+".",element);
         }
     }

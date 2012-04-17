@@ -66,19 +66,55 @@ kola("webbricks.clay.ctrl.Dialog",[
             this.entity.find(".clay_content").html(option.content);
             this.overlay=new Overlay(this.entity);
         },
+        /**
+            @des 显示窗口
+            @event show{null}
+        */
         show:function(){
             this.overlay.show();
             this.fire("show");
         },
+        /**
+            @des 隐藏窗口
+            @event hide{null}
+        */
         hide:function(){
             this.overlay.hide();
             this.fire("hide");
         },
-        setTitle:function(title){
-            this.entity.find(".clay_title").html(title);
+        /**
+            @des 设置标题
+            @param title[String] 
+        */
+        /**
+            @des 获取标题
+            @param null
+            @return title[String]
+        */
+        title:function(title){
+            if(KolaObject.isUndefined(title)){
+                this.entity.find(".clay_title").html(title);
+            }else{
+                return this.entity.find(".clay_title").html();
+            }
         },
-        setContent:function(title){
-            this.entity.find(".clay_content").html(title);
+        /**
+            @des 设置内容区的dom
+            @param content[context] 
+        */
+        /**
+            @des 获取内容区的dom
+            @param null
+            @return 内容区的dom[KolaElement]
+        */
+        content:function(content){
+            if(KolaObject.isUndefined(content)){
+                return this.entity.find(".clay_content");
+            }else if(KolaObject.isString(content)){
+                this.entity.find(".clay_content").html(content);
+            }else{
+                this.entity.find(".clay_content").html("").append(content);
+            }
         }
     });
     return exports;

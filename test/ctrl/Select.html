@@ -45,6 +45,14 @@
     .hover p{
         background-color:blue;
     }
+    .bar{
+        display:inline-block;
+        width:200px;
+        height:20px;
+    }
+    .head{
+        border:1px solid black;
+    }
 </style>
 <script>
     (function() {
@@ -71,13 +79,13 @@
 </head>
 <body>
     <div class="unit">
-        <input type="text"  data-cpt="webbricks.clay.ctrl.Select" data-cpt-data='{entity:"next()"}'/>
+        <div class="head"  data-cpt="webbricks.clay.ctrl.Select" data-cpt-data='{name:"type",entity:"next()",bar:"find(.bar)"}'/><em class="bar">请选择</em><span>V</span></div>
         <div class="dropDown noDis">
             <ul>
-                <li><p>1</p></li>
-                <li><p>4</p></li>
-                <li><p>5</p></li>
-                <li><p>6</p></li>
+                <li><p class="value">1</p></li>
+                <li><p class="value">4</p></li>
+                <li><p class="value">5</p></li>
+                <li><p class="value">6</p></li>
             </ul>
         </div>
     </div>

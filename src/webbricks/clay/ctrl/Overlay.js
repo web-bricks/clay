@@ -9,11 +9,11 @@ kola("webbricks.clay.ctrl.Overlay",[
     "kola.html.Document",
     "kola.bom.Browser",
     "webbricks.clay.ctrl.Expose",
-],function(K,C,O,D,Browser,Expose){
+],function($,KolaClass,KolaObject,D,Browser,Expose){
 
     D.createInlineCss('.coverlay{position:relative;}.warp{position:fixed;left:0;top:0;overflow-y:scroll;}');
 
-    var Overlay=C.create({
+    var Overlay=KolaClass.create({
         /**
             overlay:被作为层显示的dom
             options
@@ -23,8 +23,8 @@ kola("webbricks.clay.ctrl.Overlay",[
         _init:function(overlay,options){            
             var _this=this;
             options=options||{};
-            _this.overlay=K(overlay);
-            _this.options=O.extend({
+            _this.overlay=$(overlay);
+            _this.options=KolaObject.extend({
                 anchor:document.body,
                 closeOnClickOut:false,
                 expose:{
@@ -33,22 +33,18 @@ kola("webbricks.clay.ctrl.Overlay",[
                     opacity:0.8
                 }
             },options);
-            _this.options.anchor=K(_this.options.anchor);
+            _this.options.anchor=$(_this.options.anchor);
             _this.index=Overlay.count++;
-            _this.options.expose=O.extend({
+            _this.options.expose=KolaObject.extend({
                 anchor:_this.options.anchor
             },options.expose);
             
-            _this.overlay.style("display","none").addClass("coverlay");
+            _this.overlay.addClass("coverlay");
             
-            _this.warp=K("<div></div>").addClass("warp");
-            _this.refresh=function(){refresh.call(_this)};
-            if(window.addEventListener)
-                window.addEventListener("resize",this.refresh);
-            else
-                window.attachEvent("onresize",this.refresh);
+            _this.warp=$("<div></div>").addClass("warp").addClass("hidden");
+            $(window).on("resize",refresh,{scope:this});
             _this.warp.append(this.overlay);
-            this.refresh();
+            refresh.call(this);
             
             _this.options.anchor.append(_this.warp);
             
@@ -62,7 +58,7 @@ kola("webbricks.clay.ctrl.Overlay",[
         */
         show:function(){
             this.expose.show({z:Overlay.topLayer++});
-            this.overlay.style("display","block");
+            this.warp.removeClass("hidden");
             //居中
             var w=this.overlay.width();
             var h=this.overlay.height();
@@ -74,22 +70,22 @@ kola("webbricks.clay.ctrl.Overlay",[
             this.overlay.style("left",cl);
             this.overlay.style("top",ct);
             
-            K("body").style("overflow","hidden");//other
-            K("html").style("overflow","hidden");//ie
+            $("body").style("overflow","hidden");//other
+            $("html").style("overflow","hidden");//ie
             if(Browser.IE6){
                 this.warp.style("position","absolute").style("top",D.scroll().top);
             }
-            this.refresh();
+            refresh.call(this);
         },
         /**
             隐藏层
         */
         hide:function(){
-            K("body").removeStyle("overflow","hidden");
-            K("html").removeStyle("overflow","hidden");
+            $("body").removeStyle("overflow","hidden");
+            $("html").removeStyle("overflow","hidden");
             
             this.expose.hide();
-            this.warp.style("display","none");
+            this.warp.addClass("hidden");
         }
     });
     Overlay.topLayer=1000;

@@ -3,7 +3,7 @@
 */
 kola("webbricks.clay.ctrl.Expose",
     "kola.html.Element,kola.lang.Class,kola.lang.Object,kola.html.Document",
-function(K,C,O,D){
+function($,C,O,D){
     
     D.createInlineCss('.cexpose{position:absolute;left:0;top:0;visibility:visible;}');
     
@@ -24,7 +24,7 @@ function(K,C,O,D){
         */
         _init:function(footPrint,options){            
             var _this=this;
-            _this.footPrint=K(footPrint);
+            _this.footPrint=$(footPrint);
             _this.options=O.extend({
                 fixed:false,
                 anchor:document.body,
@@ -32,9 +32,8 @@ function(K,C,O,D){
                 color:"white",
                 opacity:0.8
             },options);
-            _this.options.anchor=K(_this.options.anchor);
-            _this.refresh=function(){refresh.call(_this)}
-            _this.snow=K('<div style="display:none" id="expose'+Expose.count+'"></div>');
+            _this.options.anchor=$(_this.options.anchor);
+            _this.snow=$('<div style="display:none" id="expose'+Expose.count+'"></div>');
             _this.snow.addClass("cexpose");
             _this.snow.style("background-color",_this.options.color);
             _this.index=Expose.count++;
@@ -55,11 +54,8 @@ function(K,C,O,D){
             this.snow.style("visibility","visible");
             
             if(!p.fixed)
-                K(p.scrollEle).on("scroll",this.refresh);
-            if(window.addEventListener)
-                window.addEventListener("resize",this.refresh);
-            else
-                window.attachEvent("onresize",this.refresh);
+                $(p.scrollEle).on("scroll",refresh,{scope:this});
+            $(window).on("resize",refresh,{scope:this});
             this.snow.style("z-index",showOpt.z);
             this.snow.style("opacity",p.opacity);
             refresh.call(this);
@@ -71,11 +67,8 @@ function(K,C,O,D){
             this._showing=false;
             var p=this.options;
             if(!p.fixed)
-                K(p.scrollEle).off("scroll",this.refresh);
-            if(window.addEventListener)
-                window.removeEventListener("resize",this.refresh);
-            else
-                window.detachEvent("onresize",this.refresh);
+                $(p.scrollEle).off("scroll",refresh);
+            $(window).off("resize",refresh);
             this.snow.style("display","none");
         }
     });

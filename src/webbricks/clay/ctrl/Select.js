@@ -21,10 +21,7 @@ kola("webbricks.clay.ctrl.Select",[
             this.anchor=anchor;
             this.list=CptUtil.getDom(option.entity,anchor);
             this.bar=CptUtil.getDom(option.bar,anchor);
-            if(option.name){
-                this.agent=K('<input type="hidden" name="'+option.name+'">');
-                this.anchor.append(this.agent);
-            }
+            this.agent=this.anchor.find("input");
             this.listCtrl=new Single(this.list,{
                 item:option.item||"li",                                     
                 trigger:"mouseover",                                        
@@ -48,6 +45,7 @@ kola("webbricks.clay.ctrl.Select",[
                 this.bar.html(this.selectedValue);
             if(this.agent){
                 this.agent[0].value=this.selectedValue;
+                this.agent.fire("focus");
             }
         },
         selectedIndex:function(){

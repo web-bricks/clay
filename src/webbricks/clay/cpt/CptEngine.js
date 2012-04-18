@@ -17,9 +17,12 @@ function(K,C,O,A){
     K.on("ElementCreate",scan);
     //初始化
     scan({data:document});
-    function scan(evt){
-        var elements=K(evt.data).find("[data-cpt]");
-        if(!elements)
+    
+    function scan(srcElement,callBack){
+        if(!(srcElement instanceof K))
+            srcElement=srcElement.data
+        var elements=K(srcElement).find("[data-cpt]");
+        if(elements.length==0)
             return;
         A.forEach(elements,function(element){
             var element=K(element);
@@ -27,8 +30,16 @@ function(K,C,O,A){
             var data=eval('('+element.attr("data-cpt-data")+')');
             kola(ctrl,function(CtrlClass){
                 new CtrlClass(element,data);
+                comp();
             });
         });
+        //当所有ctrl加载完成后，调用callBack
+        var count=elements.length;
+        function comp(){
+            count--;
+            if(count==0 && callBack)
+                callBack();
+        }
     }
     return scan;
 });

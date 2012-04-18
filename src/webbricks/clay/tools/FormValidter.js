@@ -45,11 +45,11 @@ function(K,C,O,A,Ajax,Dispatcher){
     /**
         默认表单状态切换
     */
-    var view=function(elem,data){
-        if(elem.status==Form.STATUS_EMPTY || elem.status==Form.STATUS_OK){
-            elem.el.next().html("");
-        }else if(elem.status==Form.STATUS_ERR){
-            elem.el.next().html(data);
+    var view=function(item,data){
+        if(item.status==Form.STATUS_EMPTY || item.status==Form.STATUS_OK){
+            item.elem.next(".tip").html("");
+        }else if(item.status==Form.STATUS_ERR){
+            item.elem.next(".tip").html(data);
         }
     }
     /**
@@ -59,7 +59,8 @@ function(K,C,O,A,Ajax,Dispatcher){
         _init:function(el){
             var _this=this;
             _this.status=Form.STATUS_EMPTY;
-            _this.el=el;
+            _this.elem=el;
+            _this.el=el.find("input");
             _this.type=el.attr("data-valid")||"";
             _this.require=el.attr("data-require")||0;
             _this.view=el.attr("data-valid-view");
@@ -72,9 +73,7 @@ function(K,C,O,A,Ajax,Dispatcher){
                 _this.code=rules[_this.type];
             else
                 _this.code=[];
-            _this.el.on(_this.code.trigger,function(){
-                _this.valid.call(_this);
-            });
+            _this.el.on(_this.code.trigger,_this.valid,{scope:_this});
         },
         valid:function(){
             var _this=this;
@@ -86,7 +85,7 @@ function(K,C,O,A,Ajax,Dispatcher){
                     _this.status=Form.STATUS_EMPTY;
                 else{
                     _this.status=Form.STATUS_ERR;
-                    _this.dispatch("ERR");
+                    _this.fire("ERR");
                 }
                 _this.view(_this,_this.require);
                 return;
@@ -101,7 +100,7 @@ function(K,C,O,A,Ajax,Dispatcher){
                     }
                     if(!reg.test(val)){
                         _this.status=Form.STATUS_ERR;
-                        _this.dispatch("ERR");
+                        _this.fire("ERR");
                         _this.view(_this,rule[1]);
                         return;
                     }
@@ -110,16 +109,16 @@ function(K,C,O,A,Ajax,Dispatcher){
                         succ:function(json){
                             if(json.status==0){
                                 _this.status=Form.STATUS_OK;
-                                _this.dispatch("PASS");
+                                _this.fire("PASS");
                                 _this.view(_this);
                             }else{
                                 _this.status=Form.STATUS_ERR;
-                                _this.dispatch("ERR");
+                                _this.fire("ERR");
                                 _this.view(_this,json.statusText);
                             }
                         },fail:function(){
                             _this.status=Form.STATUS_ERR;
-                            _this.dispatch("ERR");
+                            _this.fire("ERR");
                             _this.view(_this,"网络不通");
                         }
                     });
@@ -127,7 +126,7 @@ function(K,C,O,A,Ajax,Dispatcher){
                 }
             }
             _this.status=Form.STATUS_OK;
-            _this.dispatch("PASS");
+            _this.fire("PASS");
             _this.view(_this.el);
         }
     });
@@ -138,15 +137,15 @@ function(K,C,O,A,Ajax,Dispatcher){
                 return;
         }
         for(var i=0;i<this.items.length;i++){
-            this.items[i].unObserve("PASS",testAllPass);
-            this.items[i].unObserve("ERR",testErr);
+            this.items[i].off("PASS",testAllPass);
+            this.items[i].off("ERR",testErr);
         }
         this.submit();
     }
     function testErr(){
         for(var i=0;i<this.items.length;i++){
-            this.items[i].unObserve("PASS",testAllPass);
-            this.items[i].unObserve("ERR",testErr);
+            this.items[i].off("PASS",testAllPass);
+            this.items[i].off("ERR",testErr);
         }
     }
     /**
@@ -161,12 +160,11 @@ function(K,C,O,A,Ajax,Dispatcher){
             _this.form=K(form);
             _this.options=O.extend({
                 clearOnFocus:true,
-                submit:function(){alert(1)}
+                submit:function(){}
             },options);
             _this.submit=_this.options.submit;
             _this.items=[];
-            _this.form.find("[data-valid],[data-require]").each(function(){
-                var item=this;
+            _this.form.find("[data-valid],[data-require]").each(function(item){
                 var newItem=new Item(item);
                 _this.items.push(newItem);
                 if(_this.options.clearOnFocus){
@@ -183,8 +181,8 @@ function(K,C,O,A,Ajax,Dispatcher){
                         _this.items[i].status=Form.STATUS_EMPTY;
                     }
                     for(var i=0,il=_this.items.length;i<il;i++){
-                        _this.items[i].observe("PASS",testAllPass,{scope:_this});
-                        _this.items[i].observe("ERR",testErr,{scope:_this});
+                        _this.items[i].on("PASS",testAllPass,{scope:_this});
+                        _this.items[i].on("ERR",testErr,{scope:_this});
                         _this.items[i].valid();
                         //if(_this.items[i].status==Form.STATUS_ERR){
                         //    return;

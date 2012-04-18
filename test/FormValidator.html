@@ -1,0 +1,111 @@
+<html>
+<head>
+<script>
+    (function() {
+		//  加载kola
+		var script = document.createElement('script');
+		script.src = 'http://localhost/cv/kola/Package.js';
+		script.type = 'text/javascript';
+        script.charset='UTF8';
+		document.getElementsByTagName('head')[0].appendChild(script);
+		script = null;
+
+		//  声明一个kola替代变量
+		window.kola = function() {
+			var arr = [ this ];
+			for ( var i = 0, il = arguments.length; i < il; i++) {
+				arr.push(arguments[i]);
+			}
+			kola._cache.push(arr);
+		};
+		kola._cache = [];
+	})();
+    kola("webbricks.clay.cpt.CptEngine,kola.html.Element,webbricks.clay.tools.FormValidter",function(Scan,K,FormValidter){
+        new FormValidter(K("#d0"),{submit:function(){alert("通过喽！")}})
+    });
+</script>
+<style>
+        div.dropDown{
+        position:absolute;
+	}
+    ul{
+		display:block;
+		padding:0px;
+	}
+	.anchor{
+        border:1px solid black;
+        background-color:gray;
+		display:inlin-block;
+		float:left;
+	}
+	ul.body>li{
+		display:none;
+	}
+    .noDis{
+        display:none;
+    }
+    .layer_open{
+        background-color:gray;
+    }
+    li{
+		list-style-type:none;
+	}
+	li p{
+		margin:0;
+		background-color:#eeeeee;
+		border:1px solid darkGray;
+		padding:4px;
+		text-align:center;
+		width:100px;
+		cursor:pointer;
+		display:inlin-block;
+	}
+    .unit{
+        border:1px solid black;
+        margin:20px;
+        overflow:auto;
+        padding:2px;
+    }
+    .hover p{
+        background-color:blue;
+    }
+    .bar{
+        display:inline-block;
+        width:200px;
+        height:20px;
+    }
+    .head{
+        border:1px solid black;
+        display:inline-block;
+    }
+    .err{
+        color:red;
+    }
+</style>
+</head>
+<body>
+<div class="panel" id="d0">
+    <form>
+        <div class="line">
+            <span>email:</span><input type="text" name="passport" data-valid="email" data-require="email不能为空"/><span class="tip err"></span>
+        </div><div class="line">
+            <span>昵称:</span><input type="text" name="passwd" data-valid="name" data-require="昵称不能为空"/><span class="tip err"></span>
+        </div><div class="line">
+            <span>电话:</span><input type="text" name="name" data-valid="phone" data-require="电话不能为空"/><span class="tip err"></span>
+        </div><div class="line">
+            <span>年龄:</span>
+            <div class="head"  data-cpt="webbricks.clay.ctrl.Select" data-cpt-data='{entity:"next()",bar:"find(.bar)"}' data-require="请选择年龄"/><em class="bar">请选择</em><span>V</span><input type="hidden" name="type"></div>
+            <div class="dropDown noDis">
+                <ul>
+                    <li><p class="value">1</p></li>
+                    <li><p class="value">4</p></li>
+                    <li><p class="value">5</p></li>
+                    <li><p class="value">6</p></li>
+                </ul>
+            </div>
+            <span class="tip err"></span>
+        </div>
+        <input type="button" data-submit value="提交"/>
+    </form>
+</div>
+</body>

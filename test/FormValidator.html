@@ -4,7 +4,7 @@
     (function() {
 		//  加载kola
 		var script = document.createElement('script');
-		script.src = 'http://localhost/cv/kola/Package.js';
+		script.src = 'http://localhost/kola/Package.js';
 		script.type = 'text/javascript';
         script.charset='UTF8';
 		document.getElementsByTagName('head')[0].appendChild(script);
@@ -20,8 +20,11 @@
 		};
 		kola._cache = [];
 	})();
-    kola("webbricks.clay.cpt.CptEngine,kola.html.Element,webbricks.clay.tools.FormValidter",function(Scan,K,FormValidter){
-        new FormValidter(K("#d0"),{submit:function(){alert("通过喽！")}})
+    kola("webbricks.clay.cpt.CptEngine,kola.html.Element,webbricks.clay.tools.FormValidter",function(CptEngine,K,FormValidter){
+        CptEngine.listen();
+        new FormValidter(K(".formlayoutL"),{submit:function(){
+            alert("ok");
+        }})
     });
 </script>
 <style>
@@ -82,6 +85,7 @@
         color:red;
     }
 </style>
+<link rel="stylesheet" href="//s1.cv.itc.cn/c/pin/g.css">
 </head>
 <body>
 <div class="panel" id="d0">
@@ -94,7 +98,7 @@
             <span>电话:</span><input type="text" name="name" data-valid="phone" data-require="电话不能为空"/><span class="tip err"></span>
         </div><div class="line">
             <span>年龄:</span>
-            <div class="head"  data-cpt="webbricks.clay.ctrl.Select" data-cpt-data='{entity:"next()",bar:"find(.bar)"}' data-require="请选择年龄"/><em class="bar">请选择</em><span>V</span><input type="hidden" name="type"></div>
+            <div class="head"  data-cpt="webbricks.clay.ctrl.Select" data-cpt-data='{entity:"next()",bar:"find(.bar)"}' data-require="请选择年龄"><em class="bar">请选择</em><span>V</span><input type="hidden" name="type"></div>
             <div class="dropDown noDis">
                 <ul>
                     <li><p class="value">1</p></li>
@@ -107,5 +111,48 @@
         </div>
         <input type="button" data-submit value="提交"/>
     </form>
+    <div class="unit">
+<div class="quickCreatBoard">
+    <div class="formlayoutL">
+        <div class="frm">
+            <label class="frmT">名称：</label>
+            <div class="frmC">
+                <input type="text" class="tbx tbxL tbxfull" data-require="请输入名称">
+                <p class="frmTip"></p>
+            </div>
+        </div>
+        <div class="frm">
+            <label class="frmT" for="">分类：</label>
+            <!-- 选择 -->
+            <div class="frmC">
+                <div class="Selector SelectorL" data-cpt="webbricks.clay.ctrl.Select" data-cpt-data='{dropdown:"find(.SelectorDown)",list:"find(ul)",bar:"find(.current .value)"}' data-require="请选择分类">
+                    <input type="hidden">
+                    <div class="current" >
+                        <span class="value">请选择分类</span><span class="downArrow"></span>
+                    </div>
+                    <div class="SelectorDown hidden">
+                        <div class="downwraper">
+                            <div class="options">
+                                <ul>
+                                    <li class="option"><span class="value">我的夜晚</span><i class="optionflg itogether" title="合作管理"></i></li>
+                                    <li class="option"><span class="value">旅行</span><i class="optionflg itogether" title="合作管理"></i></li>
+                                    <li class="option"><span class="value">momo</span><i class="optionflg itogether" title="合作管理"></i></li>
+                                    <li class="option"><span class="value">但是发的噶家里开始决定了公开</span><i class="optionflg itogether" title="合作管理"></i></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>	
+                </div>
+                <p class="frmTip"></p>
+            </div>
+        </div>
+        <div class="frm btns">
+            <a href="javascript:void(0)" data-submit class="Btn1 BtnL"><b>创建board</b></a>
+        </div>
+    </div>
 </div>
+    </div>
+</div>
+
+
 </body>

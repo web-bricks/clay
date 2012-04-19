@@ -24,9 +24,10 @@
         background-color:gray;
     }
     li{
+        display:block;
 		list-style-type:none;
 	}
-	li p{
+	li span{
 		margin:0;
 		background-color:#eeeeee;
 		border:1px solid darkGray;
@@ -34,7 +35,7 @@
 		text-align:center;
 		width:100px;
 		cursor:pointer;
-		display:inlin-block;
+        display:inline-block;
 	}
     .unit{
         border:1px solid black;
@@ -42,8 +43,9 @@
         overflow:auto;
         padding:2px;
     }
-    .hover p{
-        background-color:blue;
+    .hover span{
+        
+        background-color:#acf;
     }
     .bar{
         display:inline-block;
@@ -54,11 +56,12 @@
         border:1px solid black;
     }
 </style>
+<link rel="stylesheet" href="//s1.cv.itc.cn/c/pin/g.css"/>
 <script>
     (function() {
 		//  加载kola
 		var script = document.createElement('script');
-		script.src = 'http://localhost/cv/kola/Package.js';
+		script.src = 'http://localhost/kola/Package.js';
 		script.type = 'text/javascript';
         script.charset='UTF8';
 		document.getElementsByTagName('head')[0].appendChild(script);
@@ -79,18 +82,26 @@
 </head>
 <body>
     <div class="unit">
-        <input class="head"  data-cpt="webbricks.clay.ctrl.Select" data-cpt-data='{name:"type",entity:"next()",bar:"find(.bar)"}' value='请选择'/>
-        <div class="dropDown noDis">
+        <input class="head bar" data-cpt="webbricks.clay.ctrl.Select" data-cpt-data='{name:"type",entity:"next()",bar:"find(.bar)"}' value='请选择'/>
+        <div class="dropDown hidden">
             <ul>
-                <li><p class="value">1</p></li>
-                <li><p class="value">4</p></li>
-                <li><p class="value">5</p></li>
-                <li><p class="value">6</p></li>
+                <li><span class="value">jsp</span></li>
+                <li><span class="value">asp</span></li>
+                <li><span class="value">php</span></li>
+                <li><span class="value">ruby</span></li>
             </ul>
         </div>
     </div>
-    </div>
     <div class="unit">
-
+        <div class="head"  data-cpt="webbricks.clay.ctrl.Select" data-cpt-data='{entity:"next()",bar:"find(.bar)"}'><div class="bar">请选择</div><input type="hidden" name="tag"/></div>
+        <div class="dropDown hidden">
+            <ul>
+                <li><span class="content">jsp</span><span class="value hidden">1</span></li>
+                <li><span class="content">asp</span><span class="value hidden">4</span></li>
+                <li><span class="content">php</span><span class="value hidden">5</span></li>
+                <li><span class="content">ruby</span><span class="value hidden">6</span></li>
+            </ul>
+        </div>
     </div>
+    
 </body>

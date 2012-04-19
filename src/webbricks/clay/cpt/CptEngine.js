@@ -13,33 +13,36 @@ kola("webbricks.clay.cpt.CptEngine",
     "kola.html.Element,kola.lang.Class,kola.lang.Object,kola.lang.Array",
 
 function(K,C,O,A){
-    //绑定事件
-    K.on("ElementCreate",scan);
-    //初始化
-    scan({data:document});
-    
-    function scan(srcElement,callBack){
-        if(!(srcElement instanceof K))
-            srcElement=srcElement.data
-        var elements=K(srcElement).find("[data-cpt]");
-        if(elements.length==0)
-            return;
-        A.forEach(elements,function(element){
-            var element=K(element);
-            var ctrl=element.attr("data-cpt");
-            var data=eval('('+element.attr("data-cpt-data")+')');
-            kola(ctrl,function(CtrlClass){
-                new CtrlClass(element,data);
-                comp();
+    var exports={
+        listen:function(){
+            //绑定事件
+            K.on("DOMNodeInserted",exports.scan);
+            //初始化
+            exports.scan({data:document});
+        },
+        scan:function(srcElement,callBack){
+            if(!(srcElement instanceof K))
+                srcElement=srcElement.data
+            var elements=K(srcElement).find("[data-cpt]");
+            if(elements.length==0)
+                return;
+            A.forEach(elements,function(element){
+                var element=K(element);
+                var ctrl=element.attr("data-cpt");
+                var data=eval('('+element.attr("data-cpt-data")+')');
+                kola(ctrl,function(CtrlClass){
+                    new CtrlClass(element,data);
+                    comp();
+                });
             });
-        });
-        //当所有ctrl加载完成后，调用callBack
-        var count=elements.length;
-        function comp(){
-            count--;
-            if(count==0 && callBack)
-                callBack();
+            //当所有ctrl加载完成后，调用callBack
+            var count=elements.length;
+            function comp(){
+                count--;
+                if(count==0 && callBack)
+                    callBack();
+            }
         }
     }
-    return scan;
+    return exports;
 });

@@ -47,9 +47,11 @@ function(K,C,O,A,Ajax,Dispatcher){
     */
     var view=function(item,data){
         if(item.status==Form.STATUS_EMPTY || item.status==Form.STATUS_OK){
-            item.elem.next(".tip").html("");
+            item.elem.next(".frmTip").html("");
+            item.elem.closest(".frm").addClass("frm_ok").removeClass("frm_err");
         }else if(item.status==Form.STATUS_ERR){
-            item.elem.next(".tip").html(data);
+            item.elem.next(".frmTip").html(data);
+            item.elem.closest(".frm").addClass("frm_err").removeClass("frm_ok");;
         }
     }
     /**
@@ -73,7 +75,7 @@ function(K,C,O,A,Ajax,Dispatcher){
                 _this.code=rules[_this.type];
             else
                 _this.code=[];
-            _this.el.on(_this.code.trigger,_this.valid,{scope:_this});
+            _this.el.on(_this.code.trigger||"blur",_this.valid,{scope:_this});
         },
         valid:function(){
             var _this=this;
@@ -90,39 +92,41 @@ function(K,C,O,A,Ajax,Dispatcher){
                 _this.view(_this,_this.require);
                 return;
             }
-            for(var i=0;i<rules.length;i++){
-                var rule=rules[i];
-                if(O.isArray(rule)){
-                    if(O.isString(rule[0])){
-                        var reg=regs[rule[0]];
-                    }else{
-                        var reg=rule[0];
-                    }
-                    if(!reg.test(val)){
-                        _this.status=Form.STATUS_ERR;
-                        _this.fire("ERR");
-                        _this.view(_this,rule[1]);
-                        return;
-                    }
-                }else{
-                    Ajax.post(rule.url+val,{
-                        succ:function(json){
-                            if(json.status==0){
-                                _this.status=Form.STATUS_OK;
-                                _this.fire("PASS");
-                                _this.view(_this);
-                            }else{
-                                _this.status=Form.STATUS_ERR;
-                                _this.fire("ERR");
-                                _this.view(_this,json.statusText);
-                            }
-                        },fail:function(){
+            if(_this.type){
+                for(var i=0;i<rules.length;i++){
+                    var rule=rules[i];
+                    if(O.isArray(rule)){
+                        if(O.isString(rule[0])){
+                            var reg=regs[rule[0]];
+                        }else{
+                            var reg=rule[0];
+                        }
+                        if(!reg.test(val)){
                             _this.status=Form.STATUS_ERR;
                             _this.fire("ERR");
-                            _this.view(_this,"网络不通");
+                            _this.view(_this,rule[1]);
+                            return;
                         }
-                    });
-                    return;
+                    }else{
+                        Ajax.post(rule.url+val,{
+                            succ:function(json){
+                                if(json.status==0){
+                                    _this.status=Form.STATUS_OK;
+                                    _this.fire("PASS");
+                                    _this.view(_this);
+                                }else{
+                                    _this.status=Form.STATUS_ERR;
+                                    _this.fire("ERR");
+                                    _this.view(_this,json.statusText);
+                                }
+                            },fail:function(){
+                                _this.status=Form.STATUS_ERR;
+                                _this.fire("ERR");
+                                _this.view(_this,"网络不通");
+                            }
+                        });
+                        return;
+                    }
                 }
             }
             _this.status=Form.STATUS_OK;
@@ -184,9 +188,6 @@ function(K,C,O,A,Ajax,Dispatcher){
                         _this.items[i].on("PASS",testAllPass,{scope:_this});
                         _this.items[i].on("ERR",testErr,{scope:_this});
                         _this.items[i].valid();
-                        //if(_this.items[i].status==Form.STATUS_ERR){
-                        //    return;
-                        //}
                     }
                 });
             }

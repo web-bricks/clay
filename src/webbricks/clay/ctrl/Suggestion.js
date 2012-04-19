@@ -6,7 +6,7 @@
     selectedIndex
     selectedValue
 */
-kola("webbricks.clay.ctrl.Suggestion",[
+kola("webbricks.clay.ctrl.MutiSelect",[
     "kola.lang.Class",
     "kola.lang.Object",
     "kola.html.Element",
@@ -18,55 +18,8 @@ kola("webbricks.clay.ctrl.Suggestion",[
 
     var exports=KolaClass.create(Dispatcher, {
         _init:function(anchor,option){
-            var _this=this;
-            this.anchor=anchor;
-            this.list=CptUtil.getDom(option.entity,anchor);
             
-            this.listCtrl=new Single(this.list,{
-                item:option.item||"li",
-                trigger:"mouseover",
-                selectedClass:"hover"
-            });
-            
-            this.layer=new Layer(anchor,{
-                entity:this.list,
-                hideOnClickOut:true
-            });
-            
-            this.anchor.keydown(keydown,{scope:this});
-            this.anchor.keyup(keyup,{scope:this});
-            
-            this.list.click(select,{scope:this});
         }
     }); 
-    function keydown(e){
-        var special=true;
-        if(e.keyCode==38){//up
-            this.listCtrl.prev();
-        }else if(e.keyCode==40){//down
-            this.listCtrl.next();
-        }else if(e.keyCode==13 || e.keyCode==32){//space && enter
-            select.call(this);
-        }else{
-            special=false;
-        }
-        if(special){
-            e.preventDefault();
-        }
-    }
-    function keyup(e){
-        if(e.keyCode!=13 && e.keyCode!=32){
-            if(this.anchor[0].value.length!=0){
-                this.layer.show();
-                this.fire({type:"change",value:this.anchor[0].value,container:this.list});
-            }
-        }
-    }
-    function select(e){
-        this.selectedIndex=this.listCtrl.selectedIndex();
-        this.selectedValue=this.listCtrl.select().find("p").html();
-        this.anchor[0].value=this.selectedValue;
-        this.layer.hide();
-    }
     return exports;
 });

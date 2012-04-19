@@ -36,7 +36,10 @@ kola("webbricks.clay.interact.Sortable",[
         ele.children(opt.pickable).each(function(e){
             new Draggable(e,opt.darggableOpt);
         });
-
+        ele.data("draggable",this);
+        this.add=function(e){
+            new Draggable(e,opt.darggableOpt);
+        }
         function initGird(){
             var first=$(ele.children()[0]);
             if(!first) return;

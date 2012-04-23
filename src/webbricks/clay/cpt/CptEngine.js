@@ -12,11 +12,11 @@
 kola("webbricks.clay.cpt.CptEngine",
     "kola.html.Element,kola.lang.Class,kola.lang.Object,kola.lang.Array",
 
-function(K,C,O,A){
+function(KElement,C,O,A){
     var exports={
         listen:function(){
             //绑定事件
-            K.on("DOMNodeInserted",exports.scan);
+            KElement.on("DOMNodeInserted",exports.scan);
             //初始化
             exports.scan({data:document});
         },

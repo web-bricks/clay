@@ -285,7 +285,7 @@ kola('webbricks.clay.ctrl.Uploader', [
         onSuccess : function(file, serverData){          
           var fileId    = file.id;
           var config    = this.config;
-          var json      = $.parseJSON(serverData);
+          var json      = eval('('+serverData+')');
           var scope     = this.handlerScope;
           var percentHd = config.onProgress; 
           var successHd = config.onSuccess;
@@ -468,9 +468,14 @@ kola('webbricks.clay.ctrl.Uploader', [
             
             //文件被加入上传队列
             "file_queued_handler" : function(file){
-              file.status     = this.FILE_NOT_UPLOAD;
-              file.uploaderId = uploaderId;
-              thiz.selectQueue.push(file);
+                file.status     = this.FILE_NOT_UPLOAD;
+                file.uploaderId = uploaderId;
+                thiz.selectQueue.push(file);
+                //若指定了onSelect函数，触发函数
+                var handler=config.fileQueueHandler
+                if(KolaObject.isFunction(handler)){
+                    handler.call(this.handlerScope, file);
+                }
             },
             
             //文件加入队列错误

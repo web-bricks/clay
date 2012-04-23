@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="//s1.cv.itc.cn/c/pin/g.css"/>
+<script>
+    (function() {
+		//  加载kola
+		var script = document.createElement('script');
+		script.src = 'http://localhost/kola/Package.js';
+		script.type = 'text/javascript';
+        script.charset='UTF8';
+		document.getElementsByTagName('head')[0].appendChild(script);
+		script = null;
+
+		//  声明一个kola替代变量
+		window.kola = function() {
+			var arr = [ this ];
+			for ( var i = 0, il = arguments.length; i < il; i++) {
+				arr.push(arguments[i]);
+			}
+			kola._cache.push(arr);
+		};
+		kola._cache = [];
+	})();
+    kola("webbricks.clay.cpt.CptEngine",function(CptEngine){CptEngine.listen()});
+</script>
+<link rel="stylesheet" href="//s1.cv.itc.cn/c/pin/g.css">
+</head>
+<body>
+    <div class="unit">
+        <div class="TagsSelector" style="display:block" data-cpt="webbricks.clay.ctrl.MutiSelect" data-cpt-data='{list:"children(.value)",candidate:"children(div.Tags)"}'>
+            <ul class="Tags value">
+                <li><a href="#">可爱宠物<i class="removetab" title="移除这个标签"></i></a></li>
+                <li><a href="#">ss<i class="removetab" title="移除这个标签"></i></a></li>
+            </ul>
+            <div class="Tags">
+                <span class="label">常用标签：</span>
+                <a href="#" title="可爱宠物">宠物</a>
+                <a href="#" title="可爱宠物">可爱宠物</a>
+                <a href="#" title="可爱宠物">可爱宠物</a>
+                <a href="#" title="可爱宠物">可爱宠物</a>
+                <a href="#" title="可爱宠物">可爱宠物</a>
+                <a href="#" title="可爱宠物">可爱宠物</a>
+                <a href="#" title="可爱宠物">可爱宠物</a>
+                <a href="#" title="可爱宠物">可爱宠物</a>
+            </div>
+        </div>
+    </div>
+    <div class="unit">
+
+    </div>
+    
+</body>

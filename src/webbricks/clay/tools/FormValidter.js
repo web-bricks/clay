@@ -35,7 +35,7 @@ function(K,C,O,A,Ajax,Dispatcher){
         },
         name:{
             trigger:"blur",
-            rule:[[/[\S]{2,13}/,"昵称应为2~12位"],["Username","昵称格式错误"],{url:"isUserNameUnused?name="}],
+            rule:[[/[\S]{2,13}/,"昵称应为2~12位"],["Username","昵称格式错误"],{url:"isUserNameUnused?name="}]
         },
         phone:{
             trigger:"blur",
@@ -108,9 +108,9 @@ function(K,C,O,A,Ajax,Dispatcher){
                             return;
                         }
                     }else{
-                        Ajax.post(rule.url+val,{
+                        Ajax.json(rule.url+val,{
                             succ:function(json){
-                                if(json.status==0){
+                                if(json.status==200){
                                     _this.status=Form.STATUS_OK;
                                     _this.fire("PASS");
                                     _this.view(_this);

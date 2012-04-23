@@ -22,9 +22,15 @@
 	})();
     kola("webbricks.clay.cpt.CptEngine,kola.html.Element,webbricks.clay.tools.FormValidter",function(CptEngine,K,FormValidter){
         CptEngine.listen();
-        new FormValidter(K(".formlayoutL"),{submit:function(){
+        new FormValidter(K("form"),{submit:function(){
             alert("ok");
         }})
+    });
+    kola('webbricks.magicbox.suite.PageView', function(Engine) {
+        Engine.create();
+    });
+    kola('webbricks.magicbox.suite.LocalView', function(Engine) {
+        Engine.create();
     });
 </script>
 <style>
@@ -87,19 +93,19 @@
 </style>
 <link rel="stylesheet" href="//s1.cv.itc.cn/c/pin/g.css">
 </head>
-<body>
+<body data-context="p1\n\np2\n\np3">
 <div class="panel" id="d0">
-    <form>
+    <form action="a.do" method="POST">
         <div class="line">
-            <span>email:</span><input type="text" name="passport" data-valid="email" data-require="email不能为空"/><span class="tip err"></span>
+            <span>email:</span><input type="text" name="passport" data-valid="email" data-require="email不能为空"/><span class="frmTip err"></span>
         </div><div class="line">
-            <span>昵称:</span><input type="text" name="passwd" data-valid="name" data-require="昵称不能为空"/><span class="tip err"></span>
+            <span>昵称:</span><input type="text" name="passwd" data-valid="name" data-require="昵称不能为空"/><span class="frmTip err"></span>
         </div><div class="line">
-            <span>电话:</span><input type="text" name="name" data-valid="phone" data-require="电话不能为空"/><span class="tip err"></span>
+            <span>电话:</span><input type="text" name="name" data-valid="phone" data-require="电话不能为空"/><span class="frmTip err"></span>
         </div><div class="line">
             <span>年龄:</span>
             <div class="head"  data-cpt="webbricks.clay.ctrl.Select" data-cpt-data='{entity:"next()",bar:"find(.bar)"}' data-require="请选择年龄"><em class="bar">请选择</em><span>V</span><input type="hidden" name="type"></div>
-            <div class="dropDown noDis">
+            <div class="dropDown hidden">
                 <ul>
                     <li><p class="value">1</p></li>
                     <li><p class="value">4</p></li>
@@ -107,7 +113,7 @@
                     <li><p class="value">6</p></li>
                 </ul>
             </div>
-            <span class="tip err"></span>
+            <span class="frmTip err"></span>
         </div>
         <input type="button" data-submit value="提交"/>
     </form>

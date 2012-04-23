@@ -6,7 +6,7 @@ kola("webbricks.clay.ctrl.Dialog",[
     "webbricks.clay.ctrl.Overlay"
 ],function(KolaObject, KolaClass, $, Dispatcher, Overlay) {
     var shell='<div  class="mw">'
-                +'<a href="javascript:void(0);" class="clay_hide close" title="关闭"><i>关闭</i></a>'
+                +'<a href="javascript:void(0);" class="clay_hide close" title="关闭"></a>'
                 +'<div class="clay_title mwHd"><h4>标题</h4></div>'
                 +'<div class="clay_content mwBd"></div>'
                 +'<div class="clay_tool mwFt"><span class="clay_confirm btn"></span><span class="clay_cancel btn"></span></div>'

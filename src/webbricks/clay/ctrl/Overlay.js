@@ -8,10 +8,10 @@ kola("webbricks.clay.ctrl.Overlay",[
     "kola.lang.Object",
     "kola.html.Document",
     "kola.bom.Browser",
-    "webbricks.clay.ctrl.Expose",
+    "webbricks.clay.ctrl.Expose"
 ],function($,KolaClass,KolaObject,D,Browser,Expose){
 
-    D.createInlineCss('.coverlay{position:relative;}.warp{position:fixed;left:0;top:0;overflow-y:scroll;}');
+    D.createInlineCss('.coverlay{position:absolute;}.warp{position:fixed;left:0;top:0;overflow-y:scroll;}');
 
     var Overlay=KolaClass.create({
         /**
@@ -22,7 +22,6 @@ kola("webbricks.clay.ctrl.Overlay",[
         */
         _init:function(overlay,options){            
             var _this=this;
-            options=options||{};
             _this.overlay=$(overlay);
             _this.options=KolaObject.extend({
                 anchor:document.body,
@@ -32,12 +31,12 @@ kola("webbricks.clay.ctrl.Overlay",[
                     color:"white",
                     opacity:0.8
                 }
-            },options);
+            },options||{});
             _this.options.anchor=$(_this.options.anchor);
             _this.index=Overlay.count++;
             _this.options.expose=KolaObject.extend({
                 anchor:_this.options.anchor
-            },options.expose);
+            },this.options.expose);
             
             _this.overlay.addClass("coverlay");
             
@@ -50,7 +49,10 @@ kola("webbricks.clay.ctrl.Overlay",[
             
             _this.expose=new Expose(_this.warp,_this.options.expose);
             if(_this.options.closeOnClickOut){
-                _this.expose.snow.click(this.close,{scope:_this});
+                _this.warp.click(function(e){
+                    if(e.target==_this.warp[0])
+                    _this.hide();
+                });
             }
         },
         /**

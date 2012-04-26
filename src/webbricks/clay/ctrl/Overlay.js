@@ -74,6 +74,7 @@ kola("webbricks.clay.ctrl.Overlay",[
             
             $("body").style("overflow","hidden");//other
             $("html").style("overflow","hidden");//ie
+            $("body").style("padding-right","16px");
             if(Browser.IE6){
                 this.warp.style("position","absolute").style("top",D.scroll().top);
             }
@@ -85,7 +86,7 @@ kola("webbricks.clay.ctrl.Overlay",[
         hide:function(){
             $("body").removeStyle("overflow","hidden");
             $("html").removeStyle("overflow","hidden");
-            
+            $("body").removeStyle("padding-right");
             this.expose.hide();
             this.warp.addClass("hidden");
         }

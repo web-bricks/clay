@@ -49,7 +49,8 @@ kola("webbricks.clay.interact.Draggable",[
         if(!e.clientY)
             e.clientY=lastY;
         lastY=e.clientY;
-        
+        this.eleW=this.ele.width();
+        this.eleH=this.ele.height();
 		var mouseX=this.oldEleX+e.clientX-this.oldMouseX;
 		var mouseY=this.oldEleY+e.clientY-this.oldMouseY+(documentScrollElement[0].scrollTop);
 		//confine
@@ -63,6 +64,7 @@ kola("webbricks.clay.interact.Draggable",[
 			if(mouseY+this.eleH>$(this.opt.confinedTarget).height()-this.opt.marginBottom)
 				mouseY=$(this.opt.confinedTarget).height()-this.opt.marginBottom-this.eleH;
 		}
+        //this.fire({type:"beforeDragging",elem:this.ele,data:{left:mouseX}});
         //autoScroll
         if(this.opt.scrollSpeed>0){
             var clientHeight=KolaDocument.clientSize().h;
@@ -74,6 +76,7 @@ kola("webbricks.clay.interact.Draggable",[
                 documentScrollElement[0].scrollTop+=this.opt.scrollSpeed;
             }
         }
+        
 		this.ele.style("left",mouseX);
 		this.ele.style("top",mouseY);
 		this.fire({type:"dragging",elem:this.ele});

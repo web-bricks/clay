@@ -13,32 +13,47 @@ kola("webbricks.clay.ctrl.MutiSelect",[
         "tag":{
             list:"children(.value)",
             candidate:"children(div.Tags)",
-            item:function(value){'<li><a href="javascript:void(0)">'+value+'<i class="removetab" title="移除这个标签"></i></a></li>'}
+            renderItem:function(data){'<li><a href="javascript:void(0)">'+data+'<i class="removetab" title="移除这个标签"></i></a></li>'}
         }
     }
     return KolaClass.create({
         _init:function(anchor,opt){
+            anchor=$(anchor);
             this.option=KolaObject.extend({
                 limit:10000,
                 selectedClass:"checked"
             },opt||{});
             this.list=CptUtil.getDom(this.option.list,anchor);
+            this.listItems=this.list.children("li");
+            this.list.click(function(e){
+                this.removeItem($(e.target).closest("li").find(".title").text());
+            },{scope:this,delegate:this.option.removeHandle});
             this.candidate=CptUtil.getDom(this.option.candidate,anchor);
-            this.candidate.click(candidateClick,{scope:this});
+            this.candidateList=this.candidate.find("a")
+            this.candidateList.click(candidateClick,{scope:this});
         },
         initData:function(){
         },
-        addItem:function(e){
-            
+        addItem:function(data){
+            var item=$(this.option.renderItem(data));
+            this.list.append(item);
+            this.candidate.find("a").filter(":contains("+data.title+")").addClass(this.option.selectedClass);
+        },
+        removeItem:function(title){
+            this.list.find("li").filter(":contains("+title+")").remove();
+            this.candidate.find("a").filter(":contains("+title+")").removeClass(this.option.selectedClass);
         }
     });
-    function candidateClick(){
+    function candidateClick(e){
         var candidate=$(e.target);
+        //..if(!candidate.attr("data-MSID")){
+         //   candidate.attr("data-MSID",MSIDC++);
+        //}
+        var data=this.option.parseCandidate(candidate);
         if(candidate.hasClass(this.option.selectedClass)){
-            candidate.removeClass(this.option.selectedClass);
-            this.addItem();
+            this.removeItem(data.title);
         }else{
-            candidate.addClass(this.option.selectedClass);
+            this.addItem(data);
         }
     }
 });

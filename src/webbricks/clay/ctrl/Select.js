@@ -12,10 +12,11 @@ kola("webbricks.clay.ctrl.Select",[
     "kola.html.Element",
     "webbricks.clay.ctrl.Layer",
     "webbricks.clay.cpt.CptUtil",
-    "webbricks.clay.ctrl.SingleSelect"
-],function(KolaClass, KolaObject, $, Layer, CptUtil, Single){
+    "webbricks.clay.ctrl.SingleSelect",
+    "kola.event.Dispatcher"
+],function(KolaClass, KolaObject, $, Layer, CptUtil, Single, Dispatcher){
 
-    var exports=KolaClass.create({
+    var exports=KolaClass.create(Dispatcher,{
         _init:function(anchor,option){
             var _this=this;
             this.anchor=anchor;
@@ -70,6 +71,7 @@ kola("webbricks.clay.ctrl.Select",[
         setTimeout(function(){
             _this.layer.hide();
         });
+        this.fire("select");
     }
     return exports;
 });

@@ -62,7 +62,7 @@ function(K,C,O,A,Ajax,Dispatcher){
             var _this=this;
             _this.status=Form.STATUS_EMPTY;
             _this.elem=el;
-            _this.el=el.find("input");
+            _this.el=el.find("[name]");
             _this.type=el.attr("data-valid")||"";
             _this.require=el.attr("data-require")||0;
             _this.view=el.attr("data-valid-view");
@@ -140,16 +140,26 @@ function(K,C,O,A,Ajax,Dispatcher){
             if(this.items[i].status!=Form.STATUS_OK)
                 return;
         }
-        for(var i=0;i<this.items.length;i++){
+        for(i=0;i<this.items.length;i++){
             this.items[i].off("PASS",testAllPass);
             this.items[i].off("ERR",testErr);
         }
-        this.submit();
+        this.options.submit();
     }
     function testErr(){
         for(var i=0;i<this.items.length;i++){
             this.items[i].off("PASS",testAllPass);
             this.items[i].off("ERR",testErr);
+        }
+    }
+    function submit(e){
+        for(var i=0,il=this.items.length;i<il;i++){
+            this.items[i].status=Form.STATUS_EMPTY;
+        }
+        for(var i=0,il=this.items.length;i<il;i++){
+            this.items[i].on("PASS",testAllPass,{scope:this});
+            this.items[i].on("ERR",testErr,{scope:this});
+            this.items[i].valid();
         }
     }
     /**
@@ -158,6 +168,7 @@ function(K,C,O,A,Ajax,Dispatcher){
             .clearOnFocus 条目在得到焦点后清除错误状态
             .submit 点击提交按钮后所有验证通过的回调函数
     */
+
     var Form=C.create({
         _init:function(form,options){
             var _this=this;
@@ -166,9 +177,8 @@ function(K,C,O,A,Ajax,Dispatcher){
                 clearOnFocus:true,
                 submit:function(){}
             },options);
-            _this.submit=_this.options.submit;
             _this.items=[];
-            _this.form.find("[data-valid],[data-require]").each(function(item){
+            _this.form.find("[data-valid]").add(_this.form.find("[data-require]")).each(function(item){
                 var newItem=new Item(item);
                 _this.items.push(newItem);
                 if(_this.options.clearOnFocus){
@@ -180,17 +190,11 @@ function(K,C,O,A,Ajax,Dispatcher){
             });
             _this.submitBtn=form.find("[data-submit]");
             if(_this.submitBtn.length>0){
-                _this.submitBtn.click(function(e){
-                    for(var i=0,il=_this.items.length;i<il;i++){
-                        _this.items[i].status=Form.STATUS_EMPTY;
-                    }
-                    for(var i=0,il=_this.items.length;i<il;i++){
-                        _this.items[i].on("PASS",testAllPass,{scope:_this});
-                        _this.items[i].on("ERR",testErr,{scope:_this});
-                        _this.items[i].valid();
-                    }
-                });
+                _this.submitBtn.click(submit,{scope:this});
             }
+        },
+        submit:function(){
+            submit.call(this);
         }
     });
     Form.STATUS_EMPTY=0;

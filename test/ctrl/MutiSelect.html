@@ -23,6 +23,20 @@
 		kola._cache = [];
 	})();
     kola("webbricks.clay.cpt.CptEngine",function(CptEngine){CptEngine.listen()});
+    kola("kola.html.Element,webbricks.clay.ctrl.MutiSelect",function($,MutiSelect){
+        new MutiSelect($("div.choseFried"),{
+            list:"find(.board-list)",
+            candidate:"find(.board-candidate)",
+            selectedClass:"defboarditem_dis",
+            removeHandle:".jsremove",
+            renderItem:function(data){
+                return '<li class="inputNewboard"><a class="tbx tbxL title" >'+data.title+'</a><a href="javascript:void(0)" class="remove jsremove" title="不喜欢这个board"></a></li>';
+            },
+            parseCandidate:function(dom){
+                return {title:dom.find(".defboarditem").html()};
+            }
+        });
+    });
 </script>
 <link rel="stylesheet" href="//s1.cv.itc.cn/c/pin/g.css">
 </head>
@@ -47,7 +61,52 @@
         </div>
     </div>
     <div class="unit">
-
+        <div class="choseFried">
+            <i class="tipflg"></i><span class="lbltit">选择一个好友</span>
+            <div class="UIAdder UIAdder-active">
+                <a class="control" href="#" title="展开"></a>
+                <div class="InputTags">
+                    <div class="Tags values">
+                        <div class="item"><a href="#">张超伟<i class="removetag" title="移除"></i></a></div>
+                    </div>
+                    <div class="inputArea hidden">
+                        <input type="text" class="input">
+                        <div class="Dropshow">
+                            <ul class="simlist">
+                                <li><a href="#">张超伟</a></li>
+                                <li><a href="#">张超</a></li>
+                                <li><a href="#">张超伟</a></li>
+                                <li><a href="#">东方超伟</a></li>
+                                <li><a href="#">超伟</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="UsercbxList">
+                    <div class="Usercbxwrap">
+                        <span class="Usercbx" title="露丝露丝">
+                            <b class="avt"><img src="//s1.cv.itc.cn/i/1/demo/019.jpg" alt=""><i class="cbx"></i></b>
+                            <b class="name">露丝露丝</b>
+                        </span><span class="Usercbx Usercbx_checked" title="杰克杰克">
+                            <b class="avt"><img src="//s1.cv.itc.cn/i/1/demo/020.jpg" alt=""><i class="cbx"></i></b>
+                            <b class="name">杰克杰克</b>
+                        </span><span class="Usercbx" title="露丝露丝">
+                            <b class="avt"><img src="//s1.cv.itc.cn/i/1/demo/021.jpg" alt=""><i class="cbx"></i></b>
+                            <b class="name">露丝露丝</b>
+                        </span><span class="Usercbx" title="露丝露丝">
+                            <b class="avt"><img src="//s1.cv.itc.cn/i/1/demo/020.jpg" alt=""><i class="cbx"></i></b>
+                            <b class="name">露丝露丝</b>
+                        </span><span class="Usercbx Usercbx_checked" title="杰克杰克">
+                            <b class="avt"><img src="//s1.cv.itc.cn/i/1/demo/020.jpg" alt=""><i class="cbx"></i></b>
+                            <b class="name">杰克杰克</b>
+                        </span><span class="Usercbx" title="露丝露丝">
+                            <b class="avt"><img src="//s1.cv.itc.cn/i/1/demo/021.jpg" alt=""><i class="cbx"></i></b>
+                            <b class="name">露丝露丝</b>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     
 </body>

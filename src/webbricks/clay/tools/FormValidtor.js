@@ -2,7 +2,7 @@
     表单验证组件
     实现kola-cpt接口
 */
-kola("webbricks.clay.tools.FormValidter",
+kola("webbricks.clay.tools.FormValidtor",
     "kola.html.Element,kola.lang.Class,kola.lang.Object,kola.lang.Array,kola.net.Ajax,kola.event.Dispatcher",
 function(K,C,O,A,Ajax,Dispatcher){
     /**

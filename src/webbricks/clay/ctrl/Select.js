@@ -37,7 +37,8 @@ kola("webbricks.clay.ctrl.Select",[
                 entity:this.entity,                                           
                 trigger:"click",                                            
                 hideOnClickOut:true,
-                anchorActiveClass:"Selector-active"                
+                anchorActiveClass:option.anchorActiveClass||"Selector-active",
+                hiddenClass:option.hiddenClass||"hidden"
             });                                                             
 
             this.list.click(select,{scope:this});                           

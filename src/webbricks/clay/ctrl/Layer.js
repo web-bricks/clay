@@ -22,9 +22,11 @@ option
 show
 hide
 */
-kola("webbricks.clay.ctrl.Layer",
-    ["kola.lang.Class","kola.lang.Object","webbricks.clay.cpt.CptUtil"],
-function(C,KolaObject,CptUtil){
+kola("webbricks.clay.ctrl.Layer",[
+    "kola.lang.Class",
+    "kola.lang.Object",
+    "webbricks.clay.cpt.CptUtil"
+],function(C,KolaObject,CptUtil){
     var templete={
         simpleTip:""
     };
@@ -32,6 +34,7 @@ function(C,KolaObject,CptUtil){
     var Layer=function(anchor,option){
         var _this=this;
         _this.option=KolaObject.extend({
+            hiddenClass:"hidden",
             anchorActiveClass:""
         },option||{});
         if(_this.option.trigger=="mouseenter" && !_this.option.hideLag)
@@ -120,10 +123,10 @@ function(C,KolaObject,CptUtil){
     }
     C.buildProto(Layer,{
         show:function(e){
-            if(!this.entity.hasClass("hidden"))
+            if(!this.entity.hasClass(this.option.hiddenClass))
                 return;
             this.anchor.addClass(this.option.anchorActiveClass);
-            this.entity.removeClass("hidden");
+            this.entity.removeClass(this.option.hiddenClass);
             //如果可以点击外部关闭，则绑定事件
             if(this.option.hideOnClickOut){
                 var self=this;
@@ -133,10 +136,10 @@ function(C,KolaObject,CptUtil){
             }
         },
         hide:function(e){
-            if(this.entity.hasClass("hidden"))
+            if(this.entity.hasClass(this.option.hiddenClass))
                 return;
             this.anchor.removeClass(this.option.anchorActiveClass);
-            this.entity.addClass("hidden");
+            this.entity.addClass(this.option.hiddenClass);
             
             if(this.option.hideOnClickOut){
                 this.entity.off("click",this.hide);

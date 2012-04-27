@@ -40,7 +40,7 @@ kola("webbricks.clay.ctrl.Overlay",[
             
             _this.overlay.addClass("coverlay");
             
-            _this.warp=$("<div></div>").addClass("warp").addClass("hidden");
+            _this.warp=$("<div></div>").addClass("warp").style("display","none");
             $(window).on("resize",refresh,{scope:this});
             _this.warp.append(this.overlay);
             refresh.call(this);
@@ -60,7 +60,7 @@ kola("webbricks.clay.ctrl.Overlay",[
         */
         show:function(){
             this.expose.show({z:Overlay.topLayer++});
-            this.warp.removeClass("hidden");
+            this.warp.removeStyle("display");
             //居中
             var w=this.overlay.width();
             var h=this.overlay.height();
@@ -88,7 +88,7 @@ kola("webbricks.clay.ctrl.Overlay",[
             $("html").removeStyle("overflow","hidden");
             $("body").removeStyle("padding-right");
             this.expose.hide();
-            this.warp.addClass("hidden");
+            this.warp.style("display","none");
         }
     });
     Overlay.topLayer=1000;

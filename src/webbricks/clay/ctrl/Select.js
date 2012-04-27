@@ -44,8 +44,8 @@ kola("webbricks.clay.ctrl.Select",[
         },                                                                  
         selectByIndex:function(index){                                      
             this.listCtrl.select(index);                                    
-            this.selectedValue=this.listCtrl.select().find(".value").html();
-            this.selectedContent=this.listCtrl.select().find(".content").html();
+            this.selectedValue=this.listCtrl.select().find(".clay_value").html();
+            this.selectedContent=this.listCtrl.select().find(".clay_content").html();
             if(!this.selectedContent)
                 this.selectedContent=this.selectedValue
             if(this.bar.is("input"))                                        
@@ -61,7 +61,7 @@ kola("webbricks.clay.ctrl.Select",[
             return this.listCtrl.selectedIndex();
         },
         selectedValue:function(){
-            this.listCtrl.select().find(".value").html();
+            this.listCtrl.select().find(".clay_value").html();
         }
     });
     function select(e){

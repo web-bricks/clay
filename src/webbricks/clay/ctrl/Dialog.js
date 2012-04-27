@@ -34,7 +34,10 @@ kola("webbricks.clay.ctrl.Dialog",[
             return new this(opt);
         },
         _init:function(option){
-            this.entity=$(shell);
+            if(option.html)
+                this.entity=$(option.html);
+            else
+                this.entity=$(shell);
             //tool bar
             if(option.confirmButton || option.cancelButton){
                 if(option.confirmButton){
@@ -61,9 +64,9 @@ kola("webbricks.clay.ctrl.Dialog",[
             //hide X
             this.entity.find(".clay_hide").click(this.hide,{scope:this});
             //title
-            this.entity.find(".clay_title").html(option.title);
+            this.entity.children(".clay_title").html(option.title);
             //content
-            this.entity.find(".clay_content").html(option.content);
+            this.entity.children(".clay_content").html(option.content);
             this.overlay=new Overlay(this.entity);
         },
         /**
@@ -93,9 +96,9 @@ kola("webbricks.clay.ctrl.Dialog",[
         */
         title:function(title){
             if(KolaObject.isUndefined(title)){
-                this.entity.find(".clay_title").html(title);
+                this.entity.children(".clay_title").html(title);
             }else{
-                return this.entity.find(".clay_title").html();
+                return this.entity.children(".clay_title").html();
             }
         },
         /**
@@ -109,11 +112,11 @@ kola("webbricks.clay.ctrl.Dialog",[
         */
         content:function(content){
             if(KolaObject.isUndefined(content)){
-                return this.entity.find(".clay_content");
+                return this.entity.children(".clay_content");
             }else if(KolaObject.isString(content)){
-                this.entity.find(".clay_content").html(content);
+                this.entity.children(".clay_content").html(content);
             }else{
-                this.entity.find(".clay_content").html("").append(content);
+                this.entity.children(".clay_content").html("").append(content);
             }
         }
     });

@@ -11,7 +11,9 @@ kola("webbricks.clay.interact.Sortable",[
     var Sortable=function(ele,opt){
         var self=this;
         var lastDest=null;
-
+        if(ele.data("sortable"))
+            return;
+        ele.data("sortable",this);
         opt=KolaObject.extend({
             pickable:"",
             escape : 0,
@@ -74,6 +76,7 @@ kola("webbricks.clay.interact.Sortable",[
 
             //复制一个占位符，tag和第一个子元素一样
             self.placeholder=$(document.createElement(first[0].tagName)).addClass(opt.placeholder);
+            console.log(self.placeholder)
         }
 
         //拿起一个子元素的时候用占位符填充原来的区域

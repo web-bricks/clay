@@ -5,11 +5,11 @@ kola("webbricks.clay.ctrl.Dialog",[
     "kola.event.Dispatcher",
     "webbricks.clay.ctrl.Overlay"
 ],function(KolaObject, KolaClass, $, Dispatcher, Overlay) {
-    var shell='<div  class="mw">'
-                +'<a href="javascript:void(0);" class="clay_hide close" title="关闭"></a>'
-                +'<div class="clay_title mwHd"><h4>标题</h4></div>'
-                +'<div class="clay_content mwBd"></div>'
-                +'<div class="clay_tool mwFt"><span class="clay_confirm btn"></span><span class="clay_cancel btn"></span></div>'
+    var shell='<div  class="$mw">'
+                +'<a href="javascript:void(0);" class="clay_hide $close" title="关闭"></a>'
+                +'<div class="clay_title $mwHd"><h4>标题</h4></div>'
+                +'<div class="clay_content $mwBd"></div>'
+                +'<div class="clay_tool $mwFt"><span class="clay_confirm btn"></span><span class="clay_cancel btn"></span></div>'
               +'</div>';
 
               
@@ -17,18 +17,21 @@ kola("webbricks.clay.ctrl.Dialog",[
         __ME:function(type,option){
             if(type=="plain"){
                 var opt=KolaObject.extend({
-                    content:""
+                    content:"",
+                    prefix:""
                 },option||{});
             }else if(type=="confirm"){
                 var opt=KolaObject.extend({
                     content:"",
                     confirmButton:"确定",
-                    cancelButton:"取消"
+                    cancelButton:"取消",
+                    prefix:""
                 },option||{});
             }else if(type=="alert"){
                 var opt=KolaObject.extend({
                     content:"",
-                    confirmButton:"知道了"
+                    confirmButton:"知道了",
+                    prefix:""
                 },option||{});
             }
             return new this(opt);
@@ -37,7 +40,7 @@ kola("webbricks.clay.ctrl.Dialog",[
             if(option.html)
                 this.entity=$(option.html);
             else
-                this.entity=$(shell);
+                this.entity=$(shell.replace(/\$/g,option.prefix));
             //tool bar
             if(option.confirmButton || option.cancelButton){
                 if(option.confirmButton){
@@ -96,9 +99,13 @@ kola("webbricks.clay.ctrl.Dialog",[
         */
         title:function(title){
             if(KolaObject.isUndefined(title)){
-                this.entity.children(".clay_title").html(title);
-            }else{
                 return this.entity.children(".clay_title").html();
+            }else{
+                if(KolaObject.isString(title) && title.charAt(0)!="<"){
+                    this.entity.children(".clay_title").html("<h4>"+title+"</h4>");
+                }else{
+                    this.entity.children(".clay_title").html("").append(title);
+                }
             }
         },
         /**

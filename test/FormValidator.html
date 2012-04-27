@@ -20,9 +20,9 @@
 		};
 		kola._cache = [];
 	})();
-    kola("webbricks.clay.cpt.CptEngine,kola.html.Element,webbricks.clay.tools.FormValidtor",function(CptEngine,K,FormValidtor){
+    kola("webbricks.clay.cpt.CptEngine,kola.html.Element,webbricks.clay.tools.FormValidator",function(CptEngine,K,FormValidator){
         CptEngine.listen();
-        new FormValidtor(K("form"),{submit:function(){
+        new FormValidator(K("form"),{submit:function(){
             alert("ok");
         }})
     });

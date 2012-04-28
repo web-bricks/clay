@@ -20,6 +20,7 @@ kola("webbricks.clay.ctrl.Suggestion",[
         _init:function(anchor,option){
             var _this=this;
             this.anchor=anchor;
+            this.inputDom=this.anchor.find("input");
             this.list=CptUtil.getDom(option.entity,anchor);
             
             this.listCtrl=new Single(this.list,{
@@ -33,8 +34,8 @@ kola("webbricks.clay.ctrl.Suggestion",[
                 hideOnClickOut:true
             });
             
-            this.anchor.keydown(keydown,{scope:this});
-            this.anchor.keyup(keyup,{scope:this});
+            this.inputDom.keydown(keydown,{scope:this});
+            this.inputDom.keyup(keyup,{scope:this});
             
             this.list.click(select,{scope:this});
         }
@@ -56,9 +57,9 @@ kola("webbricks.clay.ctrl.Suggestion",[
     }
     function keyup(e){
         if(e.keyCode!=13 && e.keyCode!=32){
-            if(this.anchor[0].value.length!=0){
+            if(this.inputDom[0].value.length!=0){
                 this.layer.show();
-                this.fire({type:"change",value:this.anchor[0].value,container:this.list});
+                this.fire({type:"change",value:this.inputDom[0].value,container:this.list});
             }
         }
     }

@@ -6,8 +6,9 @@
 kola("webbricks.clay.ctrl.SingleSelect",[
     "kola.html.Element",
     "kola.lang.Class",
-    "kola.lang.Object"
-],function($,C,KolaObject){
+    "kola.lang.Object",
+    "kola.lang.Array"
+],function($,C,KolaObject,KolaArray){
     return C.create({
         _init:function(elem,opt){
             var _this=this;
@@ -32,11 +33,14 @@ kola("webbricks.clay.ctrl.SingleSelect",[
             to.addClass(this.opt.selectedClass);
             this.selected=to;
         },
+        items:function(){
+            return this.elem.find(this.opt.item);
+        },
         select:function(par){
             if(par===undefined)
                 return this.selected;
             else if(typeof par =="number"){
-				this.select(this.elem.find(this.opt.item+":eq("+par+")"));
+				this.select(this.items()[par]);
             }else if(typeof par =="string"){
                 //this.select(this.elem.find(par));
             }else{
@@ -44,7 +48,7 @@ kola("webbricks.clay.ctrl.SingleSelect",[
             }
         },
         selectedIndex:function(){
-            return this.selected.index(this.opt.item);
+            return KolaArray.indexOf(this.items(),this.selected[0]);
         },
         next:function(){
             var index=this.selectedIndex();

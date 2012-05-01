@@ -30,7 +30,7 @@ kola("webbricks.clay.ctrl.Dialog",[
             }else if(type=="alert"){
                 var opt=KolaObject.extend({
                     content:"",
-                    confirmButton:"知道了",
+                    confirmButton: '知道了',
                     prefix:""
                 },option||{});
             }

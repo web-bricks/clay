@@ -17,13 +17,13 @@
 	ul.body>li{
 		display:none;
 	}
-    .noDis{
+    .hidden{
         display:none;
     }
     li{
 		list-style-type:none;
 	}
-	li p{
+	li span{
 		margin:0;
 		background-color:#eeeeee;
 		border:1px solid darkGray;
@@ -39,7 +39,7 @@
         overflow:auto;
         padding:2px;
     }
-    .hover p{
+    .hover span{
         background-color:blue;
     }
 </style>
@@ -47,7 +47,7 @@
     (function() {
 		//  加载kola
 		var script = document.createElement('script');
-		script.src = 'http://localhost/cv/kola/Package.js';
+		script.src = 'http://localhost/kola/Package.js';
 		script.type = 'text/javascript';
         script.charset='UTF8';
 		document.getElementsByTagName('head')[0].appendChild(script);
@@ -63,18 +63,42 @@
 		};
 		kola._cache = [];
 	})();
-    kola("webbricks.clay.cpt.CptEngine",function(CptEngine){CptEngine.listen()});
+    kola("kola.html.Element,webbricks.clay.ctrl.Suggestion",function($,Suggestion){
+        var lists=["sohu.com","qq.com","163.com","126.com","chinaren.com","hotmail.com","gmail.com"];
+        var sug=new Suggestion($("input"),{
+            entity:$("div.dropDown")
+        });
+        function startWidth(org,test){
+            for(var i=0;i<test.length;i++){
+                if(org.charAt(i)!=test.charAt(i))
+                    return false;
+            }
+            return true;
+        }
+        sug.on("change",function(e){
+            var items="";
+            var atPos=e.value.indexOf("@")
+            if(atPos==-1){
+                for(var i=0;i<lists.length;i++){
+                    items+="<li><span class='clay_value'>"+e.value+"@"+lists[i]+"</span></li>"
+                }
+            }else{
+                var last=e.value.substring(atPos+1);
+                for(var i=0;i<lists.length;i++){
+                    if(startWidth(lists[i],last))
+                        items+="<li><span class='clay_value'>"+e.value.substring(0,atPos)+"@"+lists[i]+"</span></li>"
+                }
+            }
+            e.container.find("ul").html(items);
+        });
+    });
 </script>
 </head>
 <body>
     <div class="unit">
-        <input type="text"  data-cpt="webbricks.clay.ctrl.Suggestion" data-cpt-data='{entity:"next()"}'/>
-        <div class="dropDown noDis">
+        <input type="text"/>
+        <div class="dropDown hidden">
             <ul>
-                <li><p>1</p></li>
-                <li><p>4</p></li>
-                <li><p>5</p></li>
-                <li><p>6</p></li>
             </ul>
         </div>
     </div>

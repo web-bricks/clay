@@ -21,12 +21,13 @@ kola("webbricks.clay.ctrl.Suggestion",[
             var _this=this;
             this.anchor=anchor;
             this.inputDom=this.anchor.find("input");
+            this.option=option;
             this.list=CptUtil.getDom(option.entity,anchor);
             
             this.listCtrl=new Single(this.list,{
                 item:option.item||"li",
                 trigger:"mouseover",
-                selectedClass:"hover"
+                selectedClass:option.selectedClass||"hover"
             });
             
             this.layer=new Layer(anchor,{
@@ -36,6 +37,8 @@ kola("webbricks.clay.ctrl.Suggestion",[
             
             this.inputDom.keydown(keydown,{scope:this});
             this.inputDom.keyup(keyup,{scope:this});
+            
+            this.inputDom.blur(function(){_this.layer.hide()},{scope:this})
             
             this.list.click(select,{scope:this});
         }
@@ -56,7 +59,7 @@ kola("webbricks.clay.ctrl.Suggestion",[
         }
     }
     function keyup(e){
-        if(e.keyCode!=13 && e.keyCode!=32){
+        if(e.keyCode!=13 && e.keyCode!=32 && e.keyCode!=38 && e.keyCode!=40){
             if(this.inputDom[0].value.length!=0){
                 this.layer.show();
                 this.fire({type:"change",value:this.inputDom[0].value,container:this.list});
@@ -65,7 +68,7 @@ kola("webbricks.clay.ctrl.Suggestion",[
     }
     function select(e){
         this.selectedIndex=this.listCtrl.selectedIndex();
-        this.selectedValue=this.listCtrl.select().find("p").html();
+        this.selectedValue=this.listCtrl.select().find(".clay_value").html();
         this.anchor[0].value=this.selectedValue;
         this.layer.hide();
     }

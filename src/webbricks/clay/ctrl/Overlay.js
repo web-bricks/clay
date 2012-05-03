@@ -11,19 +11,19 @@ kola("webbricks.clay.ctrl.Overlay",[
     "webbricks.clay.ctrl.Expose"
 ],function($,KolaClass,KolaObject,D,Browser,Expose){
 
-    D.createInlineCss('.coverlay{position:absolute;}.warp{position:fixed;left:0;top:0;overflow-y:scroll;}');
+    D.createInlineCss('.coverlay{position:absolute;}.warp{position:fixed;left:0;top:0;}');
 
     var Overlay=KolaClass.create({
         /**
             overlay:被作为层显示的dom
-            options
+            option
                 .anchor:遮罩被放在哪里
                 .expose：expose的option
         */
-        _init:function(overlay,options){            
+        _init:function(overlay,option){            
             var _this=this;
             _this.overlay=$(overlay);
-            _this.options=KolaObject.extend({
+            _this.option=KolaObject.extend({
                 anchor:document.body,
                 closeOnClickOut:false,
                 expose:{
@@ -31,12 +31,12 @@ kola("webbricks.clay.ctrl.Overlay",[
                     color:"white",
                     opacity:0.8
                 }
-            },options||{});
-            _this.options.anchor=$(_this.options.anchor);
+            },option||{});
+            _this.option.anchor=$(_this.option.anchor);
             _this.index=Overlay.count++;
-            _this.options.expose=KolaObject.extend({
-                anchor:_this.options.anchor
-            },this.options.expose);
+            _this.option.expose=KolaObject.extend({
+                anchor:_this.option.anchor
+            },this.option.expose);
             
             _this.overlay.addClass("coverlay");
             
@@ -45,10 +45,10 @@ kola("webbricks.clay.ctrl.Overlay",[
             _this.warp.append(this.overlay);
             refresh.call(this);
             
-            _this.options.anchor.append(_this.warp);
+            _this.option.anchor.append(_this.warp);
             
-            _this.expose=new Expose(_this.warp,_this.options.expose);
-            if(_this.options.closeOnClickOut){
+            _this.expose=new Expose(_this.warp,_this.option.expose);
+            if(_this.option.closeOnClickOut){
                 _this.warp.click(function(e){
                     if(e.target==_this.warp[0])
                     _this.hide();
@@ -71,12 +71,14 @@ kola("webbricks.clay.ctrl.Overlay",[
                 ct=0;
             this.overlay.style("left",cl);
             this.overlay.style("top",ct);
-            
-            $("body").style("overflow","hidden");//other
-            $("html").style("overflow","hidden");//ie
-            $("body").style("padding-right","16px");
-            if(Browser.IE6){
-                this.warp.style("position","absolute").style("top",D.scroll().top);
+            if(this.option.full){
+                $("body").style("overflow","hidden");//other
+                $("html").style("overflow","hidden");//ie
+                $("body").style("padding-right","16px");
+                if(Browser.IE6){
+                    this.warp.style("position","absolute").style("top",D.scroll().top);
+                }
+                this.warp.style("overflow-y","scroll");
             }
             refresh.call(this);
         },
@@ -84,9 +86,11 @@ kola("webbricks.clay.ctrl.Overlay",[
             隐藏层
         */
         hide:function(){
-            $("body").removeStyle("overflow","hidden");
-            $("html").removeStyle("overflow","hidden");
-            $("body").removeStyle("padding-right");
+            if(this.option.full){
+                $("body").removeStyle("overflow","hidden");
+                $("html").removeStyle("overflow","hidden");
+                $("body").removeStyle("padding-right");
+            }
             this.expose.hide();
             this.warp.style("display","none");
         }

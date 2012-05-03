@@ -15,14 +15,33 @@ kola("webbricks.clay.ctrl.Input",[
         if(this._program)
             return
         if (e.propertyName == "value"){
-            this.onInput();
+            onInput.call(this);
         }
     }
-    
-    var exports=KolaClass.create({
+    function onInput(){
+        if(this.value==this.entity.val())
+            return;
+        this.value=this.entity.val();
+        this.fire("change",{value:this.value});
+        
+        //autosize
+        var dom=this.entity[0];
+        dom.style.height=null;
+        var px = dom.scrollHeight;
+        if(px>80)
+            px=80;
+        dom.style.height = px+"px";
+    }
+    function onkeyup(e){
+        if(e.ctrlKey && e.keyCode==13){
+            if(this.option.ctrlEnter)
+                this.option.ctrlEnter();
+        }
+    }
+    var exports=KolaClass.create(Dispatcher,{
         _init:function(entity,option){
+            this.entity=entity;
             this.option=KolaObject.extend({
-                ctrlEnter
             },option);
             this.value=entity.val();
             entity.data("Input",this);
@@ -31,15 +50,13 @@ kola("webbricks.clay.ctrl.Input",[
                     onpropertychange.call(this,window.event);
                 });
             }else{
-                entity.on("input",this.onInput,{scope:this});
+                entity.on("input",onInput,{scope:this});
+            }
+            if(this.option.ctrlEnter){
+                entity.on("keyup",onkeyup,{scope:this});
             }
         },
-        onInput:function(){
-            if(this.value==entity.val())
-                return;
-            this.value=entity.val();
-        },
-        val(value):function(){
+        val:function(value){
             if(KolaObject.isUndefined(value)){
                 return this.entity.val();
             }else{
@@ -49,11 +66,6 @@ kola("webbricks.clay.ctrl.Input",[
                 }else{
                     this.entity.val(value);
                 }
-            }
-        },
-        onkeyup:function(e){
-            if(e.ctrlkey && e.keycode==32){
-                //....
             }
         }
     })

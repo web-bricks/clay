@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+</style>
+<link rel="stylesheet" href="//s1.cv.itc.cn/c/pin/g.css"/>
+<script>
+    (function() {
+		//  加载kola
+		var script = document.createElement('script');
+		script.src = 'http://localhost/kola/Package.js';
+		script.type = 'text/javascript';
+        script.charset='UTF8';
+		document.getElementsByTagName('head')[0].appendChild(script);
+		script = null;
+
+		//  声明一个kola替代变量
+		window.kola = function() {
+			var arr = [ this ];
+			for ( var i = 0, il = arguments.length; i < il; i++) {
+				arr.push(arguments[i]);
+			}
+			kola._cache.push(arr);
+		};
+		kola._cache = [];
+	})();
+    kola("webbricks.clay.cpt.CptEngine",function(CptEngine){CptEngine.listen()});
+</script>
+</head>
+<body>
+    <div class="unit">
+        <div class="uislider topicfllowSlider" style="margin-left:100px;width:600px" data-cpt="webbricks.clay.ctrl.Gallery" data-cpt-data='{"content":"find(.slidercontent)","left":"find(.handlePre)","right":"find(.handleNext)"}'>
+            <div class="sliderwrap">
+                <div class="slidercontent">
+                    <ul>
+                        <li class="slideritem">
+                            <div class="Pin PinTopicfllow">
+                                <div class="topichd">
+                                    <h4>宠物</h4>
+                                </div>
+                                <div class="topicthumb">
+                                    <a href="#"><img alt="" src="//s1.cv.itc.cn/i/1/demo/028.jpg" class="avt"></a>
+                                    <span class="count CMbgStatic">62,144人订阅</span>
+                                </div>
+                                <p class="topicdes">爱美食？那就赶紧订阅美食达人频道吧！这里有你难以想象的美味等你发</p>
+                                <a class="Btn BtnL3" href="#"><b>已订阅</b></a>
+                            </div>
+                        </li>
+                        <li class="slideritem">
+                            <div class="Pin PinTopicfllow">
+                                <div class="topichd">
+                                    <h4>宠物</h4>
+                                </div>
+                                <div class="topicthumb">
+                                    <a href="#"><img alt="" src="//s1.cv.itc.cn/i/1/demo/028.jpg" class="avt"></a>
+                                    <span class="count CMbgStatic">62,144人订阅</span>
+                                </div>
+                                <p class="topicdes">爱美食？那就赶紧订阅美食达人频道吧！这里有你难以想象的美味等你发</p>
+                                <a class="Btn BtnL3" href="#"><b>已订阅</b></a>
+                            </div>
+                        </li>
+                        <li class="slideritem">
+                            <div class="Pin PinTopicfllow">
+                                <div class="topichd">
+                                    <h4>宠物</h4>
+                                </div>
+                                <div class="topicthumb">
+                                    <a href="#"><img alt="" src="//s1.cv.itc.cn/i/1/demo/028.jpg" class="avt"></a>
+                                    <span class="count CMbgStatic">62,144人订阅</span>
+                                </div>
+                                <p class="topicdes">爱美食？那就赶紧订阅美食达人频道吧！这里有你难以想象的美味等你发</p>
+                                <a class="Btn BtnL3" href="#"><b>已订阅</b></a>
+                            </div>
+                        </li>
+                        <li class="slideritem">
+                            <div class="Pin PinTopicfllow">
+                                <div class="topichd">
+                                    <h4>宠物</h4>
+                                </div>
+                                <div class="topicthumb">
+                                    <a href="#"><img alt="" src="//s1.cv.itc.cn/i/1/demo/028.jpg" class="avt"></a>
+                                    <span class="count CMbgStatic">62,144人订阅</span>
+                                </div>
+                                <p class="topicdes">爱美食？那就赶紧订阅美食达人频道吧！这里有你难以想象的美味等你发</p>
+                                <a class="Btn BtnL3" href="#"><b>已订阅</b></a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <a href="javascript:void(0)" class="handle handlePre">pre</a>
+            <a href="javascript:void(0)" class="handle handleNext">next</a>
+        </div>
+    </div>
+    <div class="unit">
+    </div>
+    
+</body>

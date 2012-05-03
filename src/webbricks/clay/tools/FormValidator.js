@@ -58,18 +58,17 @@ function(K,C,O,A,Ajax,Dispatcher){
         表单项验证
     */
     var Item=C.create(Dispatcher,{
-        _init:function(el){
+        _init:function(el,option){
             var _this=this;
             _this.status=Form.STATUS_EMPTY;
             _this.elem=el;
             _this.el=el.find("[name]");
             _this.type=el.attr("data-valid")||"";
             _this.require=el.attr("data-require")||0;
-            _this.view=el.attr("data-valid-view");
-            if(!_this.view){
+            if(!option.view){
                 _this.view=view;
             }else{
-                kola(_this.view,function(v){_this.view=v});
+                _this.view=option.view;
             }
             if(_this.type)
                 _this.code=rules[_this.type];
@@ -179,7 +178,7 @@ function(K,C,O,A,Ajax,Dispatcher){
             },options);
             _this.items=[];
             _this.form.find("[data-valid]").add(_this.form.find("[data-require]")).each(function(item){
-                var newItem=new Item(item);
+                var newItem=new Item(item,{view:options.view});
                 _this.items.push(newItem);
                 if(_this.options.clearOnFocus){
                     item.on("focus",function(){

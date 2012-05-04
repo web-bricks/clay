@@ -10,11 +10,9 @@ kola("webbricks.clay.ctrl.Gallery",[
     "kola.lang.Class",
     "kola.lang.Object",
     "kola.html.Element",
-    "webbricks.clay.ctrl.Layer",
     "webbricks.clay.cpt.CptUtil",
-    "webbricks.clay.ctrl.SingleSelect",
     "kola.event.Dispatcher"
-],function(KolaClass, KolaObject, $, Layer, CptUtil, Single, Dispatcher){
+],function(KolaClass, KolaObject, $,  CptUtil, Dispatcher){
 
     var exports=KolaClass.create(Dispatcher,{
         _init:function(anchor,option){
@@ -24,15 +22,21 @@ kola("webbricks.clay.ctrl.Gallery",[
             this.left=CptUtil.getDom(option.left,anchor);
             this.right=CptUtil.getDom(option.right,anchor);
             
-            this.left.click(adjustMargin,{scope:this})
+            this.innerWidth=this.content.find("li")
+            this.innerWidth=this.innerWidth.length*$(this.innerWidth[0]).outerWidth();
+            this.content.width(this.innerWidth);
+            
+            this.left.click(adjustMargin,{scope:this,data:-1});
+            this.right.click(adjustMargin,{scope:this,data:1});
         }
     });
-    function adjustMargin(){
+    function adjustMargin(e){
         var marginNow=parseInt(this.content.style("margin-left"));
-        marginNow-=100;
-        console.log(this.anchor.width()-this.content.width()+"  "+marginNow)
-        if(this.anchor.width()-this.content.width()>marginNow)
-            marginNow=this.anchor.width()-this.content.width();
+        marginNow-=300*e.data;
+        if(this.anchor.width()-this.innerWidth>marginNow)
+            marginNow=this.anchor.width()-this.innerWidth;
+        if(marginNow>0)
+            marginNow=0;
         this.content.style("margin-left",marginNow);
     }
     return exports;

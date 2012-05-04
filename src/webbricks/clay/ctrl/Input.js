@@ -3,8 +3,9 @@ kola("webbricks.clay.ctrl.Input",[
     "kola.lang.Class",
     "kola.lang.Object",
     "kola.event.Dispatcher",
-    "kola.bom.Browser"
-],function($,KolaClass,KolaObject,Dispatcher,Browser){
+    "kola.bom.Browser",
+    "kola.bom.Selection"
+],function($,KolaClass,KolaObject,Dispatcher,Browser,KolaSelection){
     /**
         option
             restrict
@@ -44,7 +45,7 @@ kola("webbricks.clay.ctrl.Input",[
             this.option=KolaObject.extend({
             },option);
             this.value=entity.val();
-            entity.data("Input",this);
+            entity.data("input",this);
             if(Browser.IEStyle){
                 entity.attachEvent("onpropertychange",function(){
                     onpropertychange.call(this,window.event);
@@ -67,6 +68,9 @@ kola("webbricks.clay.ctrl.Input",[
                     this.entity.val(value);
                 }
             }
+        },
+        select:function(start,end){
+            KolaSelection.select(this.entity,start,end);
         }
     })
     return exports;

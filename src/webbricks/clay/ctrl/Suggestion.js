@@ -37,10 +37,9 @@ kola("webbricks.clay.ctrl.Suggestion",[
             
             this.inputDom.keydown(keydown,{scope:this});
             this.inputDom.keyup(keyup,{scope:this});
-            
-            this.inputDom.blur(function(){_this.layer.hide()},{scope:this})
-            
             this.list.click(select,{scope:this});
+            this.inputDom.blur(function(){setTimeout(function(){_this.layer.hide()},500)},{scope:this});
+            
         }
     }); 
     function keydown(e){

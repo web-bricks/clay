@@ -36,11 +36,11 @@
 </script>
 </head>
 <body>
-    <div class="unit hidden" style="position:relative">
+    <div class="unit" style="position:relative">
     </div>    
 </body>
 <script>
-    kola("webbricks.clay.anim.Anim,kola.html.Element",function(Anim,$){
-        Anim.slideIn($(".unit"));
+    kola("webbricks.clay.anim.Base,kola.html.Element",function(Anim,$){
+        Anim.slideOut($(".unit"));
     });
 </script>

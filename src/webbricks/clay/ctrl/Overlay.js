@@ -8,8 +8,9 @@ kola("webbricks.clay.ctrl.Overlay",[
     "kola.lang.Object",
     "kola.html.Document",
     "kola.bom.Browser",
-    "webbricks.clay.ctrl.Expose"
-],function($,KolaClass,KolaObject,D,Browser,Expose){
+    "webbricks.clay.ctrl.Expose",
+    "webbricks.clay.anim.Base"
+],function($,KolaClass,KolaObject,D,Browser,Expose,Anim){
 
     D.createInlineCss('.coverlay{position:absolute;}.warp{position:fixed;left:0;top:0;}');
 
@@ -40,7 +41,7 @@ kola("webbricks.clay.ctrl.Overlay",[
             
             _this.overlay.addClass("coverlay");
             
-            _this.warp=$("<div></div>").addClass("warp").style("display","none");
+            _this.warp=$("<div></div>").addClass("warp hidden");
             $(window).on("resize",refresh,{scope:this});
             _this.warp.append(this.overlay);
             refresh.call(this);
@@ -60,7 +61,7 @@ kola("webbricks.clay.ctrl.Overlay",[
         */
         show:function(){
             this.expose.show({z:Overlay.topLayer++});
-            this.warp.removeStyle("display");
+            Anim.slideIn(this.warp);
             //居中
             var w=this.overlay.width();
             var h=this.overlay.height();
@@ -71,6 +72,7 @@ kola("webbricks.clay.ctrl.Overlay",[
                 ct=0;
             this.overlay.style("left",cl);
             this.overlay.style("top",ct);
+           
             if(this.option.full){
                 $("body").style("overflow","hidden");//other
                 $("html").style("overflow","hidden");//ie
@@ -92,7 +94,7 @@ kola("webbricks.clay.ctrl.Overlay",[
                 $("body").removeStyle("padding-right");
             }
             this.expose.hide();
-            this.warp.style("display","none");
+            Anim.slideOut(this.warp);
         }
     });
     Overlay.topLayer=1000;

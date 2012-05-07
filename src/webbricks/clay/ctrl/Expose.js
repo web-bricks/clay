@@ -1,9 +1,13 @@
 /**
     遮罩组件
 */
-kola("webbricks.clay.ctrl.Expose",
-    "kola.html.Element,kola.lang.Class,kola.lang.Object,kola.html.Document",
-function($,C,O,D){
+kola("webbricks.clay.ctrl.Expose",[
+    "kola.html.Element",
+    "kola.lang.Class",
+    "kola.lang.Object",
+    "kola.html.Document",
+    "webbricks.clay.anim.Base"
+],function($,C,O,D,Anim){
     
     D.createInlineCss('.cexpose{position:absolute;left:0;top:0;visibility:visible;}');
     
@@ -30,10 +34,10 @@ function($,C,O,D){
                 anchor:document.body,
                 scrollEle:document,
                 color:"white",
-                opacity:0.8
+                opacity:0.5
             },options);
             _this.options.anchor=$(_this.options.anchor);
-            _this.snow=$('<div style="display:none" id="expose'+Expose.count+'"></div>');
+            _this.snow=$('<div class="hidden" id="expose'+Expose.count+'"></div>');
             _this.snow.addClass("cexpose");
             _this.snow.style("background-color",_this.options.color);
             _this.index=Expose.count++;
@@ -50,14 +54,14 @@ function($,C,O,D){
             
             this._showing=true;
             var p=this.options;
-            this.snow.style("display","block");
-            this.snow.style("visibility","visible");
+            this.snow.style("opacity",p.opacity);
+            Anim.fadeIn(this.snow);
             
             if(!p.fixed)
                 $(p.scrollEle).on("scroll",refresh,{scope:this});
             $(window).on("resize",refresh,{scope:this});
             this.snow.style("z-index",showOpt.z);
-            this.snow.style("opacity",p.opacity);
+            
             refresh.call(this);
         },
         /**
@@ -69,7 +73,7 @@ function($,C,O,D){
             if(!p.fixed)
                 $(p.scrollEle).off("scroll",refresh);
             $(window).off("resize",refresh);
-            this.snow.style("display","none");
+            Anim.fadeOut(this.snow);
         }
     });
     Expose.count=0;

@@ -23,7 +23,10 @@ kola("webbricks.clay.ctrl.Gallery",[
             this.right=CptUtil.getDom(option.right,anchor);
             
             this.innerWidth=this.content.find("li")
-            this.innerWidth=this.innerWidth.length*$(this.innerWidth[0]).outerWidth();
+            if(this.innerWidth.length)
+                this.innerWidth=this.innerWidth.length*$(this.innerWidth[0]).outerWidth();
+            else
+                this.innerWidth=0;
             this.content.width(this.innerWidth);
             
             this.left.click(adjustMargin,{scope:this,data:-1});

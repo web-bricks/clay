@@ -26,7 +26,7 @@ kola("webbricks.clay.ctrl.MutiSelect",[
             this.list=CptUtil.getDom(this.option.list,anchor);
             this.listItems=this.list.children("li");
             this.list.click(function(e){
-                this.removeItem($(e.target).closest("li").find(".title").text());
+                this.removeItem($(e.target).closest("li").find(".js_title").text());
             },{scope:this,delegate:this.option.removeHandle});
             this.candidate=CptUtil.getDom(this.option.candidate,anchor);
             this.candidateList=this.candidate.find("a")

@@ -1,12 +1,32 @@
 kola("webbricks.clay.anim.Base",[
     "kola.html.Element",
     "kola.lang.Class",
-    "kola.lang.Object"
-],function(K,KolaClass,KolaObject){
+    "kola.lang.Object",
+    "kola.bom.Browser"
+],function(K,KolaClass,KolaObject,Browser){
+    var noPx={
+		"zIndex": true,
+		"fontWeight": true,
+		"opacity": true,
+		"zoom": true,
+		"lineHeight": true
+	};
     function doAnim(){
-        this.count+=10;
+        this.count+=16;
         for(var key in this.trans){
-            this.elem.style(key,this.startStyle[key]+(this.trans[key]-this.startStyle[key])*this.count/this.options.dur);
+            var value=this.startStyle[key]+(this.trans[key]-this.startStyle[key])*this.count/this.options.dur;
+            var st = this.element.style;
+            if (key == 'opacity') {
+                if (Browser.IEStyle) {
+                    st.filter = 'Alpha(Opacity=' + value*100 + ')'; 
+                } else {
+                    st.opacity = (value == 1 ? '': '' + value);
+                }
+            } else {
+                if(!noPx[key])
+                    value=value+"px";
+                st[key] = value;
+            }
         }
         if(this.count>=this.options.dur){
             clearInterval(this.inter);
@@ -23,6 +43,7 @@ kola("webbricks.clay.anim.Base",[
                 callBackScope:null
             },options||{});
             this.elem=K(elem);
+            this.element=elem[0];
             this.trans=this.options.trans;
             this.count=0;
             this.startStyle={};
@@ -32,64 +53,64 @@ kola("webbricks.clay.anim.Base",[
             }
         }
     });
-    Anim.fadeIn=function(elem,dur,callBack,callBackScope){
-        elem.removeClass("hidden");
+    Anim.fadeIn=function(elem,option){
+        elem.removeClass(option.hiddenClass||"hidden");
         var currentOpacity=elem.style("opacity");
         elem.style("opacity",0);
         
         new Anim(elem,{
             trans:{opacity:currentOpacity},
-            dur:dur||100,
+            dur:option.dur||100,
             callBack:function(){
-                if(callBack)
-                    callBack.call(callBackScope);
+                if(option.callBack)
+                    option.callBack.call(option.callBackScope);
             }
         });
     }
-    Anim.fadeOut=function(elem,dur,callBack,callBackScope){
+    Anim.fadeOut=function(elem,option){
         new Anim(elem,{
             trans:{opacity:0},
-            dur:dur||100,
+            dur:option.dur||100,
             callBack:function(){
-                elem.addClass("hidden");
+                elem.addClass(option.hiddenClass||"hidden");
                 elem.removeStyle("opacity");
-                if(callBack)
-                    callBack.call(callBackScope);
+                if(option.callBack)
+                    option.callBack.call(option.callBackScope);
             }
         });
     }
-    Anim.slideIn=function(elem,dur,callBack,callBackScope){
-        elem.removeClass("hidden");
-        var leftBack=elem.style("left");
-        var nowLeft=elem.pos().left;
-        elem.style("left",-elem.outerWidth());
+    Anim.slideIn=function(elem,option){
+        elem.removeClass(option.hiddenClass||"hidden");
+        var leftBack=elem.style("top");
+        var nowLeft=elem.pos().top;
+        elem.style("top",-elem.outerHeight());
         new Anim(elem,{
-            trans:{left:nowLeft},
-            dur:dur||100,
+            trans:{top:nowLeft},
+            dur:option.dur||100,
             callBack:function(){
-                elem.style("left",leftBack);
-                if(callBack)
-                    callBack.call(callBackScope);
+                elem.style("top",leftBack);
+                if(option.callBack)
+                    option.callBack.call(option.callBackScope);
             }
         });
     }
-    Anim.slideOut=function(elem,dur,callBack,callBackScope){ 
+    Anim.slideOut=function(elem,option){ 
         var leftBack=elem.style("left");
         var nowLeft=elem.pos().left;
         elem.style("left",nowLeft);
         new Anim(elem,{
             trans:{left:-elem.outerWidth()},
-            dur:dur||100,
+            dur:option.dur||100,
             callBack:function(){
-                elem.addClass("hidden");
+                elem.addClass(option.hiddenClass||"hidden");
                 elem.style("left",leftBack);
-                if(callBack)
-                    callBack.call(callBackScope);
+                if(option.callBack)
+                    option.callBack.call(option.callBackScope);
             }
         });
     }
     Anim.expand=function(elem,dur,callBack,callBackScope){ 
-        elem.removeClass("hidden");
+        elem.removeClass(hiddenClass);
         var h=elem.height();
         elem.style("height",0);
         new Anim(elem,{
@@ -108,7 +129,7 @@ kola("webbricks.clay.anim.Base",[
             dur:dur||100,
             callBack:function(){
                 elem.removeStyle("height");
-                elem.addClass("hidden");
+                elem.addClass(hiddenClass);
                 if(callBack)
                     callBack.call(callBackScope);
             }

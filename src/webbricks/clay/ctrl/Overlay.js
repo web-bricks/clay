@@ -27,6 +27,7 @@ kola("webbricks.clay.ctrl.Overlay",[
             _this.option=KolaObject.extend({
                 anchor:document.body,
                 closeOnClickOut:false,
+                prefix:"",
                 expose:{
                     scrollEle:document,
                     color:"white",
@@ -36,7 +37,8 @@ kola("webbricks.clay.ctrl.Overlay",[
             _this.option.anchor=$(_this.option.anchor);
             _this.index=Overlay.count++;
             _this.option.expose=KolaObject.extend({
-                anchor:_this.option.anchor
+                anchor:_this.option.anchor,
+                prefix:_this.option.prefix
             },this.option.expose);
             
             _this.overlay.addClass("coverlay");
@@ -61,7 +63,7 @@ kola("webbricks.clay.ctrl.Overlay",[
         */
         show:function(){
             this.expose.show({z:Overlay.topLayer++});
-            Anim.slideIn(this.warp);
+            Anim.slideIn(this.warp,{hiddenClass:this.option.prefix+"hidden"});
             //居中
             var w=this.overlay.width();
             var h=this.overlay.height();
@@ -94,13 +96,13 @@ kola("webbricks.clay.ctrl.Overlay",[
                 $("body").removeStyle("padding-right");
             }
             this.expose.hide();
-            Anim.slideOut(this.warp);
+            Anim.slideOut(this.warp,{hiddenClass:this.option.prefix+"hidden"});
         }
     });
     Overlay.topLayer=1000;
     return Overlay;
+    function refresh(){
+        this.warp.style("width",document.documentElement.clientWidth);
+        this.warp.style("height",document.documentElement.clientHeight);
+    }
 })
-function refresh(){
-    this.warp.style("width",document.documentElement.clientWidth);
-    this.warp.style("height",document.documentElement.clientHeight);
-}

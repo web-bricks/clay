@@ -47,7 +47,7 @@ kola("webbricks.clay.ctrl.Input",[
             this.value=entity.val();
             entity.data("input",this);
             if(Browser.IEStyle){
-                entity.attachEvent("onpropertychange",function(){
+                entity[0].attachEvent("onpropertychange",function(){
                     onpropertychange.call(this,window.event);
                 });
             }else{

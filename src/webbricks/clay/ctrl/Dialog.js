@@ -70,7 +70,7 @@ kola("webbricks.clay.ctrl.Dialog", [
             this.entity.children(".clay_title").html(option.title);
             //content
             this.entity.children(".clay_content").html(option.content);
-            this.overlay=new Overlay(this.entity);
+            this.overlay=new Overlay(this.entity,{prefix:option.prefix});
         },
         /**
             @des 显示窗口

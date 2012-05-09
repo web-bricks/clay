@@ -1,10 +1,10 @@
-kola("webbricks.clay.ctrl.Dialog",[
+kola("webbricks.clay.ctrl.Dialog", [
     "kola.lang.Object",
     "kola.lang.Class",
     "kola.html.Element",
     "kola.event.Dispatcher",
     "webbricks.clay.ctrl.Overlay"
-],function(KolaObject, KolaClass, $, Dispatcher, Overlay) {
+], function(KolaObject, KolaClass, $, Dispatcher, Overlay) {
     var shell='<div  class="$mw">'
                 +'<a href="javascript:void(0);" class="clay_hide $close" title="关闭"></a>'
                 +'<div class="clay_title $mwHd"><h4>标题</h4></div>'

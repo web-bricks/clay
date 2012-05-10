@@ -8,6 +8,7 @@
     ul{
 		display:block;
 		padding:0px;
+        margin:0;
 	}
 	.anchor{
         border:1px solid black;
@@ -18,7 +19,7 @@
 	ul.body>li{
 		display:none;
 	}
-    .noDis{
+    .hidden{
         display:none;
     }
     .layer_open{
@@ -48,7 +49,7 @@
     (function() {
 		//  加载kola
 		var script = document.createElement('script');
-		script.src = 'http://localhost/cv/kola/Package.js';
+		script.src = 'http://localhost/kola/Package.js';
 		script.type = 'text/javascript';
         script.charset='UTF8';
 		document.getElementsByTagName('head')[0].appendChild(script);
@@ -69,8 +70,12 @@
 </head>
 <body>
     <div class="unit">
-    <div class="anchor" data-cpt="webbricks.clay.ctrl.Layer" data-cpt-data='{entity:">next",trigger:"mouseenter",showLag:500}'>Anchor1</div>
-    <div class="dropDown noDis">
+    <div class="anchor" data-cpt="webbricks.clay.ctrl.Layer" data-cpt-data='{entity:".dropDownx",trigger:"mouseenter",showLag:500,fly:true}'>Anchor1</div>
+
+    </div>
+    <div class="unit">
+    <div class="anchor" data-cpt="webbricks.clay.ctrl.Layer" data-cpt-data='{entity:"next()",trigger:"mouseover"}'>Anchor1</div>
+    <div class="dropDown hidden">
         <ul>
             <li><p>1</p></li>
             <li><p>4</p></li>
@@ -78,15 +83,10 @@
             <li><p>6</p></li>
         </ul>
     </div>
-    </div>
-    <div class="unit">
-    <div class="anchor" data-cpt="webbricks.clay.ctrl.Layer" data-cpt-data='{entity:">next",trigger:"mouseover"}'>Anchor1</div>
-    <div class="dropDown noDis">
+    <div class="dropDownx hidden" style="position:absolute">
         <ul>
             <li><p>1</p></li>
             <li><p>4</p></li>
-            <li><p>5</p></li>
-            <li><p>6</p></li>
         </ul>
     </div>
     </div>

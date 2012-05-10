@@ -18,6 +18,8 @@ function(K,A){
                 return src;
             if(src==undefined)
                 return K(element);
+            if(src.indexOf("(")==-1)
+                return K(src);
             return Util.tl(src+".",element);
         }
     }

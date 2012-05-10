@@ -99,7 +99,7 @@ kola("webbricks.clay.anim.Base",[
         var nowLeft=elem.pos().left;
         elem.style("left",nowLeft);
         new Anim(elem,{
-            trans:{left:-elem.outerWidth()},
+            trans:{top:document.documentElement.clientHeight},
             dur:option.dur||100,
             callBack:function(){
                 elem.addClass(option.hiddenClass||"hidden");
@@ -110,7 +110,7 @@ kola("webbricks.clay.anim.Base",[
         });
     }
     Anim.expand=function(elem,dur,callBack,callBackScope){ 
-        elem.removeClass(hiddenClass);
+        elem.removeClass("hidden");
         var h=elem.height();
         elem.style("height",0);
         new Anim(elem,{
@@ -129,7 +129,7 @@ kola("webbricks.clay.anim.Base",[
             dur:dur||100,
             callBack:function(){
                 elem.removeStyle("height");
-                elem.addClass(hiddenClass);
+                elem.addClass("hidden");
                 if(callBack)
                     callBack.call(callBackScope);
             }

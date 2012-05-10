@@ -37,7 +37,7 @@ kola("webbricks.clay.ctrl.Expose",[
                 opacity:0.5
             },option);
             _this.option.anchor=$(_this.option.anchor);
-            _this.snow=$('<div class="hidden" id="expose'+Expose.count+'"></div>');
+            _this.snow=$('<div class='+this.option.prefix++'"hidden" id="expose'+Expose.count+'"></div>');
             _this.snow.addClass("cexpose");
             _this.snow.style("background-color",_this.option.color);
             _this.index=Expose.count++;

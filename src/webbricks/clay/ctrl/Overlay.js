@@ -43,7 +43,7 @@ kola("webbricks.clay.ctrl.Overlay",[
             
             _this.overlay.addClass("coverlay");
             
-            _this.warp=$("<div></div>").addClass("warp hidden");
+            _this.warp=$("<div></div>").addClass("warp "+option.prefix+"hidden");
             $(window).on("resize",refresh,{scope:this});
             _this.warp.append(this.overlay);
             refresh.call(this);

@@ -66,6 +66,7 @@ kola("webbricks.clay.ctrl.Input",[
                     this._program=false;
                 }else{
                     this.entity.val(value);
+                    onInput.call(this);
                 }
             }
         },

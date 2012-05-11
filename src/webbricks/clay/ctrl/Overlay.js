@@ -58,6 +58,23 @@ kola("webbricks.clay.ctrl.Overlay",[
                 });
             }
         },
+        resetPos:function(){
+            //居中
+            var w=this.overlay.width();
+            var h=this.overlay.height();
+
+            var cl=Math.floor((document.documentElement.clientWidth-w)/2);
+            var ct=Math.floor((document.documentElement.clientHeight-h)/2);
+            if(ct<0)
+                ct=0;
+            new Anim(this.overlay,{
+                trans:{
+                    left:cl,
+                    top:ct
+                },
+                dur:100
+            });
+        },
         /**
             显示层
         */

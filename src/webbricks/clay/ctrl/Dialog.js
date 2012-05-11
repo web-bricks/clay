@@ -3,8 +3,9 @@ kola("webbricks.clay.ctrl.Dialog", [
     "kola.lang.Class",
     "kola.html.Element",
     "kola.event.Dispatcher",
-    "webbricks.clay.ctrl.Overlay"
-], function(KolaObject, KolaClass, $, Dispatcher, Overlay) {
+    "webbricks.clay.ctrl.Overlay",
+    "webbricks.clay.interact.Draggable"
+], function(KolaObject, KolaClass, $, Dispatcher, Overlay,Draggable) {
     var shell='<div  class="$mw">'
                 +'<a href="javascript:void(0);" class="clay_hide $close" title="关闭"></a>'
                 +'<div class="clay_title $mwHd"><h4>标题</h4></div>'
@@ -64,6 +65,10 @@ kola("webbricks.clay.ctrl.Dialog", [
             }else{
                 this.entity.find(".clay_tool").addClass("hidden");
             }
+            new Draggable(this.entity,{
+                handle:".clay_title"
+              //  confined:"box"
+            });
             //hide X
             this.entity.find(".clay_hide").click(this.hide,{scope:this});
             //title
@@ -125,6 +130,9 @@ kola("webbricks.clay.ctrl.Dialog", [
             }else{
                 this.entity.children(".clay_content").html("").append(content);
             }
+        },
+        resetPos:function(){
+            this.overlay.resetPos();
         }
     });
     return exports;

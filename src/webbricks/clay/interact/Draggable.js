@@ -1,7 +1,7 @@
 /**
  * @author guanyuxin
  * @date 2011.10.26
- * @des Ê¹µÃÄ³ÔªËØ¿ÉÒÔÍÏ¶¯
+ * @des ä½¿å¾—æŸå…ƒç´ å¯ä»¥æ‹–åŠ¨
 */
 kola("webbricks.clay.interact.Draggable",[
     "kola.html.Element",
@@ -38,7 +38,7 @@ kola("webbricks.clay.interact.Draggable",[
             _this.eleW=_this.ele.scrollWidth();
             _this.eleH=_this.ele.scrollHeight();
             Selection.setUnselectable(_this.handles);
-            //°ó¶¨ÊÂ¼ş
+            //ç»‘å®šäº‹ä»¶
             _this.handles.mousedown(mouseDown,{scope:this});
         },
         terminate:function(){
@@ -90,16 +90,16 @@ kola("webbricks.clay.interact.Draggable",[
 		this.fire({type:"afterDrop",elem:this.ele});
 	}
     function mouseDown(e){
-		//Ö»ÔÊĞí×ó¼ü
+		//åªå…è®¸å·¦é”®
 		if(e.button!=0)
 			return;
 		this.fire("beforeDrag");
-		//ÔÚÄÃÆğºóÈ¡ÏûÈ«²¿Ñ¡Ôñ
+		//åœ¨æ‹¿èµ·åå–æ¶ˆå…¨éƒ¨é€‰æ‹©
 
 		//Selection.clearSelection();
 		this.oldEleX=this.ele.pos().left;
 		this.oldEleY=this.ele.pos().top;
-		//³õÊ¼»¯Î»ÖÃ£¬²¢×ª»»Îª¾ø¶Ô¶¨Î»
+		//åˆå§‹åŒ–ä½ç½®ï¼Œå¹¶è½¬æ¢ä¸ºç»å¯¹å®šä½
 		this.ele.style("left",this.oldEleX);
 		this.ele.style("top",this.oldEleY);
 		this.ele.style("position",this.opt.dragStyle);

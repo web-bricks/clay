@@ -31,7 +31,7 @@
     (function() {
 		//  加载kola
 		var script = document.createElement('script');
-		script.src = 'http://localhost/cv/kola/Package.js';
+		script.src = 'http://localhost/kola/Packager.js';
 		script.type = 'text/javascript';
         script.charset='UTF8';
 		document.getElementsByTagName('head')[0].appendChild(script);
@@ -47,9 +47,14 @@
 		};
 		kola._cache = [];
 	})();
-    kola("kola.html.Element,webbricks.clay.interact.Sortable",function($,Sortable){   
+    kola([
+        "kola.html.Element",
+        "webbricks.clay.interact.Sortable"
+    ],function($, Sortable){   
         new Sortable($(".outer"),{
-            item:"div"
+            item: "div",
+            columCount: 5,
+            height:100
         });
     });
 </script>

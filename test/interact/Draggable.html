@@ -1,19 +1,56 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 <head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <style>
+    body{
+        background: #aad6ff
+    }
+    .unit{
+        border:2px solid white;
+        background: #cdf;
+        margin:10px;
+        overflow:auto;
+        padding:10px;
+        -webkit-box-shadow:2px 2px 7px black;
+    }
+    .info{
+        float: right;
+        border:1px dashed orange;
+        background: wheat;
+    }
+    #u1{
+        height: 300px;
+    }
+    #u2{
+        height: 300px;
+        overflow: scroll;
+    }
+    h3{
+        border:1px solid black;
+        background: orange;
+    }
     .box{
-        width:300px;
-        height:300px;
+        width:200px;
+        height:200px;
         border:1px solid black;
         background-color:#aaf;
+        display: inline-block;
+    }
+    .dragging{
+        background: #aaccff;
+    }
+    .sky{
+        position: fixed;
+        left: 0;
+        top: 0;
     }
 </style>
 <script>
     (function() {
 		//  加载kola
 		var script = document.createElement('script');
-		script.src = 'http://localhost/cv/kola/Package.js';
+		script.src = '/kola/Packager.js';
 		script.type = 'text/javascript';
         script.charset='UTF8';
 		document.getElementsByTagName('head')[0].appendChild(script);
@@ -29,38 +66,47 @@
 		};
 		kola._cache = [];
 	})();
-    kola("kola.html.Element,webbricks.clay.interact.Draggable",function($,Draggable){   
-        new Draggable($(".box:eq(0)"),{});
+    kola(["kola.html.Element","webbricks.clay.interact.Draggable"],function($,Draggable){   
+        new Draggable($("#b0"),{
+            fixed: true,
+            confinedTarget: "client"
+        });
+        new Draggable($("#b1"),{});
+        new Draggable($("#b2"),{
+            handle: "h3",
+            scrollSpeed: 1
+        });
+        new Draggable($("#b3"),{
+            confinedTarget: $("#u2")[0]
+        });
+        new Draggable($("#b4"),{
+            confinedTarget: "client"
+        });
     });
 </script>
 </head>
 <body>
-<div class="box">
-    213213
+<div class="sky">
+    <div class="box" id="b0">
+        on a fixed layer
+    </div>
+</div>
+<div class="unit" id="u1">
+    <div class="box" id="b1">
+        I'm free
+    </div>
+    <div class="box"  id="b2">
+
+        <h3>drag the handle</h3>
+    </div>
 </div>
 
-<div class="box">
-    213213
+<div class="unit" id="u2" style="">
+    <div class="box" id="b3" style="position:absolute;left:300px;top:200px">
+        限定在unit内部
+    </div>
+    <div class="box" id="b4" style="position:absolute;left:300px">
+        限定在client内部
+    </div>
 </div>
-
-<div class="box">
-    213213
-</div>
-
-<div class="box">
-    213213
-</div>
-
-<div class="box">
-    213213
-</div>
-
-<div class="box">
-    213213
-</div>
-
-<div class="box">
-    213213
-</div>
-
 </body>

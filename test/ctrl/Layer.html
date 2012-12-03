@@ -1,55 +1,110 @@
 <html>
 <head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <style>
-    div.dropDown{
-        position:absolute;
-        margin-top:30px;
-	}
-    ul{
-		display:block;
-		padding:0px;
-        margin:0;
-	}
-	.anchor{
-        border:1px solid black;
-        background-color:gray;
-		display:inlin-block;
-		float:left;
-	}
-	ul.body>li{
-		display:none;
-	}
-    .hidden{
-        display:none;
+    body{
+        background: #aad6ff
     }
-    .layer_open{
-        background-color:gray;
-    }
-    li{
-		list-style-type:none;
-	}
-	li p{
-		margin:0;
-		background-color:#eeeeee;
-		border:1px solid darkGray;
-		padding:4px;
-		text-align:center;
-		width:100px;
-		cursor:pointer;
-		display:inlin-block;
-	}
     .unit{
-        border:1px solid black;
-        margin:20px;
+        border:2px solid white;
+        background: #ace;
+        margin:10px;
         overflow:auto;
-        padding:2px;
+        padding:10px;
+        -webkit-box-shadow:2px 2px 7px black;
+    }
+    .info{
+        float: right;
+        border:1px dashed orange;
+        background: wheat;
+    }
+    #u1{
+        height: 500px;
+    }
+    #u2{
+        height: 220px;
+    }
+    .anchor{
+        display: inline-block;
+        border:2px solid white;
+        background: #fda;
+        width: 80px;
+        border-top-left-radius:6px;
+        border-top-right-radius:6px;
+        text-align: center;
+        padding: 3px;
+        position: relative;
+        z-index: 2;
+    }
+    .dropA{
+        width: 0;
+        height: 0;
+        overflow: visible;
+        position: absolute;
+        display: none;
+        -webkit-filter: drop-shadow(1px 1px 3px rgba(0, 0, 0, 0.2));
+    }
+    .dropD{
+        text-align: center;
+        padding: 5px;
+        position: absolute;
+        z-index: 900;
+        background: #ffc;
+        -webkit-box-shadow:3px 3px 5px 5px #dda inset;
+        overflow: hidden;
+    }
+    .arrow{
+        color: #dda;
+        position: absolute;
+        left: -7px;
+        top: -8px;
+    }
+    .dropA.top{
+        display: block;
+        top: -8px;
+        left: 50%;
+    }
+    .dropA.top .dropD{
+        bottom: 0px;
+        left: -14px;        
+    }
+    .dropA.bottom{
+        display: block;
+        bottom: -8px;
+        left: 50%;
+    }
+    .dropA.bottom .dropD{
+        top: 0px;
+        left: -14px;
+    }
+    .dropA.left{
+        display: block;
+        left: -8px;
+        top: 50%;
+    }
+    .dropA.left .dropD{
+        right: 0px;
+        top: -14px;
+    }
+    .dropA.right{
+        display: block;
+        right: -8px;
+        top: 50%;
+    }
+    .dropA.right .dropD{
+        left: 0px;
+        top: -14px;
+    }
+    .a1,.a2,.a3{
+        display: inline-block;
+        margin-right: 200px
     }
 </style>
 <script>
     (function() {
 		//  加载kola
 		var script = document.createElement('script');
-		script.src = 'http://localhost/kola/Package.js';
+		script.src = '/kola/Packager.js';
 		script.type = 'text/javascript';
         script.charset='UTF8';
 		document.getElementsByTagName('head')[0].appendChild(script);
@@ -65,29 +120,140 @@
 		};
 		kola._cache = [];
 	})();
-    kola("webbricks.clay.cpt.CptEngine",function(CptEngine){CptEngine.listen()});
+    kola([
+        'kola.html.Element',
+        'webbricks.clay.ctrl.Popup',
+        'kola.event.Dispatcher'
+    ], function($, Popup, Dispatcher){
+        var u1 = $('#u1');
+        var u2 = $('#u2');
+        var dispatcher = new Dispatcher();
+        var p1 = new Popup(u1.find('.anchor'),{
+            popup: u1.find('.dropA'),
+            trigger: 'mouseover',
+            showClass: 'top bottom left right',
+            showLag: 700,
+            hideLag: 700,
+            dispatcher: dispatcher
+        });
+        u1.find("button").click(function(e){
+            u1.find(".dropA").attr("class", "dropA " + e.target.value);
+            //u1.find(".dropD").style("height", "100px");
+        });
+        var a1 = $("div.a1")
+        var a2 = $("div.a2")
+        var a3 = $("div.a3")
+        new Popup(a1.find('.anchor'),{
+            popup: a1.find('.dropD'),
+            trigger: 'mouseover',
+            dispatcher: dispatcher
+        });
+        new Popup(a2.find('.anchor'),{
+            popup: a2.find('.dropD'),
+            trigger: 'mouseenter',
+            dispatcher: dispatcher
+        });
+        new Popup(a3.find('.anchor'),{
+            popup: a3.find('.dropD'),
+            trigger: 'click',
+            hideOnClickOut: true,
+            dispatcher: dispatcher
+        });
+        dispatcher.on("show", function(e){
+            var target = e.ctarget;
+            var d = target.popup.find(".dropD");
+            var count = 0;
+            var countMax = d[0].offsetHeight;
+            function r(){
+                count += 15;
+                if(count > countMax){
+                    clearInterval(inte);
+                }
+                d.style("height", count);
+            }
+            var inte = setInterval(r, 10);
+            r();
+        });
+        dispatcher.on("hide", function(e){
+            var target = e.ctarget;
+            target.popup.find(".dropD").style("height", '');
+        });
+    });
 </script>
 </head>
 <body>
-    <div class="unit">
-    <div class="anchor" data-cpt="webbricks.clay.ctrl.Layer" data-cpt-data='{entity:".dropDownx",trigger:"mouseenter",showLag:500,fly:true}'>Anchor1</div>
+    <div class="unit" id="u1">
+        <div class="info">
+            Popup:以anchor为锚点，popup层会尝试向上，下，左，右展开<pre>
+new Popup(u1.find('.anchor'),{
+    popup: u1.find('.dropA'),
+    trigger: 'mouseover',
+    showClass: 'top bottom left right',
+    showLag: 700,
+    hideLag: 700
+});
+</pre>
+        </div>
+        <div class="anchor" style="left:300px;top:250px">
+            <div class="dropA">
+                <b class="arrow">◆</b>
+                <div class="dropD" style="width:300px">
+                    <p>《登金陵凤凰台》</p>
+                    <p>李白</p><p>
+                       凤凰台上凤凰游，凤去台空江自流。<br/>
+                       吴宫花草埋幽径，晋代衣冠成古丘。<br/>
+                       三山半落青天外，二水中分白鹭洲。<br/>
+                       总为浮云能蔽日，长安不见使人愁。<br/>
+                   </p>
+                </div>
+            </div>
+            Anchor
+        </div>
+        <button value="left">left</button>
+        <button value="right">right</button>
+        <button value="top">top</button>
+        <button value="bottom">bottom</button>
+    </div>
+    <div class="unit" id="u2">
+        <div class="a1">
+            <div class="anchor">
+                滑过anchor
+            </div>
+            <div class="dropD" style="width:300px;display:none">
+                <p>《相思》</p>
+                <p>王维</p><p>
+                   红豆生南国，春来发几枝。<br/>
+                   愿君多采撷，此物最相思。<br/>
+               </p>
+            </div>
+        </div>
 
-    </div>
-    <div class="unit">
-    <div class="anchor" data-cpt="webbricks.clay.ctrl.Layer" data-cpt-data='{entity:"next()",trigger:"mouseover"}'>Anchor1</div>
-    <div class="dropDown hidden">
-        <ul>
-            <li><p>1</p></li>
-            <li><p>4</p></li>
-            <li><p>5</p></li>
-            <li><p>6</p></li>
-        </ul>
-    </div>
-    <div class="dropDownx hidden" style="position:absolute">
-        <ul>
-            <li><p>1</p></li>
-            <li><p>4</p></li>
-        </ul>
-    </div>
+        <div class="a2">
+            <div class="anchor">
+                滑过
+            </div>
+            <div class="dropD" style="width:300px;display:none">
+                <p>《落花》</p>
+                <p>李商隐</p><p>
+                    高阁客竟去，小园花乱飞。<br/>
+                    参差连曲陌，迢递送斜晖。<br/>
+                    肠断未忍扫，眼穿仍欲归。<br/>
+                    芳心向春尽，所得是沾衣。<br/>
+               </p>
+            </div>
+        </div>
+
+        <div class="a3">
+            <div class="anchor">
+                点击
+            </div>
+            <div class="dropD" style="width:300px;display:none">
+                <p>《江南逢李龟年》</p>
+                <p>杜甫</p><p>
+                   岐王宅里寻常见，崔九堂前几度闻。<br/>
+                   正是江南好风景，落花时节又逢君。<br/>
+               </p>
+            </div>
+        </div>
     </div>
 </body>

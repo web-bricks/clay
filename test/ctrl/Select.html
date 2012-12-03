@@ -1,68 +1,164 @@
 <!DOCTYPE html>
 <html>
 <head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <style>
-    div.dropDown{
-        position:absolute;
-	}
-    ul{
-		display:block;
-		padding:0px;
-	}
-	.anchor{
-        border:1px solid black;
-        background-color:gray;
-		display:inlin-block;
-		float:left;
-	}
-	ul.body>li{
-		display:none;
-	}
-    .noDis{
-        display:none;
+    body{
+        background: #aad6ff
     }
-    .layer_open{
-        background-color:gray;
-    }
-    li{
-        display:block;
-		list-style-type:none;
-	}
-	li span{
-		margin:0;
-		background-color:#eeeeee;
-		border:1px solid darkGray;
-		padding:4px;
-		text-align:center;
-		width:100px;
-		cursor:pointer;
-        display:inline-block;
-	}
     .unit{
-        border:1px solid black;
-        margin:20px;
+        border:2px solid white;
+        background: #cdf;
+        margin:10px;
         overflow:auto;
-        padding:2px;
+        padding:10px;
+        -webkit-box-shadow:2px 2px 7px black;
     }
-    .hover span{
-        
-        background-color:#acf;
+    .info{
+        float: right;
+        border:1px dashed orange;
+        background: wheat;
     }
-    .bar{
-        display:inline-block;
-        width:200px;
-        height:20px;
+    #u1{
+        height: 300px;
+    }
+    #u2{
+        height: 300px;
+    }
+    #u3{
+        height: 300px;
+        position: relative;
     }
     .head{
         border:1px solid black;
+        width: 200px;
     }
+    div.dropdown{
+        position:absolute;
+        max-height: 100px;
+        width: 200px;
+        overflow-y: scroll;
+        border:1px solid white;
+	}
+    .dropdown a{
+        display: block;
+        background: #fff;
+        padding: 2px;
+    }
+    .dropdown a.on{
+        background: #7bf;
+    }
+    .dropdown a:hover{
+        background: #59f;
+    }
+    .ind{
+        font-weight: normal;
+        float: right;
+        color: gray;
+    }
+    .head2{
+        font-size: 10px;
+        display: inline-block;
+        border:2px solid white;
+        background: #ddd;
+        min-width: 80px;
+        border-top-left-radius:6px;
+        border-top-right-radius:6px;
+        text-align: center;
+        padding: 3px;
+        position: relative;
+        z-index: 2;
+    }
+    .head2.opening{        
+        border-bottom: 2px solid #ddd;
+    }
+    .dropdown2{
+        font-size: 10px;
+        margin-top: -2px;
+        position:absolute;
+        border:2px solid white;
+        background: #ddd;
+        width: 500px;
+        padding: 3px;
+    }
+    .dropdown2 a{
+        text-align: center;
+        display: inline-block;
+        min-width: 50px;
+        background: #eee;
+        padding: 2px; 
+        margin: 2px;
+    }
+    .dropdown2 a.on{
+        background: #fff;
+    }
+    .select{
+        position: absolute;
+        left: 50px;
+        top: 50px;
+    }
+    .head3{
+        border:3px solid #aaf;
+        background: #cfc;
+        width: 140px;
+        height: 140px;
+        padding: 10px;
+        border-radius: 10px;
+        position: relative;
+        z-index: 2;
+        font-size: 40px;
+    }
+    .head3:hover{
+        background: #dda;
+    }
+    .dropdown3 a{
+        top: 0;
+        left: 0;
+        width: 40px;
+        height: 40px;
+        border:3px solid #aaf;
+        background: #6cf;
+        position: absolute;
+        padding: 10px;
+        border-radius: 10px;
+
+        -webkit-transition: left .4s , top .4s
+    }
+    div.opening #b1{
+        left: 180px;
+        top: 0px
+    }
+    div.opening #b2{
+        left: 180px;
+        top: 90px
+    }
+    div.opening #b3{
+        left: 180px;
+        top: 180px
+    }
+    div.opening #b4{
+        left: 00px;
+        top: 180px
+    }
+    div.opening #b5{
+        left: 90px;
+        top: 180px
+    }
+
+    
+    .dropdown3 a.on{
+        background: #7bf;
+    }
+    .dropdown3 a:hover{
+        background: #59f;
+    }
+    
 </style>
-<link rel="stylesheet" href="//s1.cv.itc.cn/c/pin/g.css"/>
 <script>
     (function() {
 		//  加载kola
 		var script = document.createElement('script');
-		script.src = 'http://localhost/kola/Package.js';
+		script.src = '/kola/Packager.js';
 		script.type = 'text/javascript';
         script.charset='UTF8';
 		document.getElementsByTagName('head')[0].appendChild(script);
@@ -78,30 +174,141 @@
 		};
 		kola._cache = [];
 	})();
-    kola("webbricks.clay.cpt.CptEngine",function(CptEngine){CptEngine.listen()});
+    kola(['kola.html.Element','webbricks.clay.ctrl.Select'],function($, Select){
+        var unit1 = $("#u1");
+        new Select(unit1.find(".head"),{
+            bar: unit1.find(".bar"),
+            popup: unit1.find(".dropdown"),
+            item: 'a'
+        });
+
+        var unit2 = $("#u2");
+        var provSelect = new Select(unit2.find(".head2.province"),{
+            bar: unit2.find(".bar.province"),
+            popup: unit2.find(".dropdown2.province"),
+            anchorActiveClass: "opening",
+            item: 'a'
+        });
+        var citySelect = new Select(unit2.find(".head2.city"),{
+            bar: unit2.find(".bar.city"),
+            popup: unit2.find(".dropdown2.city"),
+            anchorActiveClass: "opening",
+            item: 'a'
+        });
+
+        var myscript = document.createElement('script');
+        myscript.setAttribute('charset','GBK');
+        myscript.setAttribute('src',"http://s1.cr.itc.cn/twitter/iploc/cr.iploc.min.js");
+        document.body.appendChild(myscript);
+
+        window.cr_iploc_city_info = function(i){
+            myscript = null;
+            loctionData = i;
+            window.cr_iploc_city_info = null;
+            var provList=$(".dropdown2.province");
+            var cityList=$(".dropdown2.city");
+            for(var i=0;i<loctionData.length;i++){
+                provList.append('<a class="clay_content clay_value" data-index="' + i + '">' +loctionData[i].n+ '</a>');
+            }
+            provSelect.on("select", function(){
+                var id=provSelect.listCtrl.select().attr("data-index");
+                cityList.html("");
+                for(var i=0;i<loctionData[id].c.length;i++){
+                    cityList.append('<a class="clay_content clay_value">' + loctionData[id].c[i].n+'</a>');
+                }
+                citySelect.selectByIndex(0);
+            });
+        }
+
+        var unit3 = $("#u3");
+        new Select(unit3.find(".head"),{
+            bar: unit3.find(".bar"),
+            popup: unit3.find(".dropdown3"),
+            item: 'a',
+            anchorActiveClass: 'hover',
+            showClass: 'opening'
+        });
+    });
 </script>
 </head>
 <body>
-    <div class="unit">
-        <input class="head bar" data-cpt="webbricks.clay.ctrl.Select" data-cpt-data='{name:"type",entity:"next()",bar:"find(.bar)"}' value='请选择'/>
-        <div class="dropDown hidden">
-            <ul>
-                <li><span class="value">jsp</span></li>
-                <li><span class="value">asp</span></li>
-                <li><span class="value">php</span></li>
-                <li><span class="value">ruby</span></li>
-            </ul>
+    <div class="unit" id="u1">
+        <div class="info">
+            Select :传统下拉菜单增强<pre>
+new Select(unit1.find(".head"),{
+    bar: unit1.find(".bar"),
+    popup: unit1.find(".dropdown"),
+    item: 'a'
+});
+        </pre>
+        </div>
+        <input class="head bar" value='请选择'/>
+        <div class="dropdown" style="display:none">
+            <a><b class="clay_value clay_content">jsp</b><b class="ind">13200+</b></a>
+            <a><b class="clay_value clay_content">asp</b><b class="ind">13400+</b></a>
+            <a><b class="clay_value clay_content">php</b><b class="ind">1266+</b></a>
+            <a><b class="clay_value clay_content">ruby</b><b class="ind">15600+</b></a>
+            <a><b class="clay_value clay_content">python</b><b class="ind">18700+</b></a>
+            <a><b class="clay_value clay_content">node</b><b class="ind">156700+</b></a>
+            <a><b class="clay_value clay_content">cgi</b><b class="ind">5176600+</b></a>
+            <a><b class="clay_value clay_content">fast-cgi</b><b class="ind">7615600+</b></a>
         </div>
     </div>
-    <div class="unit">
-        <div class="head"  data-cpt="webbricks.clay.ctrl.Select" data-cpt-data='{entity:"next()",bar:"find(.bar)"}'><div class="bar">请选择</div><input type="hidden" name="tag"/></div>
-        <div class="dropDown hidden">
-            <ul>
-                <li><span class="content">jsp</span><span class="value hidden">1</span></li>
-                <li><span class="content">asp</span><span class="value hidden">4</span></li>
-                <li><span class="content">php</span><span class="value hidden">5</span></li>
-                <li><span class="content">ruby</span><span class="value hidden">6</span></li>
-            </ul>
+    <div class="unit" id="u2">
+        <div class="info">
+            Select 2:地区选择器<pre>
+var provSelect = new Select(unit2.find(".head2.province"),{
+    bar: unit2.find(".bar.province"),
+    popup: unit2.find(".dropdown2.province"),
+    anchorActiveClass: "opening",
+    item: 'a'
+});
+var citySelect = new Select(unit2.find(".head2.city"),{
+    bar: unit2.find(".bar.city"),
+    popup: unit2.find(".dropdown2.city"),
+    anchorActiveClass: "opening",
+    item: 'a'
+});
+</pre>
+        </div>
+        <div class="head2 province">
+            <div class="bar province">请选择</div>
+            <input type="hidden" name="tag"/>
+        </div>
+        <div class="dropdown2 province" style="display:none;"></div>
+
+        <div class="head2 city">
+            <div class="bar city">请选择</div>
+            <input type="hidden" name="tag"/>
+        </div>
+        <div class="dropdown2 city" style="display:none;"></div>
+    </div>
+
+    <div class="unit" id="u3">
+        <div class="info">
+            Select 3:另类风格<pre>
+new Select(unit3.find(".head"),{
+    bar: unit3.find(".bar"),
+    popup: unit3.find(".dropdown3"),
+    item: 'a',
+    anchorActiveClass: 'hover',
+    showClass: 'opening'
+});
+</pre>
+        </div>
+        <div class="select">
+            
+            <div class="head3 head">
+                <div class="bar">请选择</div>
+                <input type="hidden" name="tag"/>
+            </div>
+            <div class="dropdown3">
+                <a id="b1" class="b1"><b class="clay_value clay_content">文学</b></a>
+                <a id="b2" class="b2"><b class="clay_value clay_content">八卦</b></a>
+                <a id="b3" class="b3"><b class="clay_value clay_content">汽车</b></a>
+                <a id="b4" class="b4"><b class="clay_value clay_content">搞笑</b></a>
+                <a id="b5" class="b5"><b class="clay_value clay_content">旅游</b></a>
+            </div>
         </div>
     </div>
     

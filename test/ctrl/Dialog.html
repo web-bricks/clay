@@ -1,11 +1,47 @@
 <html>
 <head>
-<link rel="stylesheet" href="//s1.cv.itc.cn/c/pin/g.css" >
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style>
+    body{
+        background: #aad6ff
+    }
+    .unit{
+        border:2px solid white;
+        background: #ace;
+        margin:10px;
+        overflow:auto;
+        padding:10px;
+        -webkit-box-shadow:2px 2px 7px black;
+    }
+    .info{
+        float: right;
+        border:1px dashed orange;
+        background: wheat;
+    }
+    #u1{
+        height: 200px;
+    }
+    #u2{
+        height: 200px;
+    }
+    #u3{
+        height: 200px;
+    }
+    .dialog{
+    	width: 300px;
+    	height: 200px;
+    	background: #ccc;
+    	border: 1px solid #eee;
+    	position: absolute;
+    }
+	.clay-overlay{position:fixed;left:0;top:0;}
+	.clay-expose{position:absolute;left:0;top:0;}
+</style>
 <script>
     (function() {
 		//  加载kola
 		var script = document.createElement('script');
-		script.src = 'http://localhost/cv/kola/Package.js';
+		script.src = '/kola/Packager.js';
 		script.type = 'text/javascript';
         script.charset='UTF8';
 		document.getElementsByTagName('head')[0].appendChild(script);
@@ -21,12 +57,21 @@
 		};
 		kola._cache = [];
 	})();
-    kola("kola.html.Element,webbricks.clay.ctrl.Dialog",function(K,e){   
-        var overlay=new e("confirm",{content:"哈<br/>哈<br/>哈<br/>哈<br/>哈<br/>哈<br/>哈<br/>哈<br/>哈<br/>哈<br/>哈<br/>哈<br/>哈<br/>哈<br/>哈<br/>哈<br/>"});
-        overlay.show();
+    kola(["kola.html.Element","webbricks.clay.ctrl.Overlay"], function($, Overlay){   
+        var overlayDom = '<div class="dialog"></div>';
+        var overlay = new Overlay(overlayDom);
+        
+        var b1 = $("#b1");
+        b1.click(function(){
+        	overlay.show();
+        });
     });
 </script>
 </head>
 <body>
-
+<div class="unit" id="u1">
+	<button class="btn" id="b1">open small overlay</button>
+</div>
+<div class="unit" id="u2"></div>
+<div class="unit" id="u3"></div>
 </body>

@@ -3,7 +3,7 @@ kola("webbricks.clay.anim.Base",[
     "kola.lang.Class",
     "kola.lang.Object",
     "kola.bom.Browser"
-],function(K,KolaClass,KolaObject,Browser){
+],function($, KolaClass, KolaObject, Browser){
     var noPx={
 		"zIndex": true,
 		"fontWeight": true,
@@ -30,19 +30,19 @@ kola("webbricks.clay.anim.Base",[
         }
         if(this.count>=this.options.dur){
             clearInterval(this.inter);
-            this.options.callBack(this.options.callBackScope);
+            this.options.callback(this.options.callbackScope);
             this.options=null;
         }
     }
-    var Anim=KolaClass.create({
+    var Anim=KolaClass({
         _init:function(elem,options){
             var _this=this;
             this.options=KolaObject.extend({
                 dur:100,
-                callBack:function(){},
-                callBackScope:null
+                callback:function(){},
+                callbackScope:null
             },options||{});
-            this.elem=K(elem);
+            this.elem=$(elem);
             this.element=elem[0];
             this.trans=this.options.trans;
             this.count=0;
@@ -61,9 +61,9 @@ kola("webbricks.clay.anim.Base",[
         new Anim(elem,{
             trans:{opacity:currentOpacity},
             dur:option.dur||100,
-            callBack:function(){
-                if(option.callBack)
-                    option.callBack.call(option.callBackScope);
+            callback:function(){
+                if(option.callback)
+                    option.callback.call(option.callbackScope);
             }
         });
     }
@@ -71,11 +71,11 @@ kola("webbricks.clay.anim.Base",[
         new Anim(elem,{
             trans:{opacity:0},
             dur:option.dur||100,
-            callBack:function(){
+            callback:function(){
                 elem.addClass(option.hiddenClass||"hidden");
                 elem.removeStyle("opacity");
-                if(option.callBack)
-                    option.callBack.call(option.callBackScope);
+                if(option.callback)
+                    option.callback.call(option.callbackScope);
             }
         });
     }
@@ -87,51 +87,61 @@ kola("webbricks.clay.anim.Base",[
         new Anim(elem,{
             trans:{top:nowLeft},
             dur:option.dur||100,
-            callBack:function(){
+            callback:function(){
                 elem.style("top",leftBack);
-                if(option.callBack)
-                    option.callBack.call(option.callBackScope);
+                if(option.callback)
+                    option.callback.call(option.callbackScope);
             }
         });
     }
-    Anim.slideOut=function(elem,option){ 
-        var leftBack=elem.style("left");
-        var nowLeft=elem.pos().left;
-        elem.style("left",nowLeft);
+    Anim.slideOut=function(elem,option){
+        var styleStr=elem.attr("style");
+        var pos=elem.pos();
+        elem.style("left",pos.left);
+        elem.style("top",pos.top);
+        if(option.direction=="left"){
+            var trans={top:-elem.width()}
+        }else if(option.direction=="right"){
+            var trans={top:document.documentElement.clientleft}
+        }else if(option.direction=="top"){
+            var trans={top:-elem.height()}
+        }else{
+            var trans={top:document.documentElement.clientHeight}
+        }    
         new Anim(elem,{
             trans:{top:document.documentElement.clientHeight},
             dur:option.dur||100,
-            callBack:function(){
+            callback:function(){
                 elem.addClass(option.hiddenClass||"hidden");
-                elem.style("left",leftBack);
-                if(option.callBack)
-                    option.callBack.call(option.callBackScope);
+                elem.attr("style",styleStr);
+                if(option.callback)
+                    option.callback.call(option.callbackScope);
             }
         });
     }
-    Anim.expand=function(elem,dur,callBack,callBackScope){ 
+    Anim.expand=function(elem,dur,callback,callbackScope){ 
         elem.removeClass("hidden");
         var h=elem.height();
         elem.style("height",0);
         new Anim(elem,{
             trans:{height:h},
             dur:dur||100,
-            callBack:function(){
+            callback:function(){
                 elem.removeStyle("height");
-                if(callBack)
-                    callBack.call(callBackScope);
+                if(callback)
+                    callback.call(callbackScope);
             }
         });
     }
-    Anim.collapse=function(elem,dur,callBack,callBackScope){
+    Anim.collapse=function(elem,dur,callback,callbackScope){
         new Anim(elem,{
             trans:{height:0},
             dur:dur||100,
-            callBack:function(){
+            callback:function(){
                 elem.removeStyle("height");
                 elem.addClass("hidden");
-                if(callBack)
-                    callBack.call(callBackScope);
+                if(callback)
+                    callback.call(callbackScope);
             }
         });
     }

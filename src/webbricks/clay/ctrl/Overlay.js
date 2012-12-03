@@ -6,68 +6,65 @@ kola("webbricks.clay.ctrl.Overlay",[
     "kola.html.Element",
     "kola.lang.Class",
     "kola.lang.Object",
-    "kola.html.Document",
-    "kola.bom.Browser",
-    "webbricks.clay.ctrl.Expose",
-    "webbricks.clay.anim.Base"
-],function($,KolaClass,KolaObject,D,Browser,Expose,Anim){
-
-    D.createInlineCss('.coverlay{position:absolute;}.warp{position:fixed;left:0;top:0;}');
-
-    var Overlay=KolaClass.create({
+    "webbricks.clay.ctrl.Expose"
+],function($, KolaClass, KolaObject, Expose){
+    //.clay-overlay{position:fixed;left:0;top:0;}
+    function refresh(){
+        this.overlay.style("width",document.documentElement.clientWidth);
+        this.overlay.style("height",document.documentElement.clientHeight);
+    }
+    var exports = KolaClass.create({
         /**
-            overlay:被作为层显示的dom
+            content:被作为层显示的dom
             option
                 .anchor:遮罩被放在哪里
                 .expose：expose的option
         */
-        _init:function(overlay,option){            
-            var _this=this;
-            _this.overlay=$(overlay);
-            _this.option=KolaObject.extend({
-                anchor:document.body,
-                closeOnClickOut:false,
-                prefix:"",
-                expose:{
+        _init:function(content, option){            
+            var _this = this;
+            _this.content = $(content);
+            _this.option = KolaObject.extend({
+                anchor: document.body,
+                closeOnClickOut: false,
+                expose: {
                     scrollEle:document,
                     color:"white",
                     opacity:0.8
                 }
-            },option||{});
-            _this.option.anchor=$(_this.option.anchor);
-            _this.index=Overlay.count++;
-            _this.option.expose=KolaObject.extend({
-                anchor:_this.option.anchor,
-                prefix:_this.option.prefix
-            },this.option.expose);
+            }, option);
+            _this.option.anchor = $(_this.option.anchor);
+            _this.index = exports.count++;
+            _this.option.expose = KolaObject.extend({
+                anchor:_this.option.anchor
+            }, this.option.expose);
             
-            _this.overlay.addClass("coverlay");
+            _this.content.style("position", "absolute");
             
-            _this.warp=$("<div></div>").addClass("warp "+option.prefix+"hidden");
-            $(window).on("resize",refresh,{scope:this});
-            _this.warp.append(this.overlay);
+            _this.overlay = $('<div class="clay-overlay" style="display:none"></div>');
+            _this.overlay.append(this.content);
+
             refresh.call(this);
             
-            _this.option.anchor.append(_this.warp);
+            _this.option.anchor.append(_this.overlay);
             
-            _this.expose=new Expose(_this.warp,_this.option.expose);
+            _this.expose = new Expose(_this.overlay, _this.option.expose);
             if(_this.option.closeOnClickOut){
-                _this.warp.click(function(e){
-                    if(e.target==_this.warp[0])
+                _this.overlay.click(function(e){
+                    if(e.target == _this.overlay[0])
                     _this.hide();
                 });
             }
         },
         resetPos:function(){
             //居中
-            var w=this.overlay.width();
-            var h=this.overlay.height();
+            var w=this.content.width();
+            var h=this.content.height();
 
             var cl=Math.floor((document.documentElement.clientWidth-w)/2);
             var ct=Math.floor((document.documentElement.clientHeight-h)/2);
             if(ct<0)
                 ct=0;
-            new Anim(this.overlay,{
+            new Anim(this.content,{
                 trans:{
                     left:cl,
                     top:ct
@@ -79,28 +76,31 @@ kola("webbricks.clay.ctrl.Overlay",[
             显示层
         */
         show:function(){
-            this.expose.show({z:Overlay.topLayer++});
-            this.warp.removeClass(this.option.prefix+"hidden").style("top",0);
+            this.expose.show({z:exports.topLayer++});
+            this.overlay.show(true).style("top", 0);
             //居中
-            var w=this.overlay.width();
-            var h=this.overlay.height();
+            var w = this.content.width();
+            var h = this.content.height();
 
-            var cl=Math.floor((document.documentElement.clientWidth-w)/2);
-            var ct=Math.floor((document.documentElement.clientHeight-h)/2);
-            if(ct<0)
-                ct=0;
-            this.overlay.style("left",cl);
-            this.overlay.style("top",ct);
-            Anim.slideIn(this.warp,{hiddenClass:this.option.prefix+"hidden"});
+            var cl = Math.floor((this.expose.mask[0].clientWidth - w) / 2);
+            var ct = Math.floor((this.expose.mask[0].clientHeight - h) / 2);
+            if(ct < 0)
+                ct = 0;
+            this.content.style("left", cl);
+            this.content.style("top", ct);
+            //Anim.slideIn(this.overlay);
+            this.overlay.show();
             if(this.option.full){
-                $("body").style("overflow","hidden");//other
-                $("html").style("overflow","hidden");//ie
-                $("body").style("padding-right","16px");
+                $("body").style("overflow", "hidden");//other
+                $("html").style("overflow", "hidden");//ie
+                $("body").style("padding-right", "16");
                 if(Browser.IE6){
-                    this.warp.style("position","absolute").style("top",D.scroll().top);
+                    this.overlay.style("position", "absolute").style("top", document.body.scrollTop);
                 }
-                this.warp.style("overflow-y","scroll");
+                this.overlay.style("overflow-y", "scroll");
             }
+            $(window).on("resize", refresh, {context: this});
+
             refresh.call(this);
         },
         /**
@@ -108,18 +108,16 @@ kola("webbricks.clay.ctrl.Overlay",[
         */
         hide:function(){
             if(this.option.full){
-                $("body").removeStyle("overflow","hidden");
-                $("html").removeStyle("overflow","hidden");
-                $("body").removeStyle("padding-right");
+                $("body").style("overflow","");
+                $("html").style("overflow","");
+                $("body").style("padding-right","");
             }
             this.expose.hide();
-            Anim.slideOut(this.warp,{hiddenClass:this.option.prefix+"hidden"});
+            $(window).off("resize", refresh, {context: this});
+            //Anim.slideOut(this.overlay);
+            this.overlay.show(false);
         }
     });
-    Overlay.topLayer=1000;
-    return Overlay;
-    function refresh(){
-        this.warp.style("width",document.documentElement.clientWidth);
-        this.warp.style("height",document.documentElement.clientHeight);
-    }
+    exports.topLayer=1000;
+    return exports;
 })

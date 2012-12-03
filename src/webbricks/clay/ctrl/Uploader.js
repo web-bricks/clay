@@ -1,32 +1,30 @@
 /**
-* FlashÉÏ´«×é¼ş.
+* Flashä¸Šä¼ ç»„ä»¶.
 * @author jianbowang@sohu-inc.com
 * @date   2011.10.26
 */
 
 kola('webbricks.clay.ctrl.Uploader', [
-    'kola.lang.Object',
-    'kola.event.Dispatcher',
     'kola.lang.Class',
     'kola.html.Element',
     'webbricks.clay.lib.SwfUpload'
-], function(KolaObject, Dispatcher, KolaClass, $, SwfUpload){
+], function(KolaClass, $, SwfUpload){
   
-    var Klass=KolaClass.create(Dispatcher,{
+    var Klass=KolaClass.create({
         /**
-        * Àà³õÊ¼»¯º¯Êı.
+        * ç±»åˆå§‹åŒ–å‡½æ•°.
         * @param {JSON}cfg
-        *   @item  {String}uploadUrl must ÉÏ´«·şÎñÆ÷µØÖ·
+        *   @item  {String}uploadUrl must ä¸Šä¼ æœåŠ¡å™¨åœ°å€
         *   @item  {int}maxSelectCount opt defaut 12
         */    
         _init : function(cfg){
             if(!cfg || !cfg.uploadUrl){
-                throw "´íÎóµÄÅäÖÃ²ÎÊı£¬ÇëÖ¸¶¨ÉÏ´«·şÎñÆ÷µØÖ·£¡";
+                throw "é”™è¯¯çš„é…ç½®å‚æ•°ï¼Œè¯·æŒ‡å®šä¸Šä¼ æœåŠ¡å™¨åœ°å€ï¼";
             }
             this.maxSelectCount = cfg.maxSelectCount || 12;
             this.maxFileSize = (function(){          
             if(!cfg.maxFileSize){
-                return "10MB";
+                return "20MB";
             }else{
                 var maxSize = Math.abs(parseInt((cfg.maxFileSize || 0), 10));
                 if(maxSize < 1024){
@@ -48,18 +46,18 @@ kola('webbricks.clay.ctrl.Uploader', [
             this.enableSelect = true;
             this.handlerScope = cfg.handlerScope;
 
-            //³õÊ¼»¯UploadÊµÏÖ¶ÔÏó
+            //åˆå§‹åŒ–Uploadå®ç°å¯¹è±¡
             this.initUploaderImpl(cfg);
         },
         
         /**
-        * ¿ªÊ¼ÉÏ´«ÎÄ¼ş.
+        * å¼€å§‹ä¸Šä¼ æ–‡ä»¶.
         */
         upload : function(fileId){
           var file = this.fileMap[fileId];
           if(!file) return;      
           
-          //ĞŞ¸ÄÎÄ¼ş×´Ì¬ÎªÉÏ´«ÖĞ
+          //ä¿®æ”¹æ–‡ä»¶çŠ¶æ€ä¸ºä¸Šä¼ ä¸­
           file.status = this.FILE_UPLOADING;
           var uploader = this.uploaderMap[file.uploaderId];
           if(uploader){
@@ -68,25 +66,25 @@ kola('webbricks.clay.ctrl.Uploader', [
         },
              
         /**
-        * È¡ÏûÎÄ¼şµÄÉÏ´«.
+        * å–æ¶ˆæ–‡ä»¶çš„ä¸Šä¼ .
         * @param {String}fileId
         */
         abort : function(fileId){
           //console.log('SwfUploader.abort:: fileId' +fileId);
           
-          //È¡ÏûÎÄ¼şµÄÉÏ´«
+          //å–æ¶ˆæ–‡ä»¶çš„ä¸Šä¼ 
           this._cancelUpload(fileId);
           
-          //É¾³ıÎÄ¼ş¼ÇÂ¼
+          //åˆ é™¤æ–‡ä»¶è®°å½•
           this.deleteFileRecord(fileId);
         },
         
         /**
-        * É¾³ıÎÄ¼ş¼ÇÂ¼.
+        * åˆ é™¤æ–‡ä»¶è®°å½•.
         * @param {String}fileId
         */
         deleteFileRecord : function(fileId){
-          //´ÓfileListÖĞÉ¾³ıÎÄ¼ş¼ÇÂ¼
+          //ä»fileListä¸­åˆ é™¤æ–‡ä»¶è®°å½•
           var i, len, file, fileList = this.fileList;
           for(i=0, len=fileList.length; i<len; i++){
             file = fileList[i];
@@ -96,12 +94,12 @@ kola('webbricks.clay.ctrl.Uploader', [
             }
           }
           
-          //´ÓfileMapÖĞÉ¾³ıÎÄ¼ş¼ÇÂ¼
+          //ä»fileMapä¸­åˆ é™¤æ–‡ä»¶è®°å½•
           delete this.fileMap[fileId];      
         },
         
         /**
-        * È¡ÏûÎÄ¼şµÄÉÏ´«.
+        * å–æ¶ˆæ–‡ä»¶çš„ä¸Šä¼ .
         * @param   {String}fileId
         * @private
         */
@@ -120,14 +118,14 @@ kola('webbricks.clay.ctrl.Uploader', [
         },
         
         /**
-        * »ñÈ¡ÎÄ¼şĞÅÏ¢
+        * è·å–æ–‡ä»¶ä¿¡æ¯
         */
         getFile : function(fileId){
           return this.fileMap[fileId];
         },
         
         /**
-        * »ñÈ¡ÎÄ¼ş¼¯ºÏ.
+        * è·å–æ–‡ä»¶é›†åˆ.
         * @return {Array<File>}
         */
         getFiles : function(){
@@ -135,7 +133,7 @@ kola('webbricks.clay.ctrl.Uploader', [
         },    
         
         /**
-        * »ñÈ¡ÉÏ´«×é¼şµÄ¹¤×÷×´Ì¬.
+        * è·å–ä¸Šä¼ ç»„ä»¶çš„å·¥ä½œçŠ¶æ€.
         */
         getStatus : function(){
           var i, len, status, file, fileList = this.fileList;
@@ -158,7 +156,7 @@ kola('webbricks.clay.ctrl.Uploader', [
         },
         
         /**
-        * ÊÇ·ñÔÊĞíÑ¡ÔñÎÄ¼ş.
+        * æ˜¯å¦å…è®¸é€‰æ‹©æ–‡ä»¶.
         * @return {Boolean}
         */
         isEnableSelect : function(){
@@ -166,7 +164,7 @@ kola('webbricks.clay.ctrl.Uploader', [
         },
         
         /**
-        * ÉèÖÃÊÇ·ñ¿ÉÒÔÑ¡Ôñ.
+        * è®¾ç½®æ˜¯å¦å¯ä»¥é€‰æ‹©.
         */
         setEnableSelect : function(isEnable){
           var i, uploaderMap = this.uploaderMap;
@@ -183,10 +181,10 @@ kola('webbricks.clay.ctrl.Uploader', [
         },
         
         /**
-        * ÖØÖÃÉÏ´«×é¼ş.
+        * é‡ç½®ä¸Šä¼ ç»„ä»¶.
         */
         reset : function(){
-          //µ÷ÓÃuploaerµÄreset·½·¨
+          //è°ƒç”¨uploaerçš„resetæ–¹æ³•
           var i, upldr, upldrMap = this.uploaderMap;
           for(i in upldrMap){
             if(!upldrMap.hasOwnProperty(i)){
@@ -203,7 +201,7 @@ kola('webbricks.clay.ctrl.Uploader', [
             }        
           }
         
-          //ÖØÖÃ¶ÔÏóÄÚ²¿×´Ì¬
+          //é‡ç½®å¯¹è±¡å†…éƒ¨çŠ¶æ€
           this.fileMap = {};
           this.enableSelect = true;
           this.fileList.length = 0;
@@ -216,14 +214,14 @@ kola('webbricks.clay.ctrl.Uploader', [
             var config  = this.config;
             var handler = config.onClick;
           
-            if(KolaObject.isFunction(handler)){
+            if(typeof handler == 'function'){
                 handler.call(this.handlerScope, isEnabled);
             } 
         },
         
         /**
-        * ÎÄ¼şÑ¡ÔñÖ®ºóµÄ´¦Àíº¯Êı.
-        * @param {int}selectCount   Ñ¡ÔñÎÄ¼ş¸öÊı.
+        * æ–‡ä»¶é€‰æ‹©ä¹‹åçš„å¤„ç†å‡½æ•°.
+        * @param {int}selectCount   é€‰æ‹©æ–‡ä»¶ä¸ªæ•°.
         */
         onSelect : function(selectCount){
             var files = this.selectQueue;
@@ -236,16 +234,16 @@ kola('webbricks.clay.ctrl.Uploader', [
             var cachedCount = fileList.length;
             var handler     = this.config.onSelect;
 
-            //Èô»º´æµÄÎÄ¼şÒÑ¾­´ïµ½ÔÊĞíÑ¡ÔñÎÄ¼şµÄ
-            //×î´óÖµ£¬ºöÂÔ´ËÊÂ¼ş.
+            //è‹¥ç¼“å­˜çš„æ–‡ä»¶å·²ç»è¾¾åˆ°å…è®¸é€‰æ‹©æ–‡ä»¶çš„
+            //æœ€å¤§å€¼ï¼Œå¿½ç•¥æ­¤äº‹ä»¶.
             if(cachedCount >= maxCount) return;
 
-            //¶ÔÑ¡ÔñµÄÎÄ¼ş°´ÎÄ¼şÃû½øĞĞÅÅĞò
+            //å¯¹é€‰æ‹©çš„æ–‡ä»¶æŒ‰æ–‡ä»¶åè¿›è¡Œæ’åº
             files.sort(function(f1, f2){
                 return f1.name < f2.name ? -1 : 1;
             });
 
-            //½«Ñ¡ÔñµÄÎÄ¼ş´æÈë»º´æºÍMap£¬³¬Ñ¡µÄ²¿·ÖÉáÆú
+            //å°†é€‰æ‹©çš„æ–‡ä»¶å­˜å…¥ç¼“å­˜å’ŒMapï¼Œè¶…é€‰çš„éƒ¨åˆ†èˆå¼ƒ
             var i, len, file, 
                 fileMap = this.fileMap,
                 select  = files.slice(0, maxCount - fileList.length);      
@@ -257,28 +255,28 @@ kola('webbricks.clay.ctrl.Uploader', [
                 fileMap[file.id] = file;
             }
 
-            //ÈôÖ¸¶¨ÁËonSelectº¯Êı£¬´¥·¢º¯Êı
-            if(KolaObject.isFunction(handler)){
+            //è‹¥æŒ‡å®šäº†onSelectå‡½æ•°ï¼Œè§¦å‘å‡½æ•°
+            if(typeof handler == 'function'){
                 handler.call(this.handlerScope, select, selectCount);
             }
         },
 
         /**
-        * ÎÄ¼şÉÏ´«½ø¶È¸Ä±äÊÂ¼ş.
+        * æ–‡ä»¶ä¸Šä¼ è¿›åº¦æ”¹å˜äº‹ä»¶.
         * @param  {Json}file
         * @param  {int}complete
         * @param  {int}total
         */
         onProgress : function(file, complete, total){
             var handler = this.config.onProgress;
-            if(KolaObject.isFunction(handler)){
+            if(typeof handler == 'function'){
                 var transRate = Math.floor(complete / total * 100);
                 handler.call(this.handlerScope, file.id,transRate);
             }      
         },
         
         /**
-        * ÉÏ´«³É¹¦Ö®ºóµÄµÄ»Øµ÷º¯Êı.
+        * ä¸Šä¼ æˆåŠŸä¹‹åçš„çš„å›è°ƒå‡½æ•°.
         * @param {Json}file
         * @param {String}serverData
         */
@@ -290,25 +288,25 @@ kola('webbricks.clay.ctrl.Uploader', [
           var percentHd = config.onProgress; 
           var successHd = config.onSuccess;
           
-          //¶Ô·µ»Ø½á¹¹½øĞĞÅĞ¶Ï, Èô·µ»Ø½á¹û²»Îª0ÔòÈÏÎªÉÏ´«Ê§°Ü
-          if(json.status != 0){
+          //å¯¹è¿”å›ç»“æ„è¿›è¡Œåˆ¤æ–­, è‹¥è¿”å›ç»“æœä¸ä¸º0åˆ™è®¤ä¸ºä¸Šä¼ å¤±è´¥
+          if(json.status != 200){
             this.onError(file, json.status, json.statusText);
             return;
           }
           
-          //ÈôÎÄ¼ş¼ÇÂ¼´æÔÚ£¬ÉèÖÃÎÄ¼ş×´Ì¬ÎªÒÔ´«ËÍÍê±Ï
-          //²¢ÇÒÈôÖ¸¶¨ÁË»Øµ÷º¯Êı´¥·¢»Øµ÷
+          //è‹¥æ–‡ä»¶è®°å½•å­˜åœ¨ï¼Œè®¾ç½®æ–‡ä»¶çŠ¶æ€ä¸ºä»¥ä¼ é€å®Œæ¯•
+          //å¹¶ä¸”è‹¥æŒ‡å®šäº†å›è°ƒå‡½æ•°è§¦å‘å›è°ƒ
           var cachedFile = this.fileMap[fileId];
           
           if(cachedFile){          
-            //ĞŞ¸ÄÎÄ¼şµÄ×´Ì¬ÎªÉÏ´«³É¹¦, ²¢½«
-            //´æ´¢µÄURL´æ´¢µ½serverUrlÖĞ
+            //ä¿®æ”¹æ–‡ä»¶çš„çŠ¶æ€ä¸ºä¸Šä¼ æˆåŠŸ, å¹¶å°†
+            //å­˜å‚¨çš„URLå­˜å‚¨åˆ°serverUrlä¸­
             var data = json.data;
             cachedFile.serverUrl = data.smallest;
             cachedFile.sizeInfo  = data.extraData;
             cachedFile.status    = this.FILE_UPLOAD_SUCCESS;      
             
-            //ÈôÖ¸¶¨ÁË»Øµ÷º¯Êı£¬Ö´ĞĞ»Øµ÷
+            //è‹¥æŒ‡å®šäº†å›è°ƒå‡½æ•°ï¼Œæ‰§è¡Œå›è°ƒ
             if(successHd instanceof Function){
               try{        
                 successHd.call(scope, fileId, json);        
@@ -320,7 +318,7 @@ kola('webbricks.clay.ctrl.Uploader', [
         },
         
         /**
-        * ÉÏ´«³ö´íÊ±µÄ»Øµ÷º¯Êı.
+        * ä¸Šä¼ å‡ºé”™æ—¶çš„å›è°ƒå‡½æ•°.
         * @param {Json}file
         * @param {String}errorCode
         * @param {String}message
@@ -334,10 +332,10 @@ kola('webbricks.clay.ctrl.Uploader', [
             var handler    = this.config.onError;
             
             if(cachedFile){      
-              //ĞŞ¸ÄÎÄ¼ş×´Ì¬ÎªÉÏ´«Ê§°Ü
+              //ä¿®æ”¹æ–‡ä»¶çŠ¶æ€ä¸ºä¸Šä¼ å¤±è´¥
               cachedFile.status = this.FILE_UPLOAD_ERROR;
               
-              //ÈôÖ¸¶¨ÁË´íÎó»Øµ÷£¬Ö´ĞĞ»Øµ÷
+              //è‹¥æŒ‡å®šäº†é”™è¯¯å›è°ƒï¼Œæ‰§è¡Œå›è°ƒ
               if(handler instanceof Function){
                 try{
                   handler.call(
@@ -355,28 +353,28 @@ kola('webbricks.clay.ctrl.Uploader', [
         },
         
         /**
-        * ËõÂÊÍ¼Éú³ÉÊÂ¼ş.
+        * ç¼©ç‡å›¾ç”Ÿæˆäº‹ä»¶.
         */
         onThumbOk : function(file){
             var handler = this.config.onThumbOk;    
-            if(KolaObject.isFunction(handler)){
+            if(typeof handler == 'function'){
                 handler.call(this.handlerScope, file);
             }
         },
             
         /**
-        * ËõÂÊÍ¼Éú³ÉÊ§°ÜÊÂ¼ş.
+        * ç¼©ç‡å›¾ç”Ÿæˆå¤±è´¥äº‹ä»¶.
         * @param {File}file
         */
         onThumbError : function(file){
             var handler = this.config.onThumbError;    
-            if(KolaObject.isFunction(handler)){
+            if(typeof handler == 'function'){
                 handler.call(this.handlerScope, file);
             }     
         },
         
         /**
-        * ³õÊ¼ºúuploaderÊµÏÖ¶ÔÏó.
+        * åˆå§‹èƒ¡uploaderå®ç°å¯¹è±¡.
         * @param {Json}cfg
         */
         initUploaderImpl : function(cfg){
@@ -388,15 +386,15 @@ kola('webbricks.clay.ctrl.Uploader', [
                 loaderId = "__upldr__" + i;         
                 uploader = this.buildUploader(loaderId, anchor);
             
-                //»º´æuploaderÊµÏÖ¡£ÒòÎªÓĞ¶à¸öÊµÏÖ,
-                //ËùÒÔµ÷ÓÃuploader·½·¨Ê±ĞèÒªÖªµÀ¸Ã
-                //ÎÄ¼şÀ´×ÔÄÄ¸öuploaderÊµÏÖ
+                //ç¼“å­˜uploaderå®ç°ã€‚å› ä¸ºæœ‰å¤šä¸ªå®ç°,
+                //æ‰€ä»¥è°ƒç”¨uploaderæ–¹æ³•æ—¶éœ€è¦çŸ¥é“è¯¥
+                //æ–‡ä»¶æ¥è‡ªå“ªä¸ªuploaderå®ç°
                 thiz.uploaderMap[loaderId] = uploader;
             }     
         },
         
         /**
-        * ´´½¨uploaderÊµÏÖµÄDOM½á¹¹.
+        * åˆ›å»ºuploaderå®ç°çš„DOMç»“æ„.
         * @param  {String}uploaderId
         * @param  {JQueryObj}anchor
         * @return {SwfUpload}
@@ -449,7 +447,7 @@ kola('webbricks.clay.ctrl.Uploader', [
             "privew_img_width"   : (config.privewImgWidth  || 110),
             "privew_img_height"  : (config.privewImgHeight || 110),        
             
-            //ÉÏ´«×é¼şµÄÒ»Ğ©³£¹æÉèÖÃ-----------------------
+            //ä¸Šä¼ ç»„ä»¶çš„ä¸€äº›å¸¸è§„è®¾ç½®-----------------------
             "debug"           : false,
             "flash_url"       : config.flash_url,
             //"custom_settings" : {something : "here"},         
@@ -458,27 +456,27 @@ kola('webbricks.clay.ctrl.Uploader', [
             "button_window_mode" : SWFUpload.WINDOW_MODE.TRANSPARENT,
             "button_action"      : (config.singleSelect||(config.maxSelectCount==1))?SWFUpload.BUTTON_ACTION.SELECT_FILE:SWFUpload.BUTTON_ACTION.SELECT_FILES,
             "file_types"             : filter,
-            "file_post_name"         : "Filedata",
+            "file_post_name"         : config.file_post_name || "Filedata",
             "file_size_limit"        : thiz.maxFileSize,
             "file_upload_limit"      : "0",
             "file_types_description" : "Image Files",       
             "prevent_swf_caching"    : false,
             
-            //»Øµ÷ÉèÖÃ------------------------------------
+            //å›è°ƒè®¾ç½®------------------------------------
             
-            //ÎÄ¼ş±»¼ÓÈëÉÏ´«¶ÓÁĞ
+            //æ–‡ä»¶è¢«åŠ å…¥ä¸Šä¼ é˜Ÿåˆ—
             "file_queued_handler" : function(file){
                 file.status     = this.FILE_NOT_UPLOAD;
                 file.uploaderId = uploaderId;
                 thiz.selectQueue.push(file);
-                //ÈôÖ¸¶¨ÁËonSelectº¯Êı£¬´¥·¢º¯Êı
+                //è‹¥æŒ‡å®šäº†onSelectå‡½æ•°ï¼Œè§¦å‘å‡½æ•°
                 var handler=config.fileQueueHandler
-                if(KolaObject.isFunction(handler)){
+                if(typeof handler == 'function'){
                     handler.call(this.handlerScope, file);
                 }
             },
             
-            //ÎÄ¼ş¼ÓÈë¶ÓÁĞ´íÎó
+            //æ–‡ä»¶åŠ å…¥é˜Ÿåˆ—é”™è¯¯
             "file_queue_error_handler" : config.file_queue_error_handler||function(file, errorCode, message){
               var fileName = file.name.length > 16
                            ? file.name.slice(0,13) + "..."
@@ -486,17 +484,17 @@ kola('webbricks.clay.ctrl.Uploader', [
               
               switch(errorCode){
                 case -130 : //File is not an allowed file type
-                  alert('ÄúÉÏ´«µÄÎÄ¼ş"' + fileName + '"ÎŞ·¨±»ÏµÍ³Ê¶±ğ, Ñ¡ÔñÆäËûÍ¼Æ¬!');
+                  alert('æ‚¨ä¸Šä¼ çš„æ–‡ä»¶"' + fileName + '"æ— æ³•è¢«ç³»ç»Ÿè¯†åˆ«, é€‰æ‹©å…¶ä»–å›¾ç‰‡!');
                   break;
                   
                 case -110 : //File size exceeds allowed limit"
                   var maxSize = thiz.maxFileSize;
-                  alert('ÄúÉÏ´«µÄÎÄ¼ş"' + fileName + '"Ì«´ó, Çë²»ÒªÉÏ´«³¬¹ı' + maxSize + 'µÄÍ¼Æ¬!');
+                  alert('æ‚¨ä¸Šä¼ çš„æ–‡ä»¶"' + fileName + '"å¤ªå¤§, è¯·ä¸è¦ä¸Šä¼ è¶…è¿‡' + maxSize + 'çš„å›¾ç‰‡!');
                   break;
               }
             },
             
-            //Ñ¡ÔñÍê±Ï
+            //é€‰æ‹©å®Œæ¯•
             "file_dialog_complete_handler" : function(selectCount, countInQueued){
               thiz.onSelect(selectCount);
               thiz.selectQueue.length = 0;

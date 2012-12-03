@@ -2,141 +2,110 @@
     表单验证组件
     实现kola-cpt接口
 */
-kola("webbricks.clay.tools.FormValidator",
-    "kola.html.Element,kola.lang.Class,kola.lang.Object,kola.lang.Array,kola.net.Ajax,kola.event.Dispatcher",
-function(K,C,O,A,Ajax,Dispatcher){
-    /**
-        预定义正则表达式
-    */
-    var regs={
-        Require : /.+/,
-		Username : /^[a-zA-Z]{1}([a-zA-Z0-9]|[_]){3,15}$/,
-		Realname : /^[\u4E00-\u9FA5]{2,6}$/,
-		Nosign : /^[^\s]{1}[^-_\~!@#\$%\^&\*\.\(\)\[\]\{\}<>\?\\\/\'\"]*$/,
-		Domain : /^([a-zA-Z0-9]|[-]){4,16}$/,
-		V_code : /^[a-zA-Z0-9]{6}$/,
-		Email : /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/,
-		Phone : /^((\(\d{3}\))|(\d{3}\-))?(\(0\d{2,3}\)|0\d{2,3}-)?[1-9]\d{6,7}$/,
-		Mobile : /^((\(\d{3}\))|(\d{3}\-))?1(3|5|8)\d{9}$/,
-		Url : /^([a-zA-z]+:\/\/)?([\w-]+\.)+[\w-]+(\/[\w- .\?%&=]*)?/,
-		IdCard : /^\d{15}(\d{2}[A-Za-z0-9])?$/,
-		Currency : /^\d+(\.\d+)?$/,
-		Number : /^\d+$/,
-		Zip : /^[1-9]\d{5}$/,
-		QQ : /^[1-9]\d{4,15}$/
-    }
+kola("webbricks.clay.tools.FormValidator",[
+    "kola.html.Element",
+    "kola.lang.Class",
+    "kola.lang.Object",
+    'kola.lang.Function',
+    "kola.lang.Array",
+    "kola.event.Dispatcher"
+], function($, KolaClass, KolaObject, KolaFunction, KolaArray, Dispatcher){
     /**
         预定义规则
     */
     var rules={
-        email:{
-            trigger:"blur",
-            rule:[["Email","email格式错误"]]
-        },
-        name:{
-            trigger:"blur",
-            rule:[[/[\S]{2,13}/,"昵称应为2~12位"],["Username","昵称格式错误"],{url:"isUserNameUnused?name="}]
-        },
-        phone:{
-            trigger:"blur",
-            rule:[["Number","电话号码必须是数字"],["Mobile","电话号码格式错误"]]
-        }
+        email:[{pattern: /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/, message: "email格式错误"}],
+        name:[{pattern: /[\S]{2,13}/, message: "昵称应为2~12位"},
+            {pattern: /^[a-zA-Z]{1}([a-zA-Z0-9]|[_]){3,15}$/, message: "昵称格式错误"},
+            {url: "isUserNameUnused?name="}
+        ],
+        phone:[
+            {pattern: /^\d+$/, message: "电话号码必须是数字"},
+            {pattern: /^((\(\d{3}\))|(\d{3}\-))?1(3|5|8)\d{9}$/, message: "电话号码格式错误"}
+        ]
     }
     /**
         默认表单状态切换
     */
     var view=function(item,data){
-        if(item.status==Form.STATUS_EMPTY || item.status==Form.STATUS_OK){
-            item.elem.next(".frmTip").html("");
-            item.elem.closest(".frm").addClass("frm_ok").removeClass("frm_err");
-        }else if(item.status==Form.STATUS_ERR){
-            item.elem.next(".frmTip").html(data);
-            item.elem.closest(".frm").addClass("frm_err").removeClass("frm_ok");;
+        if(item._status==Form.STATUS_EMPTY || item._status==Form.STATUS_OK){
+            item.outerElement.next(".frmTip").html("");
+            item.outerElement.closest(".frm").css("frm_ok", true).css("frm_err", false);
+        }else if(item._status==Form.STATUS_ERR){
+            item.outerElement.next(".frmTip").html(data);
+            item.outerElement.closest(".frm").css("frm_err", true).css("frm_ok", false);
         }
     }
     /**
         表单项验证
     */
-    var Item=C.create(Dispatcher,{
-        _init:function(el,option){
-            var _this=this;
-            _this.status=Form.STATUS_EMPTY;
-            _this.elem=el;
-            _this.el=el.find("[name]");
-            _this.type=el.attr("data-valid")||"";
-            _this.require=el.attr("data-require")||0;
+    var Item = KolaClass.create(Dispatcher, {
+        _init: function(outerElement, option){
+            var _this = this;
             if(!option.view){
-                _this.view=view;
+                _this.view = view;
             }else{
-                _this.view=option.view;
+                _this.view = option.view;
             }
-            if(_this.type)
-                _this.code=rules[_this.type];
+            _this.outerElement = outerElement;
+            _this.el=outerElement.find("[name]");
+            _this.pattern=outerElement.attr("pattern") || "";
+            _this.require=outerElement.attr("require") || false;
+            _this.status(Form.STATUS_EMPTY);
+            if(_this.pattern)
+                _this.rules=rules[_this.pattern];
             else
-                _this.code=[];
-            _this.el.on(_this.code.trigger||"blur",_this.valid,{scope:_this});
+                _this.rules=[];
+            _this.el.change(_this.validLocal, {scope:_this});
         },
-        valid:function(){
-            var _this=this;
-            var rules=_this.code.rule;
-            var val=_this.el[0].value;
-            //如果为空，交给非空验证
-            if(val==""){
-                if(_this.require=="")
-                    _this.status=Form.STATUS_EMPTY;
-                else{
-                    _this.status=Form.STATUS_ERR;
+        validRemote: function(){
+            Ajax.json(rule.url + val, {
+                succ:function(json){
+                    _this.status(Form.STATUS_OK);
+                    _this.fire("PASS");
+                    _this.view(_this);
+                },fail:function(){
+                    _this.status(Form.STATUS_ERR, json.data);
                     _this.fire("ERR");
                 }
-                _this.view(_this,_this.require);
+            });
+        },
+        validLocal: function(){
+            var _this = this;
+            var rules = _this.pattern;
+            var val = _this.el.val();
+            //如果为空，交给非空验证
+            if(val == ""){
+                if(_this.require == "")
+                    _this.status(Form.STATUS_EMPTY);
+                else{
+                    _this.status(Form.STATUS_ERR, _this.require);
+                    _this.fire("ERR");
+                }
                 return;
             }
             if(_this.type){
                 for(var i=0;i<rules.length;i++){
                     var rule=rules[i];
-                    if(O.isArray(rule)){
-                        if(O.isString(rule[0])){
-                            var reg=regs[rule[0]];
-                        }else{
-                            var reg=rule[0];
-                        }
-                        if(!reg.test(val)){
-                            _this.status=Form.STATUS_ERR;
-                            _this.fire("ERR");
-                            _this.view(_this,rule[1]);
-                            return;
-                        }
-                    }else{
-                        Ajax.json(rule.url+val,{
-                            succ:function(json){
-                                if(json.status==200){
-                                    _this.status=Form.STATUS_OK;
-                                    _this.fire("PASS");
-                                    _this.view(_this);
-                                }else{
-                                    _this.status=Form.STATUS_ERR;
-                                    _this.fire("ERR");
-                                    _this.view(_this,json.statusText);
-                                }
-                            },fail:function(){
-                                _this.status=Form.STATUS_ERR;
-                                _this.fire("ERR");
-                                _this.view(_this,"网络不通");
-                            }
-                        });
+                    if(!rule.pattern.test(val)){
+                        _this.status(Form.STATUS_ERR, rule.message);
+                        _this.fire("ERR");
                         return;
                     }
                 }
             }
-            _this.status=Form.STATUS_OK;
+            _this.status(Form.STATUS_OK);
             _this.fire("PASS");
-            _this.view(_this.el);
+        },
+        status: function(status, errMessage){
+            this._status = status;
+            this.view(this, errMessage);
         }
     });
 
     function testAllPass(){
         for(var i=0;i<this.items.length;i++){
-            if(this.items[i].status!=Form.STATUS_OK)
+            if(this.items[i]._status!=Form.STATUS_OK)
                 return;
         }
         for(i=0;i<this.items.length;i++){
@@ -153,7 +122,7 @@ function(K,C,O,A,Ajax,Dispatcher){
     }
     function submit(e){
         for(var i=0,il=this.items.length;i<il;i++){
-            this.items[i].status=Form.STATUS_EMPTY;
+            this.items[i]._status=Form.STATUS_EMPTY;
         }
         for(var i=0,il=this.items.length;i<il;i++){
             this.items[i].on("PASS",testAllPass,{scope:this});
@@ -168,29 +137,25 @@ function(K,C,O,A,Ajax,Dispatcher){
             .submit 点击提交按钮后所有验证通过的回调函数
     */
 
-    var Form=C.create({
-        _init:function(form,options){
-            var _this=this;
-            _this.form=K(form);
-            _this.options=O.extend({
-                clearOnFocus:true,
-                submit:function(){}
-            },options);
-            _this.items=[];
-            _this.form.find("[data-valid]").add(_this.form.find("[data-require]")).each(function(item){
-                var newItem=new Item(item,{view:options.view});
+    var Form=KolaClass.create({
+        _init:function(form, options){
+            var _this = this;
+            _this.options = KolaObject.extend({
+                clearOnFocus: true,
+                submit: KolaFunction.empty
+            }, options);
+            _this.items = [];
+            form.find("[pattern]").add(form.find("[require]")).each(function(item){
+                var newItem = new Item(item, {view:options.view});
                 _this.items.push(newItem);
                 if(_this.options.clearOnFocus){
                     item.on("focus",function(){
-                        newItem.status=Form.STATUS_EMPTY;
+                        newItem.status(Form.STATUS_EMPTY);
                         newItem.view(newItem);
                     });
                 }
             });
-            _this.submitBtn=form.find("[data-submit]");
-            if(_this.submitBtn.length>0){
-                _this.submitBtn.click(submit,{scope:this});
-            }
+            form.find("[type=submit]").click(submit, {scope: this});
         },
         submit:function(){
             submit.call(this);
